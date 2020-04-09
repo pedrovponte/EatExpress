@@ -79,4 +79,4 @@ COMO RAIO FAZEMOS ISTO, EIS A GRANDE QUESTÃO
 
 A solução ótima do problema passa por minimizar o tempo dispendido a realizar $n$ pedidos, pelo que se prende na minimização do máximo tempo de entre os tempos dos $k$ estafetas para os respetivos conjuntos de pedidos:
 
-> $min [f(k,n)] $ = $min$$[$ $max$ $[$  $\sum_{i=0}^{n} weight(e_i)$ $]$$]$
+> <img src="https://render.githubusercontent.com/render/math?math=$min [f(k,n)] $ = $min$$[$ $max$ $[$  $\sum_{i=0}^{n} weight(e_i)$ $]$$]$>
