@@ -1,4 +1,6 @@
-﻿# EatExpress
+# EatExpress
+
+> Um relatório fixe: [https://github.com/andrefmrocha/MIEIC_CAL_18_19/blob/master/TripMate_Final_Report.pdf](https://github.com/andrefmrocha/MIEIC_CAL_18_19/blob/master/TripMate_Final_Report.pdf)
 
 ## Descrição do tema
 
@@ -30,3 +32,36 @@ A distribução dos pedidos pelos estafetas deve ser realizada de modo a dar pre
  *Vários estafetas & vários pedidos por estafeta*
 Existem vários estafetas a trabalhar para a plataforma, utilizando cada um meio de transporte com uma determinada velocidade e condicionantes. 
 A distribuição dos pedidos é feita com base na sua dimensão e na distância do seu local de entrega, podendo ao mesmo estafeta ser atribuído um conjunto de pedidos dos quais deve tratar no mesmo delocamento.
+
+COMO RAIO FAZEMOS ISTO, EIS A GRANDE QUESTÃO
+
+## Formalização do problema
+
+### Dados de entrada
+
+ - P = (V<sub>P</sub> E<sub>P</sub>), V = (V<sub>V</sub>, E<sub>V</sub>), B = (V<sub>B</sub>, E<sub>B</sub>) 
+*Grafos dirigidos pesados que representam as redes viárias para cada meio de transporte, representando P o deslocamento a pé, B de bicileta e V os outros meios transporte, carro e motoclico.* 
+	 -  Vi - conjunto de vértices/nós
+	 *Os vértices representam as interseções das ruas* 
+		 - coords - par de coordenadas geográficas 
+		 - visited
+		 - adj ⊆ Ai
+		 - path 
+	 -  Ai - conjunto de arestas
+	  *As arestas representam as vias de sentido único*
+		 - dest ∈ Vi
+		 - src ∈ Vi
+		 - adj ⊆ Ai
+		 - path ∈ Vi
+ - s ∈ Vi - vértice de origem
+*Centro de apoio ao serviço expresso de onde partem os estafetas* 
+- E - conjunto de encomendas
+ *Cada encomenda emparelha o restaurante e o local onde deve ser entregue o pedido*
+	- E<sub>i</sub> =  (R<sub>i</sub>, M<sub>i</sub>)
+		- R<sub>i</sub> ⊆ V - restaurante
+			- transporte 
+		- M<sub>i</sub> ⊆ V - morada de entrega
+- T - meios de transporte disponíveis
+	- velocidade
+	- capacidade (em nº de pedidos)
+- F - conjunto de funcionários 
