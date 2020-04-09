@@ -1,6 +1,6 @@
 # EatExpress
 
-> Um relatório fixe: [https://github.com/andrefmrocha/MIEIC_CAL_18_19/blob/master/TripMate_Final_Report.pdf](https://github.com/andrefmrocha/MIEIC_CAL_18_19/blob/master/TripMate_Final_Report.pdf)
+>Um relatório fixe: [https://github.com/andrefmrocha/MIEIC_CAL_18_19/blob/master/TripMate_Final_Report.pdf](https://github.com/andrefmrocha/MIEIC_CAL_18_19/blob/master/TripMate_Final_Report.pdf)
 
 ## Descrição do tema
 
@@ -39,29 +39,44 @@ COMO RAIO FAZEMOS ISTO, EIS A GRANDE QUESTÃO
 
 ### Dados de entrada
 
- - P = (V<sub>P</sub> E<sub>P</sub>), V = (V<sub>V</sub>, E<sub>V</sub>), B = (V<sub>B</sub>, E<sub>B</sub>) 
+ - G<sub>P</sub> = (V<sub>P</sub> E<sub>P</sub>), G<sub>V</sub> = (V<sub>V</sub>, E<sub>V</sub>), G<sub>B</sub> = (V<sub>B</sub>, E<sub>B</sub>) 
 *Grafos dirigidos pesados que representam as redes viárias para cada meio de transporte, representando P o deslocamento a pé, B de bicileta e V os outros meios transporte, carro e motoclico.* 
 	 -  Vi - conjunto de vértices/nós
 	 *Os vértices representam as interseções das ruas* 
 		 - coords - par de coordenadas geográficas 
 		 - visited
-		 - adj ⊆ Ai
+		 - adj ⊆ Ei
 		 - path 
-	 -  Ai - conjunto de arestas
+	 -  Ei - conjunto de arestas
 	  *As arestas representam as vias de sentido único*
 		 - dest ∈ Vi
 		 - src ∈ Vi
-		 - adj ⊆ Ai
-		 - path ∈ Vi
+         - weight - representa distância ou tempo? 
  - s ∈ Vi - vértice de origem
 *Centro de apoio ao serviço expresso de onde partem os estafetas* 
-- E - conjunto de encomendas
- *Cada encomenda emparelha o restaurante e o local onde deve ser entregue o pedido*
-	- E<sub>i</sub> =  (R<sub>i</sub>, M<sub>i</sub>)
+- P = (R,M)- conjunto de pedidos
+ *Cada pedido emparelha o restaurante e o local onde deve ser entregue o pedido*
+	- P<sub>i</sub> =  (R<sub>i</sub>, M<sub>i</sub>)
 		- R<sub>i</sub> ⊆ V - restaurante
 			- transporte 
 		- M<sub>i</sub> ⊆ V - morada de entrega
 - T - meios de transporte disponíveis
 	- velocidade
 	- capacidade (em nº de pedidos)
-- F - conjunto de funcionários 
+- F - conjunto de funcionários
+   - path - conjunto de vértices que constituem o caminho mais curto para atender a um dado número de pedidos
+   - Ri = (Vi,Ei) - conjunto cordenado de vértices e arestas que representam o caminho mais curto para um dado conjunto de pedidos
+   - Pi = (R,M) - conjunto de pedidos atendidos por aquele funcionário
+   - Ti - meio transporte utilizado pelo estafeta
+
+### Dados de saída
+
+- R 
+
+## Restrições
+
+### Funções objetivo
+
+A solução ótima do problema passa por minimizar o tempo dispendido a realizar $n$ pedidos, pelo que se prende na minimização do máximo tempo de entre os tempos dos $k$ estafetas para os respetivos conjuntos de pedidos:
+
+> $min [f(k,n)] $ = $min$$[$ $max$ $[$  $\sum_{i=0}^{n} weight(e_i)$ $]$$]$
