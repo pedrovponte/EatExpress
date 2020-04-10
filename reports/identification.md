@@ -1,9 +1,5 @@
 # Identification
 
-> This will be exported to the proper report
-> This is just a way of organizing/splitting the tasks/content
-> Write your things here if missing or not correct
-
 Título
 ------
 Projeto CAL

@@ -29,7 +29,7 @@ Considere a possibilidade de utilizar mapas reais, extraídos do OpenStreetMaps 
 
 ### Submission Schedule
 
-1ª Entrega: Especificação e Formalização - 10 de Abril (até às 24:00)
+1ª Entrega: Especificação e Formalização - 24 de Abril (até às 24:00)
 2ª Entrega: Implementação - 22 de Maio (até às 24:00)
 
 ### Notes on the 1st report:
