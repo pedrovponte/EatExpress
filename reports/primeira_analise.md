@@ -55,7 +55,7 @@ COMO RAIO FAZEMOS ISTO, EIS A GRANDE QUESTÃO
  - s ∈ Vi - vértice de origem
 </br>*Centro de apoio ao serviço expresso de onde partem os estafetas* 
 - P = (R,M)- conjunto de pedidos
-</br>*Cada pedido emparelha o restaurante, o local onde deve ser entregar o pedido e a sua dimensão*
+</br>*Cada pedido emparelha o restaurante, o local onde deve ser entregue o pedido e a sua dimensão*
 	- P<sub>i</sub> =  (R<sub>i</sub>, M<sub>i</sub>)
 		- R<sub>i</sub> ⊆ V - restaurante
 		- M<sub>i</sub> ⊆ V - morada de entrega
