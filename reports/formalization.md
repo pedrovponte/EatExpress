@@ -56,17 +56,33 @@ Os dados a recolher, antes da execução de qualquer dos algoritmos, para os per
     * Um campo $name$, sem valor expressivo, servindo de identificador;
     * Eventualmente, e como possível alternativa à utilização de diversos grafos para cada tipo de transporte, em certas situações e algoritmos a escolher, um estatuto identificador do tipo de via que permita, ou impeça, a passagem dos respetivos meios de deslocação. Este campo é apenas uma previsão, ou sugestão de implementação, ainda não definitiva.
 
-Estes dados poderão fazer parte de um pré-processamento existente, consoante o algoritmo escolhido e o problema a resolver. 
-Se esses cálculos iniciais existirem, no caso de um algoritmo que estabeleça as distâncias mínimas entre cada par de vértices, seguir-se-á a instanciação dos pedidos, entregues aos estafetas, com o estabelecimento, também neste instante, do caminho a ser percorrido. Aqui, ter-se-á em conta as várias restrições, numa problematização um pouco à parte do cálculo das distâncias mínimas.
-Ainda assim, os dados relativos a cada situação específica, relacionada com as tarefas entregues aos estafetas, enumeram-se seguidamente:
-
 * Conjunto de estafetas $Employees$:
   * Estafeta $employee \in Employees$, com a informação sobre:
     * A sua posição inicial/no momento, $s$, um vértice/ponto no mapa;
     * A sua capacidade máxima, $maxCargo$;
     * O seu meio de transporte, $type$;
+
 * Lista ordenada de Pedidos $P$:
   * Pedido $p \in P$ com a informação detalhada sobre:
-    * Lista ordenada $checkPoints$ de pontos/vértices que façam parte do percurso;
+    * Lista, $checkPoints$, de pontos/vértices que façam, obrigatoriamente, parte do percurso (referência aos restaurantes e moradas dos clientes);
     * Lista de $itens$, cada um com a simples descrição da carga ocupada;
-    * Estafeta $emp$, que realizará o pedido;
+
+Estes dados poderão fazer parte de um pré-processamento existente, consoante o algoritmo escolhido e o problema a resolver. Se esses cálculos iniciais existirem, no caso de um algoritmo que estabeleça as distâncias mínimas entre cada par de vértices, seguir-se-á a instanciação dos pedidos, a sua organização em tarefas e a requisição de estafetas para as realizar, com o cálculo do caminho final a ser percorrido pelos mesmos. 
+
+Dados de Saída
+--------------
+
+Tendo sido o grafo analisado, tratado e traduzido numa das várias formas plausíveis de representação, poderá ser retornado, como dado de saída.
+O importante, realmente, aqui, é a entrega das tarefas aos estafetas, o que resultará no seguinte conjunto de dados de saída:
+
+* Conjunto de tarefas $Tasks$:
+  * Tarefa $task$, com informação sobre:
+    * A lista completa e ordenada de vértices, $path$, por onde passará o estafeta;
+    * Os vários pedidos $P$, que fazem parte da tarefa;
+    * O estafeta $employee$, encarregue da sua realização;
+
+O que se segue, nomeadamente, o ato de percorrer o caminho, com a identificação dos pontos já visitados, da entregua dos pedidos, do cálculo da distância percorrida, é um tanto independente desta análise algorítmica incial, mas poderá ser, eventualmente, alvo de estudo e reflexão, para interpretação de resultados.
+
+Restrições
+---------
+
