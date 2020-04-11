@@ -65,6 +65,7 @@ Os dados a recolher, antes da execução de qualquer dos algoritmos, para os per
     * A sua posição inicial/no momento, $s$, um vértice/ponto no mapa;
     * A sua capacidade máxima, $maxCargo$;
     * O seu meio de transporte, $type$;
+    * A sua disponibilidade, $ready$, para iniciar uma nova tarefa;
 
 * Lista ordenada de Pedidos $P$:
   * Pedido $p \in P$ com a informação detalhada sobre:
@@ -82,7 +83,7 @@ O importante, realmente, aqui, é a entrega das tarefas aos estafetas, o que res
 
 * Conjunto de tarefas $Tasks$:
   * Tarefa $task \in Tasks$, com informação sobre:
-    * A lista completa e ordenada de vértices, $path$, por onde passará o estafeta;
+    * A lista completa e ordenada dos vértices consecutivos, $path$, por onde passará o estafeta;
     * Os vários pedidos $P$, que fazem parte da tarefa;
     * O estafeta $employee$, encarregue da sua realização;
 
@@ -104,7 +105,7 @@ As outras restrições são como se seguem:
 * $ \forall \ r \in R, \ r.v \not = null $, sendo que um restaurante tem que ter uma posição estabelecida;
 * $ \forall \ employee_1,employee_2 \in Employees, \ employee_1 \not = employee_2 $, no sentido em que não haverá estafetas repetidos;
 * $ \forall \ employee \in Employee, \ employee.s \not = null $, sendo que um estafeta tem que ter uma posição estabelecida;
-* $ \forall \ employee \in Employee, \ employee.maxCargo \gt 0, \ employee.type \in \{ \ 'car',\ 'bike', \ 'foot' \ \} $;
+* $ \forall \ employee \in Employee, \ employee.maxCargo \gt 0, \ employee.type \in \{ \ 'car',\ 'bike', \ 'foot' \ \} \ , \ employee.ready \in \{ 'Y',\ 'N' \}$;
 * $ \forall \ p_1,p_2 \in P, \ p_1 \not = p_2 $, no sentido em que não haverá pedidos repetidos;
 * $ \forall \ p \in P, \ p.time \not = null, \ |p.checkPoints| \gt 1, \ |p.itens| \gt 0 $;
 
@@ -116,5 +117,13 @@ As outras restrições são como se seguem:
 
 Função Objetivo
 ---------------
-A solução ótima para este problema reside, genericamente, na minimização da distância percorrida, em cada percurso, por cada estafeta.
+A solução ótima para este problema reside, genericamente, na minimização da distância percorrida, em cada rota, por cada estafeta, numa dada tarefa. Assim, será necessário encontrar o mínimo de:
 
+$$ f(task) = \sum_{e(v_k,v_{k+1})} e.weight \ , \ v_k,v_{k+1} \in task.path \ \land \ e \in E $$
+
+Adicionalmente, para múltiplas tarefas a realizar em simultâneo, num dado intervalo de tempo, poderá surgir a necessidade de minimizar, também, as funções:
+
+$$ g = \sum_{task} f(task) \ , \ task \in Tasks
+\\ h = |Tasks| $$
+
+Para a função $g$, o mínimo poderá, eventualmente, ser atingido pela simples minimização de $f(task)$, em todas as instâncias, sendo, por isso, a função $f$ de maior prioridade, entre todas.
