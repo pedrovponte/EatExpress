@@ -16,17 +16,17 @@ Assim sendo, o problema reduzir-se-á a encontrar os caminhos mais curtos entre 
 Estratificação
 --------------
 
-A estratégia a seguir, para a resolução deste problema, sugere a divisão do conceito em fases de análise, de implementação e de deliberação. No entanto, como pré-estabelecido tomamos a ideia de que um estafeta em trabalho, antes de receber a sua rota, pode estar localizado num qualquer ponto do mapa. Esta e a generalização de que existirão sempre, no mínimo, um restaurante e uma morada de um cliente como pontos integrantes da rota, serão o ponto de partida para a análise que se segue.
+A estratégia a seguir, para a resolução deste problema, sugere a divisão do conceito em fases de análise, de implementação e de deliberação. No entanto, como pré-estabelecida tomamos a ideia de que um estafeta em trabalho, antes de receber a sua rota, pode estar localizado num qualquer ponto do mapa. Esta e a generalização de que existirão sempre, no mínimo, um restaurante e uma localização de um cliente como pontos integrantes da rota, serão o ponto de partida para a análise que se segue.
 
 Convém definir, também, o perfil do estafeta, enquanto entidade que se move pelo percurso estabelecido, com características próprias que serão definidas pelo meio de transporte em que se desloca e pela capacidade máxima que pode transportar. Estas condicionantes influenciarão a escolha da rota e serão tidas em conta, antes de o estafeta iniciar a entrega dos pedidos. 
 É imperativo realçar também que, em qualquer percurso, o levantamento dos pedidos nos restaurantes terá de ser efetuado antes da sua entrega aos clientes, por uma questão de fiabilidade e praticabilidade real da situação. Este pormenor irá criar certas restrições, que serão exploradas, ao detalhe, mais adiante. 
 Outro aspeto importante é a existência de zonas de desconectividade, nos mapas - a existência de obstáculos à circulação, particularmente, a ocorrência de obras na via pública, que pode inviabilizar o acesso a certas moradas e restaurantes, ao tornar zonas inacessíveis. Também isto será tido em conta, aquando da esquematização dos algoritmos.
 
-Numa última nota, destaca-se a predeterminação de todos os restaurantes e clientes registados na plataforma, elegíveis de submeter um pedido. Este detalhe será substancialmente importante para a adoção de determinados algoritmos, sobretudo se se impuser um pré-processamento dos dados, em particular, a cada novo registo, tanto de um estabelecimento comercial, como de um utilizador, na plataforma.
+Numa última nota, destaca-se a predeterminação de todos os restaurantes registados na plataforma, elegíveis de receber um pedido. Este detalhe será substancialmente importante para a adoção de determinados algoritmos, sobretudo se se impuser um pré-processamento dos dados, em particular, a cada novo registo, de um estabelecimento comercial, na plataforma.
 
 #### Fase I
 
-Na sua simplicidade, consideramos a existência de apenas um estafeta, que realiza, sequencialmente, os percursos que lhe são impostos. Nesta fase, será também considerado um meio de transporte genérico e não restritivo, e uma capacidade máxima definida previamente. Na sua medida, o funcionário terá uma rota em que concretizará o levantamento de vários (alguns, tendo em conta a capacidade de transporte) pedidos, nos restaurantes, e a sua entrega, na morada dos clientes. Poderá ser considerado, como parte da exemplificação, o caso atómico de um estafeta que entrega, apenas, um pedido, entre um restaurante e a morada de um cliente, ou, mais apropriado ao contexto algorítmico (*single source, multiple destinations*), entre um restaurante e vários clientes.
+Na sua simplicidade, consideramos a existência de apenas um estafeta, que realiza, sequencialmente, os percursos que lhe são impostos. Nesta fase, será também considerado um meio de transporte genérico e não restritivo, e uma capacidade máxima definida previamente. Na sua medida, o funcionário terá uma rota em que concretizará o levantamento dos pedidos, nos restaurantes, e a sua entrega, na morada dos clientes. Poderá ser considerado, como parte da exemplificação, o caso atómico de um estafeta que entrega, apenas, um pedido, entre um restaurante e a morada de um cliente, ou, mais apropriado ao estudo dos vários contextos algorítmicos (*single source, multiple destinations*), entre um restaurante e vários clientes.
 
 #### Fase II
 
@@ -34,7 +34,7 @@ Nesta fase, serão considerados vários estafetas, cada um com uma capacidade m�
 
 #### Fase III
 
-A última fase coincidirá com a implementação de variados meios de transporte, o que corresponderá à utilização de diferentes mapas, para atender às características das múltiplas entidades que entregarão os pedidos e, em simultâneo, às características das diversas vias. Aqui, entrará também em consideração a existência dos obstáculos definidos em cima, o que levará a uma seleção mais restritiva do tipo de estafeta encarregue de determinado pedido.
+A última fase coincidirá com a implementação de variados meios de transporte, o que poderá corresponder à utilização de diferentes mapas, para atender às características das múltiplas entidades que entregarão os pedidos e, em simultâneo, às características das diversas vias. Aqui, entrará, também, em consideração a existência de vários obstáculos nas vias, identificados em cima, o que levará a uma seleção mais restritiva do percurso e do tipo de estafeta encarregue de determinado pedido.
 
 >---------------------------------
 
@@ -43,18 +43,22 @@ Dados de Entrada
 
 Os dados a recolher, antes da execução de qualquer dos algoritmos, para os percursos de cada um dos estafetas, são generalizáveis na seguinte lista:
 
-* Grafo $G (V, E)$, dirigido, representando o mapa de vias (múltiplos grafos como opção para vários tipos de veículo - ver atributos das arestas), a percorrer pelos estafetas, onde estão, como parte integrante, destacados e definidos os locais de recolha e entrega dos pedidos.
+* Grafo $G (V, E)$, dirigido, representando o mapa de vias (poderemos estar perante múltiplos grafos como opção para vários tipos de veículo - ver atributos das arestas), a percorrer pelos estafetas, onde estão localizados, como parte integrante, os pontos de recolha e entrega dos pedidos.
   * Cada vértice $v \in V$ terá os seguintes atributos:
     * Uma lista de arestas $Adj(v) \in E$, que partam desse vértice;
     * Um $id$, identificativo;
     * Um par de coordenadas $coords$, representando a localização real do respetivo ponto;
-    * Uma anotação $type$ que o distinga de restaurante, morada de cliente, ou simples vértice de ligação;
   * Cada aresta $e(v,u) \in E$, que parta de um dado vértice $v$ será caracterizada por:
     * Um vértice $u \in V$ de destino;
     * Um peso $weigth$ associado, relacionado com o seu comprimento real, expresso numa medida de comprimento espacial;
     * Um estado $state$, que representará a transitabilidade da via;
     * Um campo $name$, sem valor expressivo, servindo de identificador;
     * Eventualmente, e como possível alternativa à utilização de diversos grafos para cada tipo de transporte, em certas situações e algoritmos a escolher, um estatuto identificador do tipo de via que permita, ou impeça, a passagem dos respetivos meios de deslocação. Este campo é apenas uma previsão, ou sugestão de implementação, ainda não definitiva.
+
+* Conjunto de pontos $R$, representando os restaurantes registados na plataforma:
+  * Restaurante $r \in R$ com atributos:
+    * O seu $id$, único, identificativo;
+    * A referência para o vértice $v$ do grafo, que representa a sua posição;
 
 * Conjunto de estafetas $Employees$:
   * Estafeta $employee \in Employees$, com a informação sobre:
@@ -64,10 +68,11 @@ Os dados a recolher, antes da execução de qualquer dos algoritmos, para os per
 
 * Lista ordenada de Pedidos $P$:
   * Pedido $p \in P$ com a informação detalhada sobre:
-    * Lista, $checkPoints$, de pontos/vértices que façam, obrigatoriamente, parte do percurso (referência aos restaurantes e moradas dos clientes);
+    * Data e Hora, $time$, em que foi realizado;
+    * Lista, $checkPoints$, de pontos/vértices que façam, obrigatoriamente, parte do percurso (referência aos restaurantes e localização dos clientes);
     * Lista de $itens$, cada um com a simples descrição da carga ocupada;
 
-Estes dados poderão fazer parte de um pré-processamento existente, consoante o algoritmo escolhido e o problema a resolver. Se esses cálculos iniciais existirem, no caso de um algoritmo que estabeleça as distâncias mínimas entre cada par de vértices, seguir-se-á a instanciação dos pedidos, a sua organização em tarefas e a requisição de estafetas para as realizar, com o cálculo do caminho final a ser percorrido pelos mesmos. 
+Estes dados poderão fazer parte de um pré-processamento existente, consoante o algoritmo escolhido e o problema a resolver. Se esses cálculos iniciais existirem, no caso de um algoritmo que estabeleça as distâncias mínimas entre cada par de vértices, seguir-se-á, então, a inevitável instanciação dos pedidos, com a sua organização em tarefas e a requisição de estafetas para as realizar, terminando no cálculo do caminho final a ser percorrido pelos mesmos. 
 
 Dados de Saída
 --------------
@@ -76,7 +81,7 @@ Tendo sido o grafo analisado, tratado e traduzido numa das várias formas plaus�
 O importante, realmente, aqui, é a entrega das tarefas aos estafetas, o que resultará no seguinte conjunto de dados de saída:
 
 * Conjunto de tarefas $Tasks$:
-  * Tarefa $task$, com informação sobre:
+  * Tarefa $task \in Tasks$, com informação sobre:
     * A lista completa e ordenada de vértices, $path$, por onde passará o estafeta;
     * Os vários pedidos $P$, que fazem parte da tarefa;
     * O estafeta $employee$, encarregue da sua realização;
@@ -85,4 +90,31 @@ O que se segue, nomeadamente, o ato de percorrer o caminho, com a identificaçã
 
 Restrições
 ---------
+
+A primeira restrição prende-se com o tamanho do grafo. Em termos reais, aplicações deste género, por uma questão de praticabilidade, limitam as zonas de atuação a áreas urbanas, onde exista um número razoável de restaurantes registados e de estafetas. Assim sendo, os grafos aqui analisados também terão a sua área limitada.
+
+As outras restrições são como se seguem:
+
+###### Dados de Entrada
+
+* $ \forall \ v_1,v_2 \in V, \ v_1 \not = v_2 $, no sentido em que não haverá vértices repetidos;
+* $ \forall \ e_1,e_2 \in E, \ e_1 \not = e_2 $, no sentido em que não haverá arestas repetidas;
+* $ \forall \ e \in E, \ e.weight \gt 0, \ e.state \in \{ \ 'T',\ 'N'\}$, já que uma aresta - via/rua - tem um comprimento definido e encontra-se transitável, ou não transitável;
+* $ \forall \ r_1,r_2 \in R, \ r_1 \not = r_2 $, no sentido em que não haverá restaurantes repetidos;
+* $ \forall \ r \in R, \ r.v \not = null $, sendo que um restaurante tem que ter uma posição estabelecida;
+* $ \forall \ employee_1,employee_2 \in Employees, \ employee_1 \not = employee_2 $, no sentido em que não haverá estafetas repetidos;
+* $ \forall \ employee \in Employee, \ employee.s \not = null $, sendo que um estafeta tem que ter uma posição estabelecida;
+* $ \forall \ employee \in Employee, \ employee.maxCargo \gt 0, \ employee.type \in \{ \ 'car',\ 'bike', \ 'foot' \ \} $;
+* $ \forall \ p_1,p_2 \in P, \ p_1 \not = p_2 $, no sentido em que não haverá pedidos repetidos;
+* $ \forall \ p \in P, \ p.time \not = null, \ |p.checkPoints| \gt 1, \ |p.itens| \gt 0 $;
+
+###### Dados de Saída
+
+* $ \forall \ task_1,task_2 \in Tasks, \ task_1 \not = task_2 $ ;
+* $ \forall \ task \in Tasks, \ task.path \not = null, task.P \not = null, \ task.employee \not = null$ ;
+* $ \forall \ task \in Tasks, \text{em} \ task.path,$ os restaurantes terão de ser visitados antes da localização do cliente, em relação ao pedido associado a ambos;
+
+Função Objetivo
+---------------
+A solução ótima para este problema reside, genericamente, na minimização da distância percorrida, em cada percurso, por cada estafeta.
 
