@@ -31,7 +31,7 @@ Na sua simplicidade, consideramos a existência de apenas um estafeta, que reali
 #### Fase II
 
 Nesta fase, serão considerados vários estafetas que utilizam o mesmo meio de transporte e para os quais é delineado um percurso. Aqui, estaremos perante a distribuição simultânea de pedidos, com a avaliação de todas as condicionantes relacionadas com o problema, nesta fase. 
-Os pedidos estarão, logicamente, organizados numa escala temporal, ficando encarregue por um dado pedido o estafeta que se encotre mais perto do restaurante a ele associado.
+Os pedidos estarão, logicamente, organizados numa escala temporal, ficando encarregue por um dado pedido o estafeta que se encontre mais perto do restaurante a ele associado.
 
 #### Fase III
 
