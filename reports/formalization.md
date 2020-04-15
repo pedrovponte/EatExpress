@@ -26,16 +26,19 @@ Numa última nota, destaca-se a predeterminação de todos os restaurantes regis
 
 #### Fase I
 
-Na sua simplicidade, consideramos a existência de apenas um estafeta, que realiza, sequencialmente, os percursos que lhe são impostos. Nesta fase, será também considerado um meio de transporte qualquer <strike>(genérico) e não restritivo</strike>, e uma capacidade máxima definida previamente. Na sua medida, o funcionário terá uma rota em que concretizará o levantamento dos pedidos, nos restaurantes, e a sua entrega, na morada dos clientes. Poderá ser considerado, como parte da exemplificação, o caso atómico de um estafeta que entrega, apenas, um pedido, entre um restaurante e a morada de um cliente, ou, mais apropriado ao estudo dos vários contextos algorítmicos (*single source, multiple destinations*), entre um restaurante e vários clientes.
+Na sua simplicidade, consideramos a existência de apenas um estafeta, que realiza, sequencialmente, os percursos que lhe são impostos. Nesta fase, de modo a focar a análise na essência da problemática, será considerado um meio de transporte qualquer e desvalorizada a capacidade de transporte. Na sua medida, o funcionário terá uma rota na qual concretizará o levantamento dos pedidos, nos restaurantes, e a sua entrega, na morada dos clientes. Poderá ser considerado, como parte da exemplificação, o caso atómico de um estafeta que entrega apenas um pedido, entre um restaurante e a morada de um cliente, ou, mais apropriado ao estudo dos vários contextos algorítmicos (*single source, multiple destinations*), entre um restaurante e vários clientes.
 
 #### Fase II
 
-Nesta fase, serão considerados vários estafetas, cada um com uma capacidade máxima de carga, o mesmo meio de transporte <strike>genérico</strike> e para os quais é delineado um percurso. Aqui, estaremos perante a distribuição simultânea de pedidos, com a avaliação de todas as condicionantes relacionadas com o problema, nesta fase. Os pedidos estarão, logicamente, organizados numa escala temporal e serão entregues aos estafetas, dando prioridade, no pedido, àqueles mais próximos dos restaurantes, respeitando também a sua capacidade de transporte.
+Nesta fase, serão considerados vários estafetas que utilizam o mesmo meio de transporte e para os quais é delineado um percurso. Aqui, estaremos perante a distribuição simultânea de pedidos, com a avaliação de todas as condicionantes relacionadas com o problema, nesta fase. 
+Os pedidos estarão, logicamente, organizados numa escala temporal, ficando encarregue por um dado pedido o estafeta que se encotre mais perto do restaurante a ele associado.
 
 #### Fase III
 
 Esta fase coincidirá com a implementação de variados meios de transporte, o que poderá corresponder à utilização de diferentes mapas, para atender às características das múltiplas entidades que entregarão os pedidos e, em simultâneo, às características das diversas vias. 
-
+Para além disso será imprescindível ter em conta a capacidade máxima que cada estafeta pode transportar, pois a dimensão da encomenda passa a ser determinante na atribuição dos pedidos. 
+Assim, nesta fase, a atribuição de um pedido a um estafeta passa a depender não só da sua proximidade do restaurante, mas também das características próprias do meio de transporte por ele utilizado, preferindo os meios de transporte mais rápidos para encomendas que impliquem deslocações maiores e optando por atribuir as encomendas de maior dimensão aos estafetas que tenham mais facilidade em transportá-las.
+ 
 #### Fase IV
 
 Aqui, entrará em consideração a existência de vários obstáculos nas vias, identificados em cima, o que levará a uma seleção mais restritiva do percurso e do tipo de estafeta encarregue de determinado pedido.
