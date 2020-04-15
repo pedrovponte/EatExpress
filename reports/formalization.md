@@ -37,7 +37,7 @@ Os pedidos estarão, logicamente, organizados numa escala temporal, ficando enca
 
 Esta fase coincidirá com a implementação de variados meios de transporte, o que poderá corresponder à utilização de diferentes mapas, para atender às características das múltiplas entidades que entregarão os pedidos e, em simultâneo, às características das diversas vias. 
 Para além disso será imprescindível ter em conta a capacidade máxima que cada estafeta pode transportar, pois a dimensão da encomenda passa a ser determinante na atribuição dos pedidos. 
-Assim, nesta fase, a atribuição de um pedido a um estafeta passa a depender não só da sua proximidade do restaurante, mas também das características próprias do meio de transporte por ele utilizado, preferindo os meios de transporte mais rápidos para encomendas que impliquem deslocações maiores e optando por atribuir as encomendas de maior dimensão aos estafetas que tenham mais facilidade em transportá-las.
+Assim, nesta fase, a atribuição de um pedido a um estafeta passa a depender não só da sua proximidade ao restaurante, mas também das características próprias do meio de transporte por ele utilizado, preferindo os meios mais rápidos para encomendas que impliquem deslocações maiores e atribuindo as encomendas de maior dimensão aos estafetas com maior capacidade de transporte.
  
 #### Fase IV
 
