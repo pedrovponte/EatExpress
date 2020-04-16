@@ -2,7 +2,7 @@
 
 ## Caminho mais curto entre dois vértices
 
-Em cada uma das fases de análise deliberadas pode-se seguramente realçar como problemática comum a resolução do problema do caminho mais curto entre dois vértices numa rede viária, particularmente o cálculo do percurso de menor distância entre um restaurante e um ponto de entrega aquando da realização de um pedido.
+Em cada uma das fases de análise deliberadas pode-se seguramente realçar como problemática comum a do caminho mais curto entre dois vértices numa rede viária, particularmente o cálculo do percurso de menor distância entre um restaurante e um ponto de entrega aquando da realização de um pedido.
 
 Por este motivo, é pertinente analisar a variedade de algoritmos e alternativas de implementação disponíveis. Só a realização desta análise prévia tornará possível perceber o impacto que as vantagens e desvantagens associadas à implementação de cada algoritmo e a cada uma das suas variantes terá no contexto da temática a ser trabalhada.  
 
