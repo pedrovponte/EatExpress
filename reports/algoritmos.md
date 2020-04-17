@@ -72,3 +72,7 @@ Este algoritmo em particular é conhecido por não garantir uma solução ótima
 > As mais usadas são Manhattan Distance, Euclidean Distance, ou até a Diagonal Distance , mas esta última é limitada
 
 #### Algoritmo Floyd-Warshall
+
+O último algoritmo analizado será o de Floyd-Warshall. Este é mais um algoritmo que nos permite calcular o caminho mais curto entre 2 pontos num grafo e baseia-se numa matriz de distâncias pré-processada inicialmente, onde se encontra a menor distância entre cada par de vértices do grafo. 
+A complexidade temporal deste algoritmo é O(V<sup>3</sup>).
+(... completar)
