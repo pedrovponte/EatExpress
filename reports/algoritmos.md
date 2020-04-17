@@ -3,7 +3,7 @@
 ## Caminho mais curto entre dois vértices
  
 Em cada uma das fases de análise anteriormente deliberadas pode-se, seguramente, realçar como problema comum a determinação do caminho mais curto entre dois vértices numa rede viária. Em particular, enquadra-se perfeitamente nesta problemática a necessidade de, aquando da realização de um pedido, determinar o percurso que permite proceder à sua entrega, recorrendo ao trajeto de menor distância. Isto implicará:
-- determinar o percurso transitável mais curto, que permita a cada um dos estafetas alcançar o restaurante no qual o pedido foi solicitado;
+- determinar o percurso transitável mais curto, que permita a cada um dos estafetas alcançar o restaurante do qual o pedido foi solicitado;
 - calcular o trajeto de menor distância entre o restaurante e o ponto de entrega especificado pelo cliente.
  
 Assim, é pertinente analisar a variedade de algoritmos e alternativas de implementação disponíveis para o cálculo do caminho mais curto entre dois vértices. Só a realização desta análise prévia tornará possível perceber o impacto das vantagens e desvantagens de cada algoritmo e das suas variantes, no contexto da temática a ser trabalhada.
