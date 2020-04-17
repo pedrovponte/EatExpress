@@ -22,11 +22,11 @@ Convém definir, também, o perfil do estafeta, enquanto entidade que se move pe
 É imperativo realçar também que, em qualquer percurso, o levantamento dos pedidos nos restaurantes terá de ser efetuado antes da sua entrega aos clientes, por uma questão de fiabilidade e praticabilidade real da situação. Este pormenor irá criar certas restrições, que serão exploradas, ao detalhe, mais adiante. 
 Outro aspeto importante é a existência de zonas de desconectividade, nos mapas - a existência de obstáculos à circulação, particularmente, a ocorrência de obras na via pública, que pode inviabilizar o acesso a certas moradas e restaurantes, ao tornar zonas inacessíveis. Também isto será tido em conta, aquando da esquematização dos algoritmos.
 
-Numa última nota, destaca-se a predeterminação de todos os restaurantes registados na plataforma, elegíveis de receber um pedido. Este detalhe será substancialmente importante para a adoção de determinados algoritmos, sobretudo se se impuser um pré-processamento dos dados, em particular, a cada novo registo, de um estabelecimento comercial, na plataforma.
+Numa última nota, destaca-se a possível predeterminação de todos os restaurantes e estafetas registados na plataforma, elegíveis de tratar um pedido. Este detalhe será substancialmente importante para a adoção de determinados algoritmos, sobretudo se se impuser, ou não, com base na estratégia a utilizar, um pré-processamento dos dados, em particular, a cada novo registo, de uma destas entidades, na plataforma.
 
 #### Fase I
 
-Na sua simplicidade, consideramos a existência de apenas um estafeta, que realiza, sequencialmente, os percursos que lhe são impostos. Nesta fase, de modo a focar a análise na essência da problemática, será considerado um meio de transporte qualquer e desvalorizada a capacidade de transporte. Na sua medida, o funcionário terá uma rota na qual concretizará o levantamento dos pedidos, nos restaurantes, e a sua entrega, na morada dos clientes. Poderá ser considerado, como parte da exemplificação, o caso atómico de um estafeta que entrega apenas um pedido, entre um restaurante e a morada de um cliente, ou, mais apropriado ao estudo dos vários contextos algorítmicos (*single source, multiple destinations*), entre um restaurante e vários clientes.
+Na sua simplicidade, consideramos a existência de apenas um estafeta, que realiza, sequencialmente, os percursos que lhe são impostos. Nesta fase, de modo a focar a análise na essência da problemática, será considerado um meio de transporte qualquer e desvalorizada a capacidade de transporte. Na sua medida, o único funcionário terá rotas na qual concretizará o levantamento de pedidos, nos restaurantes, e a sua entrega, na morada dos clientes. Poderá ser considerado, como parte da exemplificação, o caso atómico de um estafeta que entrega apenas um pedido, entre um restaurante e a morada de um cliente, ou, mais apropriado ao estudo dos vários contextos algorítmicos (*single source, multiple destinations*), entre um restaurante e vários clientes.
 
 #### Fase II
 
@@ -36,12 +36,12 @@ Os pedidos estarão, logicamente, organizados numa escala temporal, ficando enca
 #### Fase III
 
 Esta fase coincidirá com a implementação de variados meios de transporte, o que poderá corresponder à utilização de diferentes mapas, para atender às características das múltiplas entidades que entregarão os pedidos e, em simultâneo, às características das diversas vias. 
-Para além disso será imprescindível ter em conta a capacidade máxima que cada estafeta pode transportar, pois a dimensão da encomenda passa a ser determinante na atribuição dos pedidos. 
-Assim, nesta fase, a atribuição de um pedido a um estafeta passa a depender não só da sua proximidade ao restaurante, mas também das características próprias do meio de transporte por ele utilizado, preferindo os meios mais rápidos para encomendas que impliquem deslocações maiores e atribuindo as encomendas de maior dimensão aos estafetas com maior capacidade de transporte.
+Para além disso, será imprescindível ter em conta a capacidade máxima que cada estafeta pode transportar, pois a dimensão da encomenda passa a ser determinante na atribuição dos pedidos. 
+Assim, nesta fase, a atribuição de um pedido a um estafeta fica a depender não só da sua proximidade ao restaurante, mas também das características próprias do meio de transporte por ele utilizado, preferindo os meios mais rápidos para encomendas que impliquem deslocações maiores e atribuindo as encomendas de maior dimensão aos estafetas com maior capacidade de transporte.
  
 #### Fase IV
 
-Aqui, entrará em consideração a existência de vários obstáculos nas vias, identificados em cima, o que levará a uma seleção mais restritiva do percurso e do tipo de estafeta encarregue de determinado pedido.
+Aqui, entrará em consideração a existência de vários obstáculos nas vias, identificados em cima, o que levará a uma seleção mais restritiva do percurso e do tipo de estafeta encarregue de determinado pedido. Além disso, o tratamento dos grafos poderá sofrer alterações, sobretudo ao nível do pré-processamento.
 
 >---------------------------------
 
