@@ -32,7 +32,7 @@ Esta melhoria deriva do facto de a área processada diminuir para metade , já q
 Deste modo, a variante bidirecional do algoritmo de Dijkstra vai ser aplicada com o intuito de melhorar o tempo de cálculo do percurso mais curto entre estafeta e restaurante e, posteriormente, entre restaurante e local de entrega.
  
  
-*(... pode-se indicar que na terceira fase se vai manipular os algoritmos e/ou dados de modo a não privilegiar apenas a distância do estafeta ao restaurante mas também a capacidade que este pode transportar e o tipo de veículo... )*
+*(... pode-se indicar que na terceira fase se vai conjugar os algoritmos com certas restrições específicas do problemade de modo a não privilegiar apenas a distância do estafeta ao restaurante mas também a capacidade que este pode transportar e o tipo de veículo... )*
  
 #### Algoritmo A*
  
