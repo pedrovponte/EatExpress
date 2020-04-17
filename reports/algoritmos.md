@@ -39,3 +39,11 @@ Deste modo, a variante bidirecional do algoritmo de Dijkstra vai ser aplicada co
 O algoritmo A* será, também, objeto de estudo, na fase de implementação, não só por ser mais um algoritmo que permite, igualmente, calcular o caminho mais curto entre dois vértices, mas, essencialmente, pela sua performance se diferenciar do algoritmo de Dijkstra, pelo facto de recorrer a heurísticas para manipular os pesos das arestas e, assim, afetar os nós que são expandidos.
 Antes de mais, é essencial escolher, cuidadosamente, a heurística a utilizar, porque esta desempenhará um papel determinante no comportamento do algoritmo e nos resultados obtidos.
 *(... a completar... )*
+
+> Ver, para possíveis heurísticas:
+> https://brilliant.org/wiki/a-star-search/#heuristics
+> http://theory.stanford.edu/~amitp/GameProgramming/Heuristics.html
+> https://www.redblobgames.com/pathfinding/a-star/implementation.html
+> https://medium.com/@nicholas.w.swift/easy-a-star-pathfinding-7e6689c7f7b2
+> As mais usadas são Manhattan Distance, Euclidean Distance (com ou sem squared), ou até a Diagonal Distance 
+> Podemos escolher apenas duas e analisar aqui...
