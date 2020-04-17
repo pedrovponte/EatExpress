@@ -38,12 +38,36 @@ Deste modo, a variante bidirecional do algoritmo de Dijkstra vai ser aplicada co
  
 O algoritmo A* será, também, objeto de estudo, na fase de implementação, não só por ser mais um algoritmo que permite, igualmente, calcular o caminho mais curto entre dois vértices, mas, essencialmente, pela sua performance se diferenciar do algoritmo de Dijkstra, pelo facto de recorrer a heurísticas para manipular os pesos das arestas e, assim, afetar os nós que são expandidos.
 Antes de mais, é essencial escolher, cuidadosamente, a heurística a utilizar, porque esta desempenhará um papel determinante no comportamento do algoritmo e nos resultados obtidos.
-*(... a completar... )*
 
-> Ver, para possíveis heurísticas:
+Posto isto, tendo em conta as propriedades dos vértices dos grafos a tratar, foram consideradas três funções de heurística diferentes que farão parte do processo de implementação e análise deste algoritmo em concreto. Todas elas atuarão em função das coordenadas dos pontos no mapa e darão, sempre, um valor aproximado menor que o custo real do percurso, entre os vértices escolhidos.
+
+A primeira estratégia tem o nome de **Manhattan Distance** e calcula a distância, como número de quadrados percorridos, em ambas as direções, desde o ponto inicial, até ao final. Tem particular interessem em mapas com a forma de grelha e usa, para o efeito, a seguinte fórmula generalizada:
+
+$h=∣x_{start}​−x_{destination}​∣+∣y_{start}​−y_{destination}​∣$
+
+![](../images/manhattan-distance.svg)
+
+Outra estratégia, conhecida como **Euclidean Distance**, um pouco mais precisa que a anterior, explora o percurso em linha reta, demorando, em contrapartida, mais tempo a executar, por necessitar de explorar uma área maior. A sua função é representada na forma:
+
+$h=\sqrt{(x_{start}​−x_{destination}​)^2+(y_{start}​−y_{destination}​)^2}$ 
+
+![](../images/euclidean-distance.svg)
+
+Por fim, existe também a **Diagonal Distance**. Esta última perde interesse real, quando comparada com as outras funções, porque tem a limitação de só poder ser usada em movimentos realizados numa direção apenas:
+
+$h = \max( abs(x_{start} – x_{destination}), abs(y_{start} – y_{destination}) )$
+
+![](../images/diagonal.png)
+
+Este algoritmo em particular é conhecido por não garantir uma solução ótima em muitos casos. No entanto, os seus resultados serão avaliados, a par com os restantes algoritmos, tendo em conta, também, as diferentes funções de heurística aqui referidas. 
+
+> Ver, para fontes das heurísticas referidas:
 > https://brilliant.org/wiki/a-star-search/#heuristics
 > http://theory.stanford.edu/~amitp/GameProgramming/Heuristics.html
 > https://www.redblobgames.com/pathfinding/a-star/implementation.html
 > https://medium.com/@nicholas.w.swift/easy-a-star-pathfinding-7e6689c7f7b2
-> As mais usadas são Manhattan Distance, Euclidean Distance (com ou sem squared), ou até a Diagonal Distance 
-> Podemos escolher apenas duas e analisar aqui...
+> https://www.growingwiththeweb.com/2012/06/a-pathfinding-algorithm.html
+> https://www.geeksforgeeks.org/a-search-algorithm/
+> As mais usadas são Manhattan Distance, Euclidean Distance, ou até a Diagonal Distance , mas esta última é limitada
+
+#### Algoritmo Floyd-Warshall
