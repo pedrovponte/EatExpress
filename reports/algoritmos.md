@@ -71,25 +71,25 @@ Este algoritmo em particular é conhecido por não garantir uma solução ótima
 
 #### Algoritmo Floyd-Warshall
 
-O último algoritmo analizado será o de Floyd-Warshall. Este é mais um algoritmo que nos permite calcular o caminho mais curto entre 2 pontos num grafo e baseia-se numa matriz de distâncias pré-processada inicialmente, onde se encontra a menor distância entre cada par de vértices do grafo. 
-A complexidade temporal deste algoritmo é O(V<sup>3</sup>).
-(... completar)
+O último algoritmo analisado será o de Floyd-Warshall. Este atua diretamente no problema da distância mais curta, entre vértices, e baseia-se numa matriz, onde se encontra a menor distância entre cada par de vértices do grafo. O algoritmo retorna, como resultado, uma tabela de distâncias mínimas e, com uma simples modificação, garante, facilmente, informação adicional, como a reconstrução da matriz de predecessores de um determinado caminho, entre dois pontos. 
+
+Os custos são mais notórios em termos de memória, mas a compensação em tempo permite que este seja um algoritmo ideal para ser usado no pré-processamento dos grafos. Depois de efetuado o pressuposto, qualquer cálculo de distância se resumirá a uma simples *table lookup*, na matriz de distâncias mínimas, ao contrário dos algoritmos anteriores, que necessitariam de ser executados, de novo, a cada situação. A única inconveniência deste algoritmo poderá ser, nos casos específicos de mudança da constituição atómica dos grafos, como quando se registam arestas intransitáveis, com obras, ou obstáculos na via pública, ter que se pré-processar e reestruturar, de novo, os respetivos mapas, de maneira a identificar outros trajetos que evitem essas arestas. 
+Apesar disso, este algoritmo será, certamente, o escolhido para ser aplicado na fase final de implementação da aplicação, como descrito de seguida.
 
 
 #### Abordagens consideradas na Fase III
 
 Na terceira fase, o caso em que se consideram múltiplos restaurantes no mesmo pedido, poderá ser visto como uma generalização do típico "Travelling Salesman Problem", pois o objetivo é encontrar o menor caminho possível para que cada estafeta visite todos os restaurantes associados a um pedido apenas uma vez. É de notar, no entanto, que o problema original considera que após visitados todos os pontos de interesse é necessário regressar ao ponto de origem, o que não será o caso, pois pretende-se que o destino seja a morada do cliente.
-Acrescenta-se, assim, a restrição de exisitir um ponto de origem e de destino predeterminados, respetivamente a posição inicial do estafeta e a morada de entrega do pedido.
+Acrescenta-se, assim, a restrição de existir um ponto de origem e de destino predeterminados, respetivamente a posição inicial do estafeta e a morada de entrega do pedido.
 
-Tendo em conta a dificuldade de conseguir uma soluçã ótima para este problema, vamos procurar abordá-lo recorrendo a diferentes estratégias, escolhendo a que apresentar o comportamento mais próximo do esperado para cada caso.
+Tendo em conta a dificuldade de conseguir uma solução ótima para este problema, vamos procurar abordá-lo recorrendo a diferentes estratégias, escolhendo a que apresentar o comportamento mais próximo do esperado para cada caso.
 
 A alternativa mais direta seria aplicar um algoritmo "brute-force" que testasse todas os percursos possíveis, preservando, a cada iteração, aquele caminho que apresentasse uma distância mais curta. No entanto, esta solução é impraticável pelo seu elevado tempo de execução, Θ(n!), até para grafos pouco densos.
 
-Também são conhecidas alternativas de solução para o problema recorrendo a algortimos de programação dinâmica que, apesar de apresentarem melhorias em comparação com a solução "brute-force", ainda apresentam um tempo exponencial O(2^n * n^2), apresentando, para além disso, complexidade espacial elevada, O(2^n * n), o que nos leva a descartá-lo para o efeito desejado.
+Também são conhecidas alternativas de solução para o problema recorrendo a algoritmos de programação dinâmica que, apesar de apresentarem melhorias em comparação com a solução "brute-force", ainda apresentam um tempo exponencial O(2^n * n^2), apresentando, para além disso, complexidade espacial elevada, O(2^n * n), o que nos leva a descartá-lo para o efeito desejado.
 
 A alternativa, que, à partida, nos parece a mais viável tendo em conta os conhecimentos adquiridos até agora, baseia-se numa abordagem gananciosa, já que procura, em cada iteração, escolher a solução ótima, ou seja, neste caso, escolher o restaurante mais perto do anterior.
 Assim, tendo como vértice de origem a posição de cada estafeta, procuraria-se construir o percurso até à morada de entrega do pedido, escolhendo, a cada iteração, o restaurante de menor distância.
-Para esta abordagem gananciosa será, no entanto, necessário ter calculado previamente as distâncias entres os vários pontos do grafo. Para isso, pensamos recorrer ao algoritmo de programação dinâmica Floyd Warshall, referido anteriormente, obtendo, assim, o caminho mais curto entre
-todos os pares de vértices, a usar posteriormente para determinar o caminho de cada estafeta para alcançar todos os restaurantes e, por fim, a morada do cliente.
+Para esta abordagem gananciosa será, no entanto, necessário ter calculado previamente as distâncias entres os vários pontos do grafo. Para isso, pensamos recorrer ao algoritmo de programação dinâmica Floyd Warshall, referido anteriormente, obtendo, assim, o caminho mais curto entre todos os pares de vértices, a usar posteriormente para determinar o caminho de cada estafeta para alcançar todos os restaurantes e, por fim, a morada do cliente.
 
-Uma abordagem semelhante mas no sentido inverso poderá ser realizada no caso de os estafetas utilizarem o mesmo meio de transporte, isto é, quando se conhece previamente o grafo de entrada. Nestes casos, ao escolher um estafeta para realizar um pedido, pode tomar-se como ponto de partida a morada de entrega do pedido e, no grafo invertido, construir o percurso a realizar com base na estratégia referida anteriormente: escolhendo, neste caso, o restaurante mais perto da morada do cliente numa primeira iteração e, posterioremente, optando sempre pelo restaurante mais próximo do anterior. Por fim, inclui-se no percurso a localização do estafeta.
+Uma abordagem semelhante mas no sentido inverso poderá ser realizada no caso de os estafetas utilizarem o mesmo meio de transporte, isto é, quando se conhece previamente o grafo de entrada. Nestes casos, ao escolher um estafeta para realizar um pedido, pode tomar-se como ponto de partida a morada de entrega do pedido e, no grafo invertido, construir o percurso a realizar com base na estratégia referida anteriormente: escolhendo, neste caso, o restaurante mais perto da morada do cliente numa primeira iteração e, posteriormente, optando sempre pelo restaurante mais próximo do anterior. Por fim, inclui-se no percurso a localização do estafeta.
