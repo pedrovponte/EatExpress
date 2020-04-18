@@ -76,7 +76,7 @@ A complexidade temporal deste algoritmo é O(V<sup>3</sup>).
 (... completar)
 
 
-#### Abordagem ao "Travelling Salesman Problem"
+#### Abordagens consideradas na Fase III
 
 Na terceira fase, o caso em que se consideram múltiplos restaurantes no mesmo pedido, poderá ser visto como uma generalização do típico "Travelling Salesman Problem", pois o objetivo é encontrar o menor caminho possível para que cada estafeta visite todos os restaurantes associados a um pedido apenas uma vez. É de notar, no entanto, que o problema original considera que após visitados todos os pontos de interesse é necessário regressar ao ponto de origem, o que não será o caso, pois pretende-se que o destino seja a morada do cliente.
 Acrescenta-se, assim, a restrição de exisitir um ponto de origem e de destino predeterminados, respetivamente a posição inicial do estafeta e a morada de entrega do pedido.
