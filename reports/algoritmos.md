@@ -24,8 +24,6 @@ Note-se que, nas fases previamente definidas, há a necessidade de aplicar o alg
  
 No entanto, o que se pretende realmente é utilizar o algoritmo de Dijkstra como base para encontrar o caminho mais curto entre dois pontos, pelo que se vai descobrir o caminho mais curto do vértice de origem para todos os outros, terminando o algoritmo quando se for processar o vértice que procuramos, uma otimização que evita continuar a processar vértices, quando já se descobriu o caminho pretendido.
 Assim, como, nas duas primeiras fases de implementação, a escolha do estafeta a realizar o pedido depende exclusivamente da sua proximidade ao restaurante do qual este foi solicitado, é necessário determinar, em primeiro lugar, o caminho mais curto para cada um dos estafetas se deslocar até aos respetivos estabelecimentos, sendo, em cada situação, o vértice de destino o restaurante. De seguida, aplica-se, novamente, o algoritmo, para encontrar o percurso mais curto do restaurante à morada escolhida para o ato de entrega, usando o vértice de destino correspondente à localização indicada pelo cliente.
-
-Na terceira fase, no caso de serem considerados múltiplos restaurantes no mesmo pedido, o algoritmo será utilizado com o intuito de, para cada estafeta disponível, determinar o percurso mais curto que o permita recolher os items dos vários restaurantes e, por fim , entregá-los na respetiva morada de entrega.
  
 Espera-se, ao aplicar este algoritmo, em alguns casos específicos, entre os quais, mapas de estradas com poucos vértices e distâncias curtas, obter tempos de execução razoáveis. No entanto, para trajetos longos e mapas de estradas complexos, a utilização do algoritmo de Dijkstra, na sua variante unidirecional, gerará, certamente, tempos de execução demasiado longos, o que nos levará, provavelmente, a experimentar otimizações e outros algoritmos que permitam obter, com maior eficácia temporal, o caminho mais curto para a entrega de um pedido.
  
@@ -33,7 +31,7 @@ Espera-se, ao aplicar este algoritmo, em alguns casos específicos, entre os qua
  
 Uma das otimizações que se procura explorar com mais detalhe na fase de implementação, para o algoritmo de Dijkstra, tendo em conta que o resultado esperado para a variante unidirecional não é o desejado, é a variante bidirecional. A execução alternada do algoritmo de Dijkstra, no sentido do vértice de origem para o de destino, e no sentido inverso, poderá trazer vantagens no que diz respeito ao tempo de execução, esperando-se que este seja reduzido para metade, em comparação com a variante do algoritmo que utiliza pesquisa unidirecional.
 Esta melhoria deriva do facto de a área processada diminuir para metade, já que a pesquisa passa a ser executada nas duas direções, mantendo-se sempre a distância mais curta descoberta até ao momento e verificando-se, ao processar uma aresta já processada previamente, na direção oposta, se foi descoberta uma distância menor.
-Deste modo, a variante bidirecional do algoritmo de Dijkstra vai ser aplicada com o intuito de melhorar o tempo de cálculo do percurso mais curto entre o estafeta e o restaurante e, posteriormente, entre o restaurante e o local de entrega, no caso de pedidos que envolvam um só restaurante. Também no caso de pedidos que envolvam múltiplos restaurantes, vai ser aplicada esta variante bidirecional de Dijkstra, procurando alcançar a mesma melhoria ao nível do tempo de execução. 
+Deste modo, a variante bidirecional do algoritmo de Dijkstra vai ser aplicada com o intuito de melhorar o tempo de cálculo do percurso mais curto entre o estafeta e o restaurante e, posteriormente, entre o restaurante e o local de entrega, no caso de pedidos que envolvam um só restaurante.
  
 #### Algoritmo A*
  
@@ -76,3 +74,22 @@ Este algoritmo em particular é conhecido por não garantir uma solução ótima
 O último algoritmo analizado será o de Floyd-Warshall. Este é mais um algoritmo que nos permite calcular o caminho mais curto entre 2 pontos num grafo e baseia-se numa matriz de distâncias pré-processada inicialmente, onde se encontra a menor distância entre cada par de vértices do grafo. 
 A complexidade temporal deste algoritmo é O(V<sup>3</sup>).
 (... completar)
+
+
+#### Abordagem ao "Travelling Salesman Problem"
+
+Na terceira fase, o caso em que se consideram múltiplos restaurantes no mesmo pedido, poderá ser visto como uma generalização do típico "Travelling Salesman Problem", pois o objetivo é encontrar o menor caminho possível para que cada estafeta visite todos os restaurantes associados a um pedido apenas uma vez. É de notar, no entanto, que o problema original considera que após visitados todos os pontos de interesse é necessário regressar ao ponto de origem, o que não será o caso, pois pretende-se que o destino seja a morada do cliente.
+Acrescenta-se, assim, a restrição de exisitir um ponto de origem e de destino predeterminados, respetivamente a posição inicial do estafeta e a morada de entrega do pedido.
+
+Tendo em conta a dificuldade de conseguir uma soluçã ótima para este problema, vamos procurar abordá-lo recorrendo a diferentes estratégias, escolhendo a que apresentar o comportamento mais próximo do esperado para cada caso.
+
+A alternativa mais direta seria aplicar um algoritmo "brute-force" que testasse todas os percursos possíveis, preservando, a cada iteração, aquele caminho que apresentasse uma distância mais curta. No entanto, esta solução é impraticável pelo seu elevado tempo de execução, Θ(n!), até para grafos pouco densos.
+
+Também são conhecidas alternativas de solução para o problema recorrendo a algortimos de programação dinâmica que, apesar de apresentarem melhorias em comparação com a solução "brute-force", ainda apresentam um tempo exponencial O(2^n * n^2), apresentando, para além disso, complexidade espacial elevada, O(2^n * n), o que nos leva a descartá-lo para o efeito desejado.
+
+A alternativa, que, à partida, nos parece a mais viável tendo em conta os conhecimentos adquiridos até agora, baseia-se numa abordagem gananciosa, já que procura, em cada iteração, escolher a solução ótima, ou seja, neste caso, escolher o restaurante mais perto do anterior.
+Assim, tendo como vértice de origem a posição de cada estafeta, procuraria-se construir o percurso até à morada de entrega do pedido, escolhendo, a cada iteração, o restaurante de menor distância.
+Para esta abordagem gananciosa será, no entanto, necessário ter calculado previamente as distâncias entres os vários pontos do grafo. Para isso, pensamos recorrer ao algoritmo de programação dinâmica Floyd Warshall, referido anteriormente, obtendo, assim, o caminho mais curto entre
+todos os pares de vértices, a usar posteriormente para determinar o caminho de cada estafeta para alcançar todos os restaurantes e, por fim, a morada do cliente.
+
+Uma abordagem semelhante mas no sentido inverso poderá ser realizada no caso de os estafetas utilizarem o mesmo meio de transporte, isto é, quando se conhece previamente o grafo de entrada. Nestes casos, ao escolher um estafeta para realizar um pedido, pode tomar-se como ponto de partida a morada de entrega do pedido e, no grafo invertido, construir o percurso a realizar com base na estratégia referida anteriormente: escolhendo, neste caso, o restaurante mais perto da morada do cliente numa primeira iteração e, posterioremente, optando sempre pelo restaurante mais próximo do anterior. Por fim, inclui-se no percurso a localização do estafeta.
