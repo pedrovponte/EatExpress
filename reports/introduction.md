@@ -1,7 +1,6 @@
-# Introduction
+# 1. Introdução
 
-Descrição do Tema
-------
+## 1.1 Descrição do Tema
 
 A EatExpress é um sistema de entrega de comida entre os restaurantes registados na plataforma e os utilizadores da sua aplicação. Quando um utilizador acede à aplicação, escolhe o restaurante e o prato que quer, e o seu pedido é entregue no local onde o utilizador se encontra, por um estafeta que utiliza o seu próprio meio de transporte para lá chegar (a pé, bicicleta, mota, carro etc).
 
