@@ -7,6 +7,7 @@ class: "body footer"
 
 <h1>Índice</h1>
 
+
 <!-- @import "[TOC]" {cmd="toc" depthFrom=1 depthTo=6 orderedList=false} -->
 
 <!-- code_chunk_output -->
@@ -27,20 +28,27 @@ class: "body footer"
           - [2.5.2 Dados de Saída](#252-dados-de-saída)
   - [2.6 Função Objetivo](#26-função-objetivo)
 - [3. Perspetiva de Implementação](#3-perspetiva-de-implementação)
-  - [3.1 Caminho mais curto entre dois vértices](#31-caminho-mais-curto-entre-dois-vértices)
-    - [Algoritmos considerados](#algoritmos-considerados)
+  - [Algoritmos considerados](#algoritmos-considerados)
       - [3.1.1 Dijkstra Unidirecional](#311-dijkstra-unidirecional)
       - [3.1.2 Dijkstra Bidirecional](#312-dijkstra-bidirecional)
       - [3.1.3 Algoritmo A*](#313-algoritmo-a)
       - [3.1.4 Algoritmo Floyd-Warshall](#314-algoritmo-floyd-warshall)
       - [3.1.5 Abordagens consideradas na Fase III](#315-abordagens-consideradas-na-fase-iii)
+- [4. Conclusão Preliminar](#4-conclusão-preliminar)
+- [5. Referências](#5-referências)
 
 <!-- /code_chunk_output -->
 
-<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 
 <!-- @import "introduction.md" -->
 
 <!-- @import "formalization.md" -->
 
 <!-- @import "algoritmos.md" -->
+
+<br><br><br><br>
+<!-- @import "conclusion.md" -->
+
+<!-- @import "references.md" -->

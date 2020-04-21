@@ -20,7 +20,7 @@ Note-se que, nas fases previamente definidas, há a necessidade de aplicar o alg
 - considerando como vértice de origem a posição atual de cada um dos estafetas disponíveis para efetuar a entrega de um pedido;
 - assumindo que o vértice de origem é o restaurante do qual foi solicitado o pedido.
  
-No entanto, o que se pretende realmente é utilizar o algoritmo de Dijkstra como base para encontrar o caminho mais curto entre dois pontos, pelo que, se termina o algoritmo quando se for processar o vértice que procuramos, uma otimização que evita continuar a processar vértices, quando já se descobriu o caminho pretendido.
+No entanto, o que se pretende realmente é utilizar o algoritmo de Dijkstra como base para encontrar o caminho mais curto entre dois pontos, pelo que se termina o algoritmo quando se for processar o vértice que procuramos, uma otimização que evita continuar a processar vértices, quando já se descobriu o caminho pretendido.
 
 Assim, como, nas duas primeiras fases de implementação, a escolha do estafeta a realizar o pedido depende exclusivamente da sua proximidade ao restaurante do qual este foi solicitado, é necessário determinar, em primeiro lugar, o caminho mais curto para cada um dos estafetas se deslocar até aos respetivos estabelecimentos, sendo o restaurante o vértice de destino. De seguida, aplica-se, novamente, o algoritmo, para encontrar o percurso mais curto do restaurante à morada escolhida para o ato de entrega, usando o vértice de destino correspondente à localização indicada pelo cliente.
  
@@ -59,20 +59,11 @@ $h = \max( abs(x_{start} – x_{destination}), abs(y_{start} – y_{destination}
 
 Este algoritmo em particular é conhecido por não garantir uma solução ótima em muitos casos. No entanto, os seus resultados serão avaliados, a par com os restantes algoritmos, tendo em conta, também, as diferentes funções de heurística aqui referidas. 
 
-> Ver, para fontes das heurísticas referidas:
-> https://brilliant.org/wiki/a-star-search/#heuristics
-> http://theory.stanford.edu/~amitp/GameProgramming/Heuristics.html
-> https://www.redblobgames.com/pathfinding/a-star/implementation.html
-> https://medium.com/@nicholas.w.swift/easy-a-star-pathfinding-7e6689c7f7b2
-> https://www.growingwiththeweb.com/2012/06/a-pathfinding-algorithm.html
-> https://www.geeksforgeeks.org/a-search-algorithm/
-> As mais usadas são Manhattan Distance, Euclidean Distance, ou até a Diagonal Distance , mas esta última é limitada
-
 #### 3.1.4 Algoritmo Floyd-Warshall
 
 O último algoritmo analisado será o de Floyd-Warshall. Este algoritmo de programação dinâmica atua diretamente no problema da distância mais curta, entre vértices, e baseia-se numa matriz, onde se encontra a menor distância entre cada par de vértices do grafo. O algoritmo retorna, como resultado, uma tabela de distâncias mínimas e, com uma simples modificação, garante, facilmente, informação adicional, como a reconstrução da matriz de predecessores de um determinado caminho, entre dois pontos. 
 
-Os custos são mais notórios em termos de memória, mas a compensação temporal permite que este seja um algoritmo ideal para ser usado no pré-processamento dos grafos. Depois de efetuado o pressuposto com um tempo de execução $O(|V|^3)$, qualquer cálculo de distância se resumirá a uma simples *table lookup* na matriz de distâncias mínimas o que o torna vantajoso a longo prazo em oposição aos algoritmos anteriores, que necessitariam de ser executados, de novo, a cada situação. A única inconveniência deste algoritmo poderá ser, nos casos específicos de mudança da constituição atómica dos grafos, como quando se registam arestas intransitáveis, com obras, ou obstáculos na via pública, ter que se pré-processar e reestruturar, de novo, os respetivos mapas, de maneira a identificar outros trajetos que evitem essas arestas. 
+Os custos são mais notórios em termos de memória, mas a compensação temporal permite que este seja um algoritmo ideal para ser usado no pré-processamento dos grafos. Depois de efetuado o pressuposto, com um tempo de execução $O(|V|^3)$, qualquer cálculo de distância se resumirá a uma simples *table lookup* na matriz de distâncias mínimas, o que o torna vantajoso, a longo prazo, em oposição aos algoritmos anteriores, que necessitariam de ser executados, de novo, a cada situação. A única inconveniência deste algoritmo poderá ser, nos casos específicos de mudança da constituição atómica dos grafos, como quando se registam arestas intransitáveis, com obras, ou obstáculos na via pública, ter que se pré-processar e reestruturar, de novo, os respetivos mapas, de maneira a identificar outros trajetos que evitem essas arestas. 
 Apesar disso, este algoritmo será, certamente, o escolhido para ser aplicado na fase final de implementação da aplicação, como descrito de seguida.
 
 
@@ -82,8 +73,6 @@ Na terceira fase, o caso em que se consideram múltiplos restaurantes no mesmo p
 
 A alternativa mais direta para resolver o problema seria aplicar um algoritmo "brute-force" que testasse todas os percursos possíveis, preservando, a cada iteração, aquele caminho que apresentasse uma distância mais curta. No entanto, esta solução é impraticável pelo seu elevado tempo de execução, $O(n!)$, até para grafos pouco densos.
 
-Também são conhecidas alternativas de solução para o problema recorrendo a algoritmos de programação dinâmica que, apesar de apresentarem melhorias em comparação com a solução "brute-force", ainda apresentam um tempo exponencial $O(2^n \times n^2)$, apresentando, para além disso, complexidade espacial elevada, $O(2^n \times n)$, o que nos leva a descartá-lo para o efeito desejado.
+Também são conhecidas alternativas de solução para o problema recorrendo a algoritmos de programação dinâmica que, apesar de revelarem melhorias, em comparação com a solução "brute-force", ainda apresentam um tempo exponencial $O(2^n \times n^2)$, tendo, para além disso, complexidade espacial elevada, $O(2^n \times n)$, o que nos leva a descartá-los, para o efeito desejado.
 
-A alternativa, que, à partida, nos parece a mais viável tendo em conta os conhecimentos adquiridos até agora, baseia-se numa abordagem gananciosa, já que procura, em cada iteração, escolher a solução ótima, ou seja, neste caso, escolher o restaurante mais perto do anterior.
-Assim, tendo como vértice de origem a posição de cada estafeta, procuraria-se construir o percurso até à morada de entrega do pedido, escolhendo, a cada iteração, o restaurante de menor distância.
-Para esta abordagem gananciosa será, no entanto, necessário ter calculado previamente as distâncias entre os vários pontos do grafo. Para isso, pensamos recorrer ao algoritmo de programação dinâmica Floyd Warshall, referido anteriormente, obtendo, assim, o caminho mais curto entre todos os pares de vértices, a usar posteriormente para determinar o caminho de cada estafeta para alcançar todos os restaurantes e, por fim, a morada do cliente.
+A alternativa, que, à partida, nos parece a mais viável, tendo em conta os conhecimentos adquiridos até agora, baseia-se numa abordagem gananciosa, já que procura, em cada iteração, escolher a solução ótima, ou seja, neste caso, escolher o restaurante mais perto do anterior. Assim, tendo como vértice de origem a posição de cada estafeta, procurar-se-ia construir o percurso até à morada de entrega do pedido, escolhendo, a cada iteração, o restaurante de menor distância. No entanto, para esta abordagem gananciosa será necessário calcular previamente as distâncias entre os vários pontos do grafo. Para isso, pensamos recorrer ao algoritmo de Floyd-Warshall, referido anteriormente, obtendo, assim, o caminho mais curto entre todos os pares de vértices, que será usado, posteriormente, para determinar o caminho de cada estafeta, alcançando todos os restaurantes e, por fim, a morada do cliente.

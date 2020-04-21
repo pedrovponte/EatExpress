@@ -10,8 +10,6 @@ Não serão equacionadas as implementações da interface da aplicação, ao ní
 
 Assim sendo, o problema reduzir-se-á a encontrar os caminhos mais curtos entre pontos/vértices, num mapa de atuação pré-escolhido, e, por fim, tendo em conta as diversas variantes do problema, definir rotas que permitam navegar pelos percursos, percorrendo a menor distância possível.
 
->----------------------------------
-
 ## 2.2 Estratificação
 
 A estratégia a seguir, para a resolução deste problema, sugere a divisão do conceito em fases de análise, de implementação e de deliberação. No entanto, como pré-estabelecida tomamos a ideia de que um estafeta em trabalho, antes de receber a sua rota, pode estar localizado num qualquer ponto do mapa. Esta e a generalização de que existirão sempre, no mínimo, um restaurante e uma localização de um cliente como pontos integrantes da rota, serão o ponto de partida para a análise que se segue.
@@ -25,7 +23,7 @@ Numa última nota, destaca-se a possível predeterminação de todos os restaura
 
 #### 2.2.1 Fase I
 
-Na sua simplicidade, consideramos a existência de apenas um estafeta, que realiza, sequencialmente, os percursos que lhe são impostos. Nesta fase, de modo a focar a análise na essência da problemática, será considerado um meio de transporte qualquer e desvalorizada a capacidade de transporte. Na sua medida, o único funcionário terá rotas na qual concretizará o levantamento de pedidos, nos restaurantes, e a sua entrega, na morada dos clientes. Será considerado, portanto, considerado o caso atómico de um estafeta que entrega apenas um pedido, entre um restaurante e a morada de um cliente.
+Na sua simplicidade, consideramos a existência de apenas um estafeta, que realiza, sequencialmente, os percursos que lhe são impostos. Nesta fase, de modo a focar a análise na essência do problema, será considerado um meio de transporte qualquer e desvalorizada a capacidade de transporte. Na sua medida, o único funcionário terá rotas na qual concretizará o levantamento de pedidos, nos restaurantes, e a sua entrega, na morada dos clientes. Será, portanto, considerado o caso atómico de um estafeta que entrega apenas um pedido, entre um restaurante e a morada de um cliente.
 
 #### 2.2.2 Fase II
 
@@ -34,21 +32,17 @@ Os pedidos estarão, logicamente, organizados numa escala temporal, ficando enca
 
 #### 2.2.3 Fase III
 
-Esta fase coincidirá com a implementação de variados meios de transporte, o que poderá corresponder à utilização de diferentes mapas, para atender às características das múltiplas entidades que entregarão os pedidos e, em simultâneo, às características das diversas vias. 
-Para além disso, será imprescindível ter em conta a capacidade máxima que cada estafeta pode transportar, pois a dimensão da encomenda passa a ser determinante na atribuição dos pedidos. 
+Esta fase coincidirá com a implementação de variados meios de transporte, o que poderá corresponder à utilização de diferentes mapas, para atender às características das múltiplas entidades que entregarão os pedidos e, em simultâneo, às características das diversas vias. Será igualmente imprescindível ter em conta a capacidade máxima que cada estafeta pode transportar, pois a dimensão da encomenda passa a ser determinante na atribuição dos pedidos. 
 Assim, nesta fase, a atribuição de um pedido a um estafeta fica a depender não só da sua proximidade ao restaurante, mas também das características próprias do meio de transporte por ele utilizado, preferindo-se os meios mais rápidos para encomendas que impliquem deslocações maiores e atribuindo as encomendas de maior dimensão aos estafetas com maior capacidade de transporte.
 
-Tendo em conta os múltiplos fatores envolvidos na seleção de um estafeta para a realização de um pedido, vai-se optar por, numa pré-seleção, excluir estafetas que não tenham capacidade para o transportar. 
-Seguidamente, como não se pretende ocupar estafetas com encomendas de dimensão muito inferior à sua capacidade máxima de transporte, por poderem ser necessários para os pedidos seguintes, terá que se avaliar, simultaneamente, a capacidade máxima de transporte de cada estafeta e a sua distância ao restaurante. Para isso, será atribuído um peso de 50% a cada um destes fatores aquando da escolha entre estafetas para a realização de um pedido. 
-Para além disso, será necessário, ao avaliar a possibilidade de escolha dos estafetas, definir uma distância máxima para aqueles que se desloquem a pé, ou de bicicleta, já que a utilização destes meios de transporte para longas distâncias, apesar de não se refletir na distância total percorrida, resultaria, em situações reais, num tempo de entrega extremamente longo.
+Para agilizar todo o processo, tendo em conta os múltiplos fatores envolvidos na seleção de um estafeta para a realização de um pedido, optar-se-á, numa pré-seleção, por excluir estafetas que não tenham capacidade para o transportar. Seguidamente, como não se pretende ocupar estafetas com encomendas de dimensão muito inferior à sua capacidade máxima de transporte, por poderem ser necessários para os pedidos seguintes, terá que se avaliar, simultaneamente, a capacidade máxima de transporte de cada estafeta e a sua distância ao restaurante. Para isso, será atribuído um peso de 50% a cada um destes fatores, aquando da escolha entre estafetas para a realização de um pedido. 
+Para além disso, ao avaliar a possibilidade de escolha dos estafetas, será necessário definir uma distância máxima para aqueles que se desloquem a pé, ou de bicicleta, já que a utilização destes meios de transporte para longas distâncias, apesar de não se refletir na distância total percorrida, resultaria, em situações reais, num tempo de entrega extremamente longo.
 
-Por fim, consideraremos também a possibilidade de um pedido englobar vários restaurantes. Isto implicará, mais uma vez, escolher, em primeiro lugar, os estafetas elegíveis, com base na sua disponibilidade para transportar a dimensão do pedido. Posteriormente, delinear-se-á a melhor opção de percurso para cada estafeta recolher o pedido dos vários restaurantes e entregá-lo ao cliente, considerando todas as restrições descritas anteriormente, no que diz respeito à capacidade, distância e tipo de transporte utilizado.
+Por fim, consideraremos também a possibilidade de um pedido englobar vários restaurantes. Mais uma vez, isto implicará escolher, em primeiro lugar, os estafetas elegíveis, com base na sua disponibilidade para transportar a dimensão do pedido. Posteriormente, delinear-se-á a melhor opção de percurso para cada estafeta recolher o pedido dos vários restaurantes e entregá-lo ao cliente, considerando todas as restrições descritas anteriormente, no que diz respeito à capacidade, distância e tipo de transporte utilizado.
  
 #### 2.2.4 Fase IV
 
 Aqui, entrará em consideração a existência de vários obstáculos nas vias, identificados em cima, o que levará a uma seleção mais restritiva do percurso e do tipo de estafeta encarregue de determinado pedido. Além disso, o tratamento dos grafos poderá sofrer alterações, sobretudo ao nível do pré-processamento.
-
->---------------------------------
 
 ## 2.3 Dados de Entrada
 
@@ -97,7 +91,7 @@ O importante, realmente, aqui, é a entrega das tarefas aos estafetas, o que res
     * O estafeta $employee$, encarregue da sua realização;
 
 O que se segue, nomeadamente, o ato de percorrer o caminho, com a identificação dos pontos já visitados, da entrega dos pedidos, do cálculo da distância percorrida, é um tanto independente desta análise algorítmica inicial, mas poderá ser, eventualmente, alvo de estudo e reflexão, para interpretação de resultados.
-
+<br><br><br>
 ## 2.5 Restrições
 
 A primeira restrição prende-se com o tamanho do grafo. Em termos reais, aplicações deste género, por uma questão de praticabilidade, limitam as zonas de atuação a áreas urbanas, onde exista um número razoável de restaurantes registados e de estafetas em operação. Assim sendo, os grafos aqui analisados também terão a sua área limitada.
