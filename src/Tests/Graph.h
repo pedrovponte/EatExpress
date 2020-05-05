@@ -36,21 +36,17 @@ public:
 	int getNumVertex() const;
 	vector<Vertex<T> *> getVertexSet() const;
 
-	// Fp05 - single source
+	// Single source
 	void dijkstraShortestPath(const T &s);
-	void unweightedShortestPath(const T &s);
-	void bellmanFordShortestPath(const T &s);
 	vector<T> getPath(const T &origin, const T &dest) const;
+	vector<T> getPathTo(const T &dest) const;
 
-	// Fp05 - all pairs
+	// All pairs shortest Path
 	void floydWarshallShortestPath();
 	vector<T> getfloydWarshallPath(const T &origin, const T &dest) const;
 	~Graph();
 
-	// Fp07 - minimum spanning tree
     bool addBidirectionalEdge(const T &sourc, const T &dest, double w);
-	vector<Vertex<T>*> calculatePrim();
-	vector<Vertex<T>*> calculateKruskal();
 };
 
 
@@ -179,32 +175,19 @@ vector<T> Graph<T>::getPath(const T &origin, const T &dest) const{
 }
 
 template<class T>
-void Graph<T>::unweightedShortestPath(const T &orig) {
-	auto s = initSingleSource(orig);
-	queue< Vertex<T>* > q;
-	q.push(s);
-	while( ! q.empty() ) {
-		auto v = q.front();
-		q.pop();
-		for(auto e: v->adj)
-			if (relax(v, e.dest, 1))
-				q.push(e.dest);
-	}
+vector<T> Graph<T>::getPathTo(const T &dest) const{
+    vector<T> res;
+    Vertex<T> * d = findVertex(dest);
+    // TODO
+    typename vector<Vertex<T>*>::const_iterator it;
+    res.push_back(d->getInfo());
+    while(d->getPath() != NULL){
+        d = d->getPath();
+        res.push_back(d->getInfo());
+    }
+    reverse(res.begin(),res.end());
+    return res;
 }
-
-template<class T>
-void Graph<T>::bellmanFordShortestPath(const T &orig) {
-	initSingleSource(orig);
-	for (unsigned i = 1; i < vertexSet.size(); i++)
-		for (auto v: vertexSet)
-			for (auto e: v->adj)
-				relax(v, e.dest, e.weight);
-	for (auto v: vertexSet)
-		for (auto e: v->adj)
-			if (relax(v, e.dest, e.weight))
-				cout << "Negative cycle!" << endl;
-}
-
 
 /**************** All Pairs Shortest Path  ***************/
 
@@ -276,7 +259,7 @@ vector<T> Graph<T>::getfloydWarshallPath(const T &orig, const T &dest) const{
 template <class T>
 bool Graph<T>::addBidirectionalEdge(const T &sourc, const T &dest, double w) {
     // TODO
-    return false;
+    return addEdge(sourc,dest,w) && addEdge(dest,sourc,w);
 }
 
 #endif /* GRAPH_H_ */

@@ -56,10 +56,91 @@ Graph<int> CreateTestGraph() {
     return myGraph;
 }
 
+template <typename T1, typename T2>
+basic_ostream<char>& operator<<(basic_ostream<char> & strm, const pair<T1, T2>& kvPair)
+{
+    strm << "(" << kvPair.first << ", " << kvPair.second << ")";
+    return strm;
+}
+
+template <class T>
+void checkAllPaths(Graph<T> &g, string expected) {
+    stringstream ss;
+    vector<Vertex<T>* > vs = g.getVertexSet();
+    for(unsigned int i = 0; i < vs.size(); i++) {
+        ss << vs[i]->getInfo() << "<-";
+        if ( vs[i]->getPath() != NULL )
+            ss << vs[i]->getPath()->getInfo();
+        ss << "|";
+    }
+    EXPECT_EQ(expected, ss.str());
+}
+
+template <class T>
+void checkSinglePath(vector<T> path, string expected) {
+    stringstream ss;
+    for(unsigned int i = 0; i < path.size(); i++)
+        ss << path[i] << " ";
+    EXPECT_EQ(expected, ss.str());
+}
+
+void generateRandomGridGraph(int n, Graph<pair<int,int>> & g) {
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_int_distribution<int> dis(1, n);
+
+    for (int i = 0; i < n; i++)
+        for (int j = 0; j < n; j++)
+            g.addVertex(make_pair(i,j));
+
+    for (int i = 0; i < n; i++)
+        for (int j = 0; j < n; j++)
+            for (int di = -1; di <= 1; di++)
+                for (int dj = -1; dj <= 1; dj++)
+                    if ((di != 0) != (dj != 0) && i+di >= 0 && i+di < n && j+dj >= 0 && j+dj < n)
+                        g.addEdge(make_pair(i,j), make_pair(i+di,j+dj), dis(gen));
+}
+
 TEST(CAL_T3G4, test_dijkstra) {
     Graph<int> myGraph = CreateTestGraph();
-    cout << "vfdvf\n";
+
+    myGraph.dijkstraShortestPath(3);
+    checkAllPaths(myGraph, "1<-3|2<-1|3<-|4<-2|5<-4|6<-3|7<-5|");
+
+    myGraph.dijkstraShortestPath(1);
+    checkAllPaths(myGraph, "1<-|2<-1|3<-4|4<-2|5<-4|6<-4|7<-5|");
+    checkSinglePath(myGraph.getPathTo(7), "1 2 4 5 7 ");
+
+    myGraph.dijkstraShortestPath(5);
+    checkSinglePath(myGraph.getPathTo(6), "5 7 6 ");
+
+    myGraph.dijkstraShortestPath(7);
+    checkSinglePath(myGraph.getPathTo(1), "7 6 4 3 1 ");
 }
+
+TEST(CAL_T3G4, test_floydWarshall) {
+    Graph<int> myGraph = CreateTestGraph();
+    myGraph.floydWarshallShortestPath();
+    checkSinglePath(myGraph.getfloydWarshallPath(1, 7), "1 2 4 5 7 ");
+    checkSinglePath(myGraph.getfloydWarshallPath(5, 6), "5 7 6 ");
+    checkSinglePath(myGraph.getfloydWarshallPath(7, 1), "7 6 4 3 1 ");
+}
+
+/*TEST(CAL_T3G4, test_performance_dijkstra) {
+    for (int n = 10; n <= 100; n += 10) {
+        Graph< pair<int,int> > g;
+        cout << "Dijkstra generating grid " << n << " x " << n << " ..." << endl;
+        generateRandomGridGraph(n, g);
+        cout << "Dijkstra processing grid " << n << " x " << n << " ..." << endl;
+        auto start = std::chrono::high_resolution_clock::now();
+        for (int i = 0; i < n; i++)
+            for (int j = 0; j < n; j++)
+                g.dijkstraShortestPath(make_pair(i,j));
+        auto finish = std::chrono::high_resolution_clock::now();
+        auto elapsed = chrono::duration_cast<chrono::microseconds>(finish - start).count();
+        cout << "Dijkstra processing grid " << n << " x " << n << " average time (micro-seconds)=" << (elapsed / (n*n)) << endl;
+    }
+}*/
 
 
 
