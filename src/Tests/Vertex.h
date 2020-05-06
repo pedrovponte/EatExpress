@@ -6,11 +6,11 @@
 #define CAL_T3G4_VERTEX_H
 
 #include "Edge.h"
+#include "Coordinates.h"
 
 template <class T>
 class Vertex {
     T info;                // contents
-    int id;                // unique id
     vector<Edge<T> > adj;  // outgoing edges
     bool visited;          // auxiliary field
     double dist = 0;

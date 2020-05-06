@@ -9,6 +9,6 @@ include_directories(lib/googletest-master/googlemock/include)
 
 
 
-add_executable(CAL_T3G4 main.cpp Tests/tests.cpp Tests/Graph.h Tests/MutablePriorityQueue.h Tests/Vertex.h Tests/Edge.h)
+add_executable(CAL_T3G4 main.cpp Tests/tests.cpp Tests/Graph.h Tests/MutablePriorityQueue.h Tests/Vertex.h Tests/Edge.h Tests/utils.cpp Tests/utils.h Tests/Coordinates.h Tests/Coordinates.cpp)
 
 target_link_libraries(CAL_T3G4 gtest gtest_main)

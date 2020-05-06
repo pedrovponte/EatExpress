@@ -21,7 +21,6 @@ template <class T>
 class Graph {
 	vector<Vertex<T> *> vertexSet;    // vertex set
 
-	// Fp05
 	Vertex<T> * initSingleSource(const T &orig);
 	bool relax(Vertex<T> *v, Vertex<T> *w, double weight);
 	double ** W = nullptr;   // dist
@@ -65,9 +64,10 @@ vector<Vertex<T> *> Graph<T>::getVertexSet() const {
  */
 template <class T>
 Vertex<T> * Graph<T>::findVertex(const T &in) const {
-	for (auto v : vertexSet)
-		if (v->info == in)
-			return v;
+	for (auto v : vertexSet){
+        if (v->info == in)
+            return v;
+	}
 	return nullptr;
 }
 
@@ -102,8 +102,9 @@ template <class T>
 bool Graph<T>::addEdge(const T &sourc, const T &dest, double w) {
 	auto v1 = findVertex(sourc);
 	auto v2 = findVertex(dest);
-	if (v1 == nullptr || v2 == nullptr)
-		return false;
+	if (v1 == nullptr || v2 == nullptr){
+        return false;
+	}
 	v1->addEdge(v2, w);
 	return true;
 }
