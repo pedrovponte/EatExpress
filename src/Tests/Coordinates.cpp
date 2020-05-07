@@ -26,3 +26,9 @@ bool Coordinates::operator==(const Coordinates &rightCoord) const {
     return this->id == rightCoord.id;
 }
 
+std::ostream &operator<<(std::ostream &os, const Coordinates &coordinates) {
+    os << coordinates.id;
+    return os;
+}
+
+

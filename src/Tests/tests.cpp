@@ -6,6 +6,7 @@
 #include <time.h>
 #include <chrono>
 #include "Graph.h"
+#include "utils.h"
 
 using namespace std;
 using testing::Eq;
@@ -116,6 +117,11 @@ TEST(CAL_T3G4, test_dijkstra) {
 
     myGraph.dijkstraShortestPath(7);
     checkSinglePath(myGraph.getPathTo(1), "7 6 4 3 1 ");
+
+    Graph<Coordinates> realGraph = loadGraph("GridGraphs", "4x4", true);
+
+    realGraph.dijkstraShortestPath(Coordinates(0));
+    checkSinglePath(realGraph.getPathTo(Coordinates(14)), "0 1 6 11 12 13 14 ");
 }
 
 TEST(CAL_T3G4, test_floydWarshall) {
@@ -124,6 +130,13 @@ TEST(CAL_T3G4, test_floydWarshall) {
     checkSinglePath(myGraph.getfloydWarshallPath(1, 7), "1 2 4 5 7 ");
     checkSinglePath(myGraph.getfloydWarshallPath(5, 6), "5 7 6 ");
     checkSinglePath(myGraph.getfloydWarshallPath(7, 1), "7 6 4 3 1 ");
+
+
+    Graph<Coordinates> realGraph = loadGraph("GridGraphs", "4x4", true);
+
+    realGraph.floydWarshallShortestPath();
+
+    checkSinglePath(realGraph.getfloydWarshallPath(Coordinates(0),Coordinates(14)), "0 1 2 3 4 9 14 ");
 }
 
 /*TEST(CAL_T3G4, test_performance_dijkstra) {

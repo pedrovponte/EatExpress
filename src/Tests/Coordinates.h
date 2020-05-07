@@ -6,6 +6,8 @@
 #define CAL_T3G4_COORDINATES_H
 
 
+#include <ostream>
+
 class Coordinates {
     unsigned long id;           // unique id
     double latitude;            // latitude
@@ -17,6 +19,8 @@ public:
     double getLongitude() const ;
     unsigned long getId() const;
     bool operator==(const Coordinates &rightCoord) const;
+
+    friend std::ostream &operator<<(std::ostream &os, const Coordinates &coordinates);
 };
 
 
