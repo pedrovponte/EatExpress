@@ -25,15 +25,13 @@ class Graph {
 	bool relax(Vertex<T> *v, Vertex<T> *w, double weight);
 	double ** W = nullptr;   // dist
 	int **P = nullptr;   // path
-	int findVertexIdx(const T &in) const;
-
-
 public:
 	Vertex<T> *findVertex(const T &in) const;
 	bool addVertex(const T &in);
 	bool addEdge(const T &sourc, const T &dest, double w);
 	int getNumVertex() const;
 	vector<Vertex<T> *> getVertexSet() const;
+    int findVertexIdx(const T &in) const;
 
 	// Single source
 	void dijkstraShortestPath(const T &s);
@@ -43,6 +41,7 @@ public:
 	// All pairs shortest Path
 	void floydWarshallShortestPath();
 	vector<T> getfloydWarshallPath(const T &origin, const T &dest) const;
+    double ** getDistancesMatrix();
 	~Graph();
 
     bool addBidirectionalEdge(const T &sourc, const T &dest, double w);
@@ -254,6 +253,11 @@ vector<T> Graph<T>::getfloydWarshallPath(const T &orig, const T &dest) const{
 		res.push_back(vertexSet[j]->info);
 	reverse(res.begin(), res.end());
 	return res;
+}
+
+template<class T>
+double ** Graph<T>::getDistancesMatrix(){
+    return W;
 }
 
 /**************** Minimum Spanning Tree  ***************/
