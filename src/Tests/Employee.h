@@ -6,6 +6,7 @@
 #define CAL_T3G4_EMPLOYEE_H
 
 #include "Coordinates.h"
+using namespace std;
 
 class Employee {
     unsigned long id;

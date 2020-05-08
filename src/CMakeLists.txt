@@ -12,6 +12,7 @@ include_directories(lib/googletest-master/googlemock/include)
 include_directories(lib/graphViewer)
 
 add_executable(CAL_T3G4 main.cpp Tests/tests.cpp Tests/Graph.h Tests/MutablePriorityQueue.h Tests/Vertex.h Tests/Edge.h Tests/utils.cpp
-        Tests/utils.h Tests/Coordinates.h Tests/Coordinates.cpp lib/graphViewer/connection.cpp lib/graphViewer/graphviewer.cpp)
+        Tests/utils.h Tests/Coordinates.h Tests/Coordinates.cpp lib/graphViewer/connection.cpp lib/graphViewer/graphviewer.cpp Tests/Employee.h Tests/Employee.cpp
+        Tests/Request.cpp Tests/Request.h)
 
 target_link_libraries(CAL_T3G4 gtest gtest_main)
