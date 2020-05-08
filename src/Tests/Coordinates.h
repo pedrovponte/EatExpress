@@ -8,6 +8,8 @@
 
 #include <ostream>
 
+using namespace std;
+
 class Coordinates {
     unsigned long id;           // unique id
     double latitude;            // latitude

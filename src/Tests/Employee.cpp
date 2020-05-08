@@ -2,9 +2,9 @@
 // Created by pedro on 08/05/2020.
 //
 
-
-
 #include "Employee.h"
+
+using namespace std;
 
 Employee::Employee(unsigned long id, const Coordinates &coordinates, int maxCargo, char type, bool ready)
     : id(id), coordinates(coordinates), maxCargo(maxCargo),type(type),ready(ready) {}

@@ -4,6 +4,8 @@
 
 #include "Request.h"
 
+using namespace std;
+
 template<class T>
 Request<T>::Request(unsigned long id, const Date &requestDate, const Hour &requestHour,
                     const list<Vertex<T>> &checkpoints, int cargo):id(id), request_date(requestDate),

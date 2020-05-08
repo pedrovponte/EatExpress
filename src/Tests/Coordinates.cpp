@@ -4,6 +4,8 @@
 
 #include "Coordinates.h"
 
+using namespace std;
+
 Coordinates::Coordinates(unsigned long id) : Coordinates(id,0, 0) {
 }
 
