@@ -213,7 +213,8 @@ void viewFileGraph(GraphViewer *gv, string dir, string subDir, bool euclidean){
                 dist = haversineDistance(v1->getInfo().getLatitude(), v1->getInfo().getLongitude(), v2->getInfo().getLatitude(), v2->getInfo().getLongitude());
 
             gv->addEdge(i, origId, destId, EdgeType::DIRECTED);
-            gv->setEdgeLabel(i, to_string(dist));
+            gv->setEdgeLabel(i,"Dist: " + to_string(dist));
+            //gv->setEdgeWeight(i,dist)
             i++;
         }
     }
@@ -224,16 +225,15 @@ void viewDijkstraShortestPath(GraphViewer *gv, Graph<Coordinates> & graph, Coord
     graph.dijkstraShortestPath(orig);
     vector<Coordinates> path = graph.getPathTo(dest);
 
-    for(unsigned int i = 0; i < path.size(); i++) {
+    Vertex<Coordinates> * v;
+    for(unsigned int i = 0; i < path.size()-1; i++) {
         gv->addNode(path[i].getId(), path[i].getLatitude(), path[i].getLongitude());
-        gv->setVertexLabel(path[i].getId(), to_string(path[i].getId()));
+        v = graph.findVertex(path[i].getId());
 
-        if(i != path.size() - 1){
-            Coordinates dest(path[i+1].getId());
-            Vertex<Coordinates> * v = graph.findVertex(dest);
+        gv->setVertexLabel(path[i].getId(),"Id: " + to_string(path[i].getId())+ "  Dist: " + to_string(v->getDist()));
 
-            gv->addEdge(i,path[i].getId(),path[i+1].getId(),EdgeType::DIRECTED);
-            gv->setEdgeLabel(i, to_string(v->getDist()));
+        if(i != 0){
+            gv->addEdge(i,path[i-1].getId(),path[i].getId(),EdgeType::DIRECTED);
         }
     }
 }
@@ -246,17 +246,25 @@ void viewFloydWarshallShortestPath(GraphViewer *gv, Graph<Coordinates> & graph, 
     vector<Coordinates> path = graph.getfloydWarshallPath(orig, dest);
     W = graph.getDistancesMatrix();
 
+    int origIdx, destIdx;
     for(unsigned int i = 0; i < path.size(); i++) {
+
         gv->addNode(path[i].getId(), path[i].getLatitude(), path[i].getLongitude());
-        gv->setVertexLabel(path[i].getId(), to_string(path[i].getId()));
 
-        if(i != path.size() - 1){
-            int origIdx = graph.findVertexIdx(path[i]);
-            int destIdx = graph.findVertexIdx(path[i+1]);
+        if(i == 0){
+            origIdx = graph.findVertexIdx(path[i]);
+            destIdx = origIdx;
+        }
+        else{
+            origIdx = graph.findVertexIdx(path[i-1]);
+            destIdx = graph.findVertexIdx(path[i]);
+        }
+        dist += W[origIdx][destIdx];
 
-            gv->addEdge(i,path[i].getId(),path[i+1].getId(),EdgeType::DIRECTED);
-            dist += W[origIdx][destIdx];
-            gv->setEdgeLabel(i, to_string(dist));
+        gv->setVertexLabel(path[i].getId(),"Id: " + to_string(path[i].getId())+ "  Dist: " + to_string(dist));
+
+        if(i != 0){
+            gv->addEdge(i,path[i-1].getId(),path[i].getId(),EdgeType::DIRECTED);
         }
     }
 }

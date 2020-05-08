@@ -5,7 +5,7 @@
 int main(int argc, char* argv[]) {
     testing::InitGoogleTest(&argc, argv);
 
-    GraphViewer *gv = new GraphViewer(700, 700, false);
+    /*GraphViewer *gv = new GraphViewer(700, 700, false);
     graphViewerProperties(gv);
 
     // Show initial graph
@@ -20,6 +20,6 @@ int main(int argc, char* argv[]) {
 
     gv->rearrange();
 
-    getchar();
+    getchar();*/
     return RUN_ALL_TESTS();
 }
