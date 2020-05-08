@@ -131,7 +131,6 @@ TEST(CAL_T3G4, test_floydWarshall) {
     checkSinglePath(myGraph.getfloydWarshallPath(5, 6), "5 7 6 ");
     checkSinglePath(myGraph.getfloydWarshallPath(7, 1), "7 6 4 3 1 ");
 
-
     Graph<Coordinates> realGraph = loadGraph("GridGraphs", "4x4", true);
 
     realGraph.floydWarshallShortestPath();
