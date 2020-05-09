@@ -106,6 +106,7 @@ bool Graph<T>::addEdge(unsigned long id, const T &sourc, const T &dest, double w
         return false;
 	}
 	v1->addEdge(id, v2, w);
+    v2->addEdge(id, v1, w);
 	return true;
 }
 

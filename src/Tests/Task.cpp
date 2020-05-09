@@ -14,6 +14,8 @@ void Task::setFloydWarshallPath(Graph<Coordinates> & graph){
     path = graph.getfloydWarshallPath(orig, checkpoint);
     vector<Coordinates> pathToDest = graph.getfloydWarshallPath(checkpoint, dest);
     path.insert(path.end(),pathToDest.begin()+1, pathToDest.end());
+
+    employee.setCoordinates(path.at(path.size()-1));
 }
 
 void Task::setDijkstraPath(Graph<Coordinates> & graph){
@@ -27,6 +29,8 @@ void Task::setDijkstraPath(Graph<Coordinates> & graph){
     graph.dijkstraShortestPath(checkpoint);
     vector<Coordinates> pathToDest = graph.getPathTo(dest);
     path.insert(path.end(),pathToDest.begin()+1, pathToDest.end());
+
+    employee.setCoordinates(path.at(path.size()-1));
 }
 
 const vector<Coordinates> Task::getPath() const{
