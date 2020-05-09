@@ -40,19 +40,19 @@ Graph<int> CreateTestGraph() {
     for(int i = 1; i <= 7; i++)
         myGraph.addVertex(i);
 
-    myGraph.addEdge(1, 2, 2);
-    myGraph.addEdge(1, 4, 7);
-    myGraph.addEdge(2, 4, 3);
-    myGraph.addEdge(2, 5, 5);
-    myGraph.addEdge(3, 1, 2);
-    myGraph.addEdge(3, 6, 5);
-    myGraph.addEdge(4, 3, 1);
-    myGraph.addEdge(4, 5, 1);
-    myGraph.addEdge(4, 6, 6);
-    myGraph.addEdge(4, 7, 4);
-    myGraph.addEdge(5, 7, 2);
-    myGraph.addEdge(6, 4, 3);
-    myGraph.addEdge(7, 6, 4);
+    myGraph.addEdge(0, 1, 2, 2);
+    myGraph.addEdge(1, 1, 4, 7);
+    myGraph.addEdge(2, 2, 4, 3);
+    myGraph.addEdge(3, 2, 5, 5);
+    myGraph.addEdge(4, 3, 1, 2);
+    myGraph.addEdge(5, 3, 6, 5);
+    myGraph.addEdge(6, 4, 3, 1);
+    myGraph.addEdge(7, 4, 5, 1);
+    myGraph.addEdge(8, 4, 6, 6);
+    myGraph.addEdge(9, 4, 7, 4);
+    myGraph.addEdge(10, 5, 7, 2);
+    myGraph.addEdge(11, 6, 4, 3);
+    myGraph.addEdge(12, 7, 6, 4);
 
     return myGraph;
 }
@@ -83,23 +83,6 @@ void checkSinglePath(vector<T> path, string expected) {
     for(unsigned int i = 0; i < path.size(); i++)
         ss << path[i] << " ";
     EXPECT_EQ(expected, ss.str());
-}
-
-void generateRandomGridGraph(int n, Graph<pair<int,int>> & g) {
-    std::random_device rd;
-    std::mt19937 gen(rd());
-    std::uniform_int_distribution<int> dis(1, n);
-
-    for (int i = 0; i < n; i++)
-        for (int j = 0; j < n; j++)
-            g.addVertex(make_pair(i,j));
-
-    for (int i = 0; i < n; i++)
-        for (int j = 0; j < n; j++)
-            for (int di = -1; di <= 1; di++)
-                for (int dj = -1; dj <= 1; dj++)
-                    if ((di != 0) != (dj != 0) && i+di >= 0 && i+di < n && j+dj >= 0 && j+dj < n)
-                        g.addEdge(make_pair(i,j), make_pair(i+di,j+dj), dis(gen));
 }
 
 TEST(CAL_T3G4, test_dijkstra) {
@@ -151,22 +134,6 @@ TEST(CAL_T3G4, test_floydWarshall) {
 
     checkSinglePath(realGraph.getfloydWarshallPath(Coordinates(15),Coordinates(24)), "15 16 17 18 19 24 ");
 }
-
-/*TEST(CAL_T3G4, test_performance_dijkstra) {
-    for (int n = 10; n <= 100; n += 10) {
-        Graph< pair<int,int> > g;
-        cout << "Dijkstra generating grid " << n << " x " << n << " ..." << endl;
-        generateRandomGridGraph(n, g);
-        cout << "Dijkstra processing grid " << n << " x " << n << " ..." << endl;
-        auto start = std::chrono::high_resolution_clock::now();
-        for (int i = 0; i < n; i++)
-            for (int j = 0; j < n; j++)
-                g.dijkstraShortestPath(make_pair(i,j));
-        auto finish = std::chrono::high_resolution_clock::now();
-        auto elapsed = chrono::duration_cast<chrono::microseconds>(finish - start).count();
-        cout << "Dijkstra processing grid " << n << " x " << n << " average time (micro-seconds)=" << (elapsed / (n*n)) << endl;
-    }
-}*/
 
 
 

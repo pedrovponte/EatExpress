@@ -21,13 +21,14 @@ class Vertex {
     double dist = 0;
     Vertex<T> *path = nullptr;
     int queueIndex = 0; 		// required by MutablePriorityQueue
-    void addEdge(Vertex<T> *dest, double w);
+    void addEdge(unsigned long id, Vertex<T> *dest, double w);
 public:
     Vertex(T in, char type);
     bool operator<(Vertex<T> & vertex) const; // // required by MutablePriorityQueue
     T getInfo() const;
     double getDist() const;
     Vertex *getPath() const;
+    const vector<Edge<T>> &getAdj() const;
     friend class Graph<T>;
     friend class MutablePriorityQueue<Vertex<T>>;
 };
@@ -41,8 +42,8 @@ Vertex<T>::Vertex(T in, char type): info(in), type(type){}
  * with a given destination vertex (d) and edge weight (w).
  */
 template <class T>
-void Vertex<T>::addEdge(Vertex<T> *d, double w) {
-    adj.push_back(Edge<T>(this, d, w));
+void Vertex<T>::addEdge(unsigned long id, Vertex<T> *d, double w) {
+    adj.push_back(Edge<T>(id, this, d, w));
 }
 
 template <class T>
@@ -63,6 +64,11 @@ double Vertex<T>::getDist() const {
 template <class T>
 Vertex<T> *Vertex<T>::getPath() const {
     return this->path;
+}
+
+template<class T>
+const vector<Edge<T>> &Vertex<T>::getAdj() const {
+    return adj;
 }
 
 #endif //CAL_T3G4_VERTEX_H

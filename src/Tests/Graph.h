@@ -28,7 +28,8 @@ class Graph {
 public:
 	Vertex<T> *findVertex(const T &in) const;
 	bool addVertex(const T &in, char type = ' ');
-	bool addEdge(const T &sourc, const T &dest, double w);
+	bool addEdge(unsigned long id, const T &sourc, const T &dest, double w);
+    const Edge<T> & getEdge(const T &sourc, const T &dest) const;
 	int getNumVertex() const;
 	vector<Vertex<T> *> getVertexSet() const;
     int findVertexIdx(const T &in) const;
@@ -44,7 +45,7 @@ public:
     double ** getDistancesMatrix() const;
 	~Graph();
 
-    bool addBidirectionalEdge(const T &sourc, const T &dest, double w);
+    bool addBidirectionalEdge(unsigned long idSourc, unsigned  long idDest, const T &sourc, const T &dest, double w);
 };
 
 
@@ -98,14 +99,31 @@ bool Graph<T>::addVertex(const T &in, char type) {
  * Returns true if successful, and false if the source or destination vertex does not exist.
  */
 template <class T>
-bool Graph<T>::addEdge(const T &sourc, const T &dest, double w) {
+bool Graph<T>::addEdge(unsigned long id, const T &sourc, const T &dest, double w) {
 	auto v1 = findVertex(sourc);
 	auto v2 = findVertex(dest);
 	if (v1 == nullptr || v2 == nullptr){
         return false;
 	}
-	v1->addEdge(v2, w);
+	v1->addEdge(id, v2, w);
 	return true;
+}
+
+template <class T>
+const Edge<T> & Graph<T>::getEdge(const T &sourc, const T &dest) const{
+    auto v1 = findVertex(sourc);
+    auto v2 = findVertex(dest);
+
+    Edge<T> nullEdge = Edge<T>();
+    if (v1 == nullptr || v2 == nullptr){
+        return nullEdge;
+    }
+
+    for(unsigned int i = 0; i < v1->adj.size(); i++){
+        if(v1->adj[i].dest == v2)
+            return v1->adj[i];
+    }
+    return nullEdge;
 }
 
 
@@ -262,9 +280,9 @@ double ** Graph<T>::getDistancesMatrix() const{
 
 /**************** Minimum Spanning Tree  ***************/
 template <class T>
-bool Graph<T>::addBidirectionalEdge(const T &sourc, const T &dest, double w) {
+bool Graph<T>::addBidirectionalEdge(unsigned long idSourc, unsigned  long idDest, const T &sourc, const T &dest, double w) {
     // TODO
-    return addEdge(sourc,dest,w) && addEdge(dest,sourc,w);
+    return addEdge(idSourc, sourc,dest,w) && addEdge(idDest, dest,sourc,w);
 }
 
 #endif /* GRAPH_H_ */

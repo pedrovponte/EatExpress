@@ -13,23 +13,41 @@ using namespace std;
 template <class T>
 class Edge {
     Vertex<T> *orig;
-    Vertex<T> * dest;      // destination vertex
+    Vertex<T> * dest;
+private:
+    // destination vertex
     double weight;         // edge weight
+    unsigned long id;      // unique id
 
 public:
-    Edge(Vertex<T> *o, Vertex<T> *d, double w);
+    Edge();
+    Edge(unsigned long id, Vertex<T> *o, Vertex<T> *d, double w);
     friend class Graph<T>;
     friend class Vertex<T>;
     double getWeight() const;
+    unsigned long getId() const;
+    Vertex<T> *getDest() const;
 };
 
 template <class T>
-Edge<T>::Edge(Vertex<T> *o, Vertex<T> *d, double w): orig(o), dest(d), weight(w) {}
+Edge<T>::Edge(){}
+
+template <class T>
+Edge<T>::Edge(unsigned long id, Vertex<T> *o, Vertex<T> *d, double w): id(id), orig(o), dest(d), weight(w) {}
 
 template <class T>
 double Edge<T>::getWeight() const {
     return weight;
 }
 
+template <class T>
+unsigned long Edge<T>::getId() const {
+    return id;
+}
+
+template<class T>
+Vertex<T> *Edge<T>::getDest() const {
+    return dest;
+}
 
 #endif //CAL_T3G4_EDGE_H

@@ -87,6 +87,6 @@ void viewFloydWarshallShortestPath(const Graph<Coordinates> & graph, const vecto
 
 void graphViewerProperties(GraphViewer * gv);
 
-void drawCompleteGraph(GraphViewer * gv,const Graph<Coordinates> & graph);
+void drawGraph(GraphViewer *gv, const Graph<Coordinates> & graph);
 
 #endif //CAL_T3G4_UTILS_H

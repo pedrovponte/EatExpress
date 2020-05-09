@@ -33,6 +33,8 @@ double haversineDistance(double lat1, double long1, double lat2, double long2){
 }
 
 Graph<Coordinates> loadGraph(string dir, string subDir, bool euclidean, bool preview){
+
+    // Create Graph Viewer
     GraphViewer *gv;
 
     if(preview){
@@ -129,7 +131,7 @@ Graph<Coordinates> loadGraph(string dir, string subDir, bool euclidean, bool pre
             else
                 dist = haversineDistance(v1->getInfo().getLatitude(), v1->getInfo().getLongitude(), v2->getInfo().getLatitude(), v2->getInfo().getLongitude());
 
-            g.addEdge(origCoords, destCoords, dist);
+            g.addEdge(i,origCoords, destCoords, dist);
 
             if(preview){
                 gv->addEdge(i, origId, destId, EdgeType::DIRECTED);
@@ -172,12 +174,14 @@ void viewFloydWarshallShortestPath(const Graph<Coordinates> & graph, const vecto
     double ** W = graph.getDistancesMatrix();
     int origIdx, destIdx;
 
-    // Create Graph Viewer
     GraphViewer *gv = new GraphViewer(700, 700, false);
     graphViewerProperties(gv);
 
+    drawGraph(gv,graph);
+    cout << path.size()<<endl;
     for(unsigned int i = 0; i < path.size(); i++) {
-        gv->addNode(path[i].getId(), path[i].getLatitude(), path[i].getLongitude());
+        gv->clearVertexColor(path[i].getId());
+        gv->setVertexColor(path[i].getId(),"red");
 
         if(i == 0){
             origIdx = graph.findVertexIdx(path[i]);
@@ -188,11 +192,17 @@ void viewFloydWarshallShortestPath(const Graph<Coordinates> & graph, const vecto
             destIdx = graph.findVertexIdx(path[i]);
         }
         dist += W[origIdx][destIdx];
+        string strDist = to_string(dist).substr(0, to_string(dist).find(".") + 2 + 1);
 
-        gv->setVertexLabel(path[i].getId(),"Id: " + to_string(path[i].getId())+ "  Dist: " + to_string(dist));
+        gv->clearVertexLabel(path[i].getId());
+        gv->setVertexLabel(path[i].getId(),"Id: " + to_string(path[i].getId())+ "  Dist: " + strDist);
 
         if(i != 0){
-            gv->addEdge(i,path[i-1].getId(),path[i].getId(),EdgeType::DIRECTED);
+            int edgeId = graph.getEdge(path[i-1].getId(),path[i].getId()).getId();
+            gv->clearEdgeColor(edgeId);
+            gv->clearEdgeLabel(edgeId);
+            gv->setEdgeColor(edgeId,"red");
+            gv->setEdgeThickness(edgeId,3);
         }
     }
 
@@ -205,6 +215,18 @@ void graphViewerProperties(GraphViewer * gv){
     gv->defineEdgeColor("black");
 }
 
-void drawCompleteGraph(GraphViewer * gv,const Graph<Coordinates> & graph){
-    
+void drawGraph(GraphViewer *gv, const Graph<Coordinates> & graph){
+    vector<Vertex<Coordinates>*> v = graph.getVertexSet();
+
+    for(int i = 0; i < v.size(); i++){
+        gv->addNode(v[i]->getInfo().getId(),v[i]->getInfo().getLatitude(),v[i]->getInfo().getLongitude());
+        //gv->setVertexLabel(v[i]->getInfo().getId(), to_string(v[i]->getInfo().getId()));
+    }
+
+    for(int i = 0; i < v.size(); i++){
+        for(Edge<Coordinates> e : v[i]->getAdj()){
+            gv->addEdge(e.getId(), v[i]->getInfo().getId(),e.getDest()->getInfo().getId(),EdgeType::DIRECTED);
+            //gv->setEdgeLabel(e.getId(),"Dist: " + to_string(e.getWeight()));
+        }
+    }
 }
