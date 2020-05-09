@@ -2,3 +2,5 @@
 src/.idea/
 
 src/cmake-build-debug/
+
+bin/plots/

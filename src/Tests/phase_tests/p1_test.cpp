@@ -3,11 +3,7 @@
 //
 
 #include <gtest/gtest.h>
-#include <gmock/gmock.h>
-
-#include <sstream>
 #include <random>
-#include <time.h>
 #include <chrono>
 #include "../Graph.h"
 #include "../utils.h"
@@ -112,7 +108,6 @@ TEST(CAL_T3G4, test_dijkstra_time){
     }
 
 }
-
 
 TEST(CAL_T3G4, test_floyd_wharshall_time){
 
