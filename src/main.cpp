@@ -1,25 +1,46 @@
 #include "gtest/gtest.h"
 #include "graphviewer.h"
 #include "Tests/utils.h"
+#include "Tests/Request.h"
+#include "Tests/Employee.h"
+#include "Tests/Task.h"
 
 int main(int argc, char* argv[]) {
     testing::InitGoogleTest(&argc, argv);
 
-    /*GraphViewer *gv = new GraphViewer(700, 700, false);
-    graphViewerProperties(gv);
+    // User must choose the city and graph is loaded accordingly
+    // Preview city graph if user chooses to
+    Graph<Coordinates> graph = loadGraph("GridGraphs", "8x8", true);
 
-    // Show initial graph
-    //viewFileGraph(gv, "GridGraphs", "4x4", true);
 
-    // Show final shortest path
-    Graph<Coordinates> g = loadGraph("GridGraphs", "4x4", true);
+    // Pre-process distances using Floyd Warshall
+    graph.floydWarshallShortestPath();
 
-    viewDijkstraShortestPath(gv, g, Coordinates(0),Coordinates(14));
+    // Generate Random Employees positions
+    // TODO
 
-    //viewFloydWarshallShortestPath(gv,g,Coordinates(0),Coordinates(14));
+    // Get possible restaurants and let user choose
+    Vertex<Coordinates> * restaurant = graph.findVertex(Coordinates(20));
+    vector<Vertex<Coordinates>*> restaurants;
+    restaurants.push_back(restaurant);
 
-    gv->rearrange();
+    // Choose user's position or generate random position and request's dimension, date and hour
+    Vertex<Coordinates> * delivery_addr = graph.findVertex(Coordinates(42));
 
-    getchar();*/
+    // Build Request
+    Request request(0, Date(2020,10,10), Hour(22,0),restaurants,delivery_addr,20);
+
+    // Give the request to an employee
+    Employee employee(0,Coordinates(10),40,'c',true);
+
+    // Calculate shortest path using FloydWarshall
+    Task task(employee,request);
+    task.setFloydWarshallPath(graph);
+    vector<Coordinates> path = task.getPath();
+
+    // Show shortest path calculated with FloydWarshall
+    viewFloydWarshallShortestPath(graph,path);
+
+    //getchar();
     return RUN_ALL_TESTS();
 }

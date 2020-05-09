@@ -32,7 +32,14 @@ double haversineDistance(double lat1, double long1, double lat2, double long2){
     return earthRad * c; // in metres
 }
 
-Graph<Coordinates> loadGraph(string dir, string subDir, bool euclidean){
+Graph<Coordinates> loadGraph(string dir, string subDir, bool euclidean, bool preview){
+    GraphViewer *gv;
+
+    if(preview){
+        gv = new GraphViewer(700, 700, false);
+        graphViewerProperties(gv);
+    }
+
     istringstream ss;
     stringstream edgesFile, nodesFile;
     Graph<Coordinates> g;
@@ -79,6 +86,12 @@ Graph<Coordinates> loadGraph(string dir, string subDir, bool euclidean){
             ss >> longitude;
 
             g.addVertex(Coordinates(id,latitude, longitude));
+
+            if(preview){
+                gv->addNode(id,latitude,longitude);
+                gv->setVertexLabel(id, to_string(id));
+            }
+
             i++;
         }
     }
@@ -117,113 +130,27 @@ Graph<Coordinates> loadGraph(string dir, string subDir, bool euclidean){
                 dist = haversineDistance(v1->getInfo().getLatitude(), v1->getInfo().getLongitude(), v2->getInfo().getLatitude(), v2->getInfo().getLongitude());
 
             g.addEdge(origCoords, destCoords, dist);
+
+            if(preview){
+                gv->addEdge(i, origId, destId, EdgeType::DIRECTED);
+                gv->setEdgeLabel(i,"Dist: " + to_string(dist));
+                //gv->setEdgeWeight(i,dist);
+            }
+
             i++;
         }
     }
     edges.close();
+
+    if(preview) gv->rearrange();
 
     return g;
 }
 
-void viewFileGraph(GraphViewer *gv, string dir, string subDir, bool euclidean){
-    istringstream ss;
-    stringstream edgesFile, nodesFile;
-    Graph<Coordinates> g;
-    string firstLine;
-
-    edgesFile << "../Mapas/" << dir << "/" << subDir;
-    nodesFile << "../Mapas/" << dir << "/" << subDir;
-
-    if(dir == "GridGraphs"){
-        edgesFile << "/edges.txt";
-        nodesFile << "/nodes.txt";
-    }
-    else{
-        transform(subDir.begin(), subDir.end(), subDir.begin(), ::tolower);
-
-        edgesFile << "/edges_" << subDir << ".txt";
-        nodesFile << "/nodes_x_y_" << subDir << ".txt";
-    }
-
-    ifstream nodes, edges;
-
-    nodes.open(nodesFile.str());
-    int i = 0;
-    if (nodes.is_open()) {
-        getline(nodes, firstLine);
-        while(i < stoi(firstLine)){
-            string node;
-            unsigned long id;
-            double x, y;
-
-            getline(nodes, node, ',');
-            ss.clear();
-            ss.str(node.substr(1,node.length() - 1));
-            ss >> id;
-
-            getline(nodes, node, ',');
-            ss.clear();
-            ss.str(node);
-            ss >> x;
-
-            getline(nodes, node);
-            ss.clear();
-            ss.str(node.substr(0,node.length() - 1));
-            ss >> y;
-
-            g.addVertex(Coordinates(id,x, y));
-            gv->addNode(id,x,y);
-            gv->setVertexLabel(id, to_string(id));
-
-            i++;
-        }
-    }
-    nodes.close();
-
-    i = 0;
-    edges.open(edgesFile.str());
-
-    if (edges.is_open()) {
-        getline(edges, firstLine);
-        while(i < stoi(firstLine)){
-            string edge;
-            unsigned long origId, destId;
-
-            getline(edges, edge, ',');
-            ss.clear();
-            ss.str(edge.substr(1,edge.length() - 1));
-            ss >> origId;
-
-            getline(edges, edge);
-            ss.clear();
-            ss.str(edge.substr(0,edge.length() - 1));
-            ss >> destId;
-
-            Coordinates origCoords(origId);
-            Coordinates destCoords(destId);
-
-            Vertex<Coordinates> * v1 = g.findVertex(origCoords);
-            Vertex<Coordinates> * v2 = g.findVertex(destCoords);
-
-            double dist;
-
-            if (euclidean)
-                dist = euclideanDistance(v1->getInfo().getLatitude(),v1->getInfo().getLongitude(),v2->getInfo().getLatitude(),v2->getInfo().getLongitude());
-            else
-                dist = haversineDistance(v1->getInfo().getLatitude(), v1->getInfo().getLongitude(), v2->getInfo().getLatitude(), v2->getInfo().getLongitude());
-
-            gv->addEdge(i, origId, destId, EdgeType::DIRECTED);
-            gv->setEdgeLabel(i,"Dist: " + to_string(dist));
-            //gv->setEdgeWeight(i,dist)
-            i++;
-        }
-    }
-    edges.close();
-}
-
-void viewDijkstraShortestPath(GraphViewer *gv, Graph<Coordinates> & graph, Coordinates orig, const Coordinates & dest){
-    graph.dijkstraShortestPath(orig);
-    vector<Coordinates> path = graph.getPathTo(dest);
+void viewDijkstraShortestPath(const Graph<Coordinates> & graph, const vector<Coordinates> & path){
+    // Create Graph Viewer
+    GraphViewer *gv = new GraphViewer(700, 700, false);
+    graphViewerProperties(gv);
 
     Vertex<Coordinates> * v;
     for(unsigned int i = 0; i < path.size()-1; i++) {
@@ -236,19 +163,20 @@ void viewDijkstraShortestPath(GraphViewer *gv, Graph<Coordinates> & graph, Coord
             gv->addEdge(i,path[i-1].getId(),path[i].getId(),EdgeType::DIRECTED);
         }
     }
+
+    gv->rearrange();
 }
 
-void viewFloydWarshallShortestPath(GraphViewer *gv, Graph<Coordinates> & graph, const Coordinates & orig, const Coordinates & dest){
+void viewFloydWarshallShortestPath(const Graph<Coordinates> & graph, const vector<Coordinates> & path){
     double dist = 0;
-    double ** W;
-
-    graph.floydWarshallShortestPath();
-    vector<Coordinates> path = graph.getfloydWarshallPath(orig, dest);
-    W = graph.getDistancesMatrix();
-
+    double ** W = graph.getDistancesMatrix();
     int origIdx, destIdx;
-    for(unsigned int i = 0; i < path.size(); i++) {
 
+    // Create Graph Viewer
+    GraphViewer *gv = new GraphViewer(700, 700, false);
+    graphViewerProperties(gv);
+
+    for(unsigned int i = 0; i < path.size(); i++) {
         gv->addNode(path[i].getId(), path[i].getLatitude(), path[i].getLongitude());
 
         if(i == 0){
@@ -267,10 +195,16 @@ void viewFloydWarshallShortestPath(GraphViewer *gv, Graph<Coordinates> & graph, 
             gv->addEdge(i,path[i-1].getId(),path[i].getId(),EdgeType::DIRECTED);
         }
     }
+
+    gv->rearrange();
 }
 
 void graphViewerProperties(GraphViewer * gv){
     gv->createWindow(700, 700);
     gv->defineVertexColor("blue");
     gv->defineEdgeColor("black");
+}
+
+void drawCompleteGraph(GraphViewer * gv,const Graph<Coordinates> & graph){
+    
 }

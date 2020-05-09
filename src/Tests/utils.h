@@ -12,7 +12,6 @@
 using namespace std;
 
 class Hour {
-
     int hour;
     int minute;
 
@@ -80,13 +79,14 @@ public:
 double euclideanDistance(double x1, double y1, double x2, double y2);
 double haversineDistance(double lat1, double long1, double lat2, double long2);
 
-Graph<Coordinates> loadGraph(string folder, string subFolder, bool euclidean);
-void viewFileGraph(GraphViewer *gv, string dir, string subDir, bool euclidean);
+Graph<Coordinates> loadGraph(string folder, string subFolder, bool euclidean, bool preview = false);
 
-void viewDijkstraShortestPath(GraphViewer *gv, Graph<Coordinates> & graph, Coordinates orig, const Coordinates & dest);
+void viewDijkstraShortestPath(const Graph<Coordinates> & graph, const vector<Coordinates> &  path);
 
-void viewFloydWarshallShortestPath(GraphViewer *gv, Graph<Coordinates> & graph, const Coordinates & orig, const Coordinates & dest);
+void viewFloydWarshallShortestPath(const Graph<Coordinates> & graph, const vector<Coordinates> & path);
 
 void graphViewerProperties(GraphViewer * gv);
+
+void drawCompleteGraph(GraphViewer * gv,const Graph<Coordinates> & graph);
 
 #endif //CAL_T3G4_UTILS_H

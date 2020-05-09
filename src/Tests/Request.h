@@ -11,24 +11,26 @@
 #include "utils.h"
 using namespace std;
 
-template <class T>
 class Request {
     unsigned long id;
     Date request_date;
     Hour request_hour;
-    list<Vertex<T>> checkpoints;
+    vector<Vertex<Coordinates>*> checkpoints;
+    Vertex<Coordinates> * delivery_addr;
     int cargo;
 public:
-    Request(unsigned long id, const Date &requestDate, const Hour &requestHour, const list<Vertex<T>> &checkpoints,
-            int cargo);
+    Request(unsigned long id, const Date &requestDate, const Hour &requestHour, int cargo);
+    Request(unsigned long id, const Date &requestDate, const Hour &requestHour, vector<Vertex<Coordinates>*> checkpoints, Vertex<Coordinates>* delivery_addr, int cargo);
     unsigned long getId() const;
     void setId(unsigned long id);
     const Date &getRequestDate() const;
     void setRequestDate(const Date &requestDate);
     const Hour &getRequestHour() const;
     void setRequestHour(const Hour &requestHour);
-    const list<Vertex<T>> &getCheckpoints() const;
-    void setCheckpoints(const list<Vertex<T>> &checkpoints);
+    vector<Vertex<Coordinates>*> getCheckpoints() const;
+    Vertex<Coordinates> *getDeliveryAddr() const;
+    void setDeliveryAddr(Vertex<Coordinates> * delivery_addr);
+    void addCheckpoint(Vertex<Coordinates> * checkpoint);
     int getCargo() const;
     void setCargo(int cargo);
 };

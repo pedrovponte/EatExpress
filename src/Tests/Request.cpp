@@ -6,58 +6,68 @@
 
 using namespace std;
 
-template<class T>
-Request<T>::Request(unsigned long id, const Date &requestDate, const Hour &requestHour,
-                    const list<Vertex<T>> &checkpoints, int cargo):id(id), request_date(requestDate),
-                                                                   request_hour(requestHour), checkpoints(checkpoints),
-                                                                   cargo(cargo) {}
+Request::Request(unsigned long id, const Date &requestDate, const Hour &requestHour, int cargo): id(id), request_date(requestDate),request_hour(requestHour), cargo(cargo) {}
 
-template<class T>
-unsigned long Request<T>::getId() const {
+Request::Request(unsigned long id, const Date &requestDate, const Hour &requestHour,vector<Vertex<Coordinates>*> checkpoints, Vertex<Coordinates>* delivery_addr,
+        int cargo): Request(id,requestDate,requestHour,cargo){
+        this->checkpoints = checkpoints;
+        this->delivery_addr = delivery_addr;
+}
+
+unsigned long Request::getId() const {
     return id;
 }
 
-template<class T>
-void Request<T>::setId(unsigned long id) {
+
+void Request::setId(unsigned long id) {
     Request::id = id;
 }
 
-template<class T>
-const Date &Request<T>::getRequestDate() const {
+
+const Date &Request::getRequestDate() const {
     return request_date;
 }
 
-template<class T>
-void Request<T>::setRequestDate(const Date &requestDate) {
+
+void Request::setRequestDate(const Date &requestDate) {
     request_date = requestDate;
 }
 
-template<class T>
-const Hour &Request<T>::getRequestHour() const {
+
+const Hour &Request::getRequestHour() const {
     return request_hour;
 }
 
-template<class T>
-void Request<T>::setRequestHour(const Hour &requestHour) {
+
+void Request::setRequestHour(const Hour &requestHour) {
     request_hour = requestHour;
 }
 
-template<class T>
-const list<Vertex<T>> &Request<T>::getCheckpoints() const {
+
+vector<Vertex<Coordinates>*> Request::getCheckpoints() const {
     return checkpoints;
 }
 
-template<class T>
-void Request<T>::setCheckpoints(const list<Vertex<T>> &checkpoints) {
-    Request::checkpoints = checkpoints;
+
+void Request::addCheckpoint(Vertex<Coordinates> * checkpoint) {
+    checkpoints.push_back(checkpoint);
 }
 
-template<class T>
-int Request<T>::getCargo() const {
+
+int Request::getCargo() const {
     return cargo;
 }
 
-template<class T>
-void Request<T>::setCargo(int cargo) {
+
+void Request::setCargo(int cargo) {
     Request::cargo = cargo;
+}
+
+
+Vertex<Coordinates> *Request::getDeliveryAddr() const {
+    return delivery_addr;
+}
+
+void Request::setDeliveryAddr(Vertex<Coordinates> * delivery_addr){
+   this->delivery_addr = delivery_addr;
 }

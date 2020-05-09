@@ -15,17 +15,15 @@ using namespace std;
 template <class T>
 class Vertex {
     T info;                // contents
+    char type;             // r for restaurant, a for address, ' ' for others (for now)
     vector<Edge<T> > adj;  // outgoing edges
     bool visited;          // auxiliary field
     double dist = 0;
     Vertex<T> *path = nullptr;
     int queueIndex = 0; 		// required by MutablePriorityQueue
-
     void addEdge(Vertex<T> *dest, double w);
-
-
 public:
-    Vertex(T in);
+    Vertex(T in, char type);
     bool operator<(Vertex<T> & vertex) const; // // required by MutablePriorityQueue
     T getInfo() const;
     double getDist() const;
@@ -36,7 +34,7 @@ public:
 
 
 template <class T>
-Vertex<T>::Vertex(T in): info(in) {}
+Vertex<T>::Vertex(T in, char type): info(in), type(type){}
 
 /*
  * Auxiliary function to add an outgoing edge to a vertex (this),

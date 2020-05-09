@@ -27,7 +27,7 @@ class Graph {
 	int **P = nullptr;   // path
 public:
 	Vertex<T> *findVertex(const T &in) const;
-	bool addVertex(const T &in);
+	bool addVertex(const T &in, char type = ' ');
 	bool addEdge(const T &sourc, const T &dest, double w);
 	int getNumVertex() const;
 	vector<Vertex<T> *> getVertexSet() const;
@@ -41,7 +41,7 @@ public:
 	// All pairs shortest Path
 	void floydWarshallShortestPath();
 	vector<T> getfloydWarshallPath(const T &origin, const T &dest) const;
-    double ** getDistancesMatrix();
+    double ** getDistancesMatrix() const;
 	~Graph();
 
     bool addBidirectionalEdge(const T &sourc, const T &dest, double w);
@@ -85,10 +85,10 @@ int Graph<T>::findVertexIdx(const T &in) const {
  *  Returns true if successful, and false if a vertex with that content already exists.
  */
 template <class T>
-bool Graph<T>::addVertex(const T &in) {
+bool Graph<T>::addVertex(const T &in, char type) {
 	if (findVertex(in) != nullptr)
 		return false;
-	vertexSet.push_back(new Vertex<T>(in));
+	vertexSet.push_back(new Vertex<T>(in,type));
 	return true;
 }
 
@@ -256,7 +256,7 @@ vector<T> Graph<T>::getfloydWarshallPath(const T &orig, const T &dest) const{
 }
 
 template<class T>
-double ** Graph<T>::getDistancesMatrix(){
+double ** Graph<T>::getDistancesMatrix() const{
     return W;
 }
 
