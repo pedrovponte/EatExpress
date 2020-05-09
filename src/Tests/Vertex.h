@@ -5,8 +5,12 @@
 #ifndef CAL_T3G4_VERTEX_H
 #define CAL_T3G4_VERTEX_H
 
+#include <vector>
+#include "MutablePriorityQueue.h"
 #include "Edge.h"
 #include "Coordinates.h"
+
+using namespace std;
 
 template <class T>
 class Vertex {
