@@ -34,7 +34,7 @@ def dijkstra_plot():
     x8 = [dijkstra8x8['us'][i] for i in range(0,100,10)]
     x16 = [dijkstra16x16['us'][i] for i in range(0,100,10)]
 
-    ind = [i for i in range(0,100,10)]
+    ind = [i + 10 for i in range(0,100,10)]
     width = 2
     fig = plt.figure()
     ax = fig.add_subplot(111)
@@ -67,7 +67,7 @@ def floyd_plot():
     x8 = [floyd8x8['us'][i] for i in range(0,100,10)]
     x16 = [floyd16x16['us'][i] for i in range(0,100,10)]
 
-    ind = [i for i in range(0,100,10)]
+    ind = [i + 10 for i in range(0,100,10)]
     width = 2
     fig = plt.figure()
     ax = fig.add_subplot(111)
@@ -92,3 +92,48 @@ grid_plot("16x16")
 grid_plot("16x16",20,2500, "_head",2,'o')
 dijkstra_plot()
 floyd_plot()
+
+def table():
+
+    graph = "4x4"
+    dijkstra4x4 = pd.read_csv("../logs/phase1/dijkstra_ph1_" + str(graph) +  ".csv")
+    
+    graph = "8x8"
+    dijkstra8x8 = pd.read_csv("../logs/phase1/dijkstra_ph1_" + str(graph) +  ".csv")
+
+    graph = "16x16"
+    dijkstra16x16 = pd.read_csv("../logs/phase1/dijkstra_ph1_" + str(graph) +  ".csv")
+    
+    graph = "4x4"
+    floyd4x4 = pd.read_csv("../logs/phase1/floyd_ph1_" + str(graph) +  ".csv")
+    
+    graph = "8x8"
+    floyd8x8 = pd.read_csv("../logs/phase1/floyd_ph1_" + str(graph) +  ".csv")
+
+    graph = "16x16"
+    floyd16x16 = pd.read_csv("../logs/phase1/floyd_ph1_" + str(graph) +  ".csv")
+
+    table = []
+    for i in range(0,100,5):
+        temp = []
+        temp.append(i + 5)
+        temp.append(dijkstra4x4['us'][i])
+        temp.append(dijkstra8x8['us'][i])
+        temp.append(dijkstra16x16['us'][i])
+        temp.append(floyd4x4['us'][i])
+        temp.append(floyd8x8['us'][i])
+        temp.append(floyd16x16['us'][i])
+        table.append(temp)
+
+    plt.close()
+
+    fig, axs = plt.subplots(1,1)
+    collabel=("Número de Pedidos",
+        "Dijkstra 4x4", "Dijkstra 8x8", "Dijkstra 16x16",
+        "Floyd 4x4","Floyd 8x8","Floyd 16x16")
+    axs.axis('tight')
+    axs.axis('off')
+    the_table = axs.table(cellText=table,colLabels=collabel,loc='center')
+    plt.savefig("../logs/phase1/table.png", dpi=300)
+
+table()
