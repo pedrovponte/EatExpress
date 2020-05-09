@@ -3,7 +3,9 @@ project(CAL_T3G4)
 
 set(CMAKE_CXX_STANDARD 14)
 
-link_libraries(ws2_32 wsock32)
+# The line below is necessary if you are under Windows only
+# Comment the line below if you are under Linux or Mac OS
+# link_libraries(ws2_32 wsock32)
 
 add_subdirectory(lib/googletest-master)
 include_directories(lib/googletest-master/googletest/include)
