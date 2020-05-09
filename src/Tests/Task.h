@@ -16,6 +16,7 @@ class Task {
 public:
     Task(const Employee &employee, const Request &request);
     void setFloydWarshallPath(Graph<Coordinates> & graph);
+    void setDijkstraPath(Graph<Coordinates> & graph);
     const vector<Coordinates> getPath() const;
 };
 

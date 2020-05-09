@@ -154,15 +154,24 @@ void viewDijkstraShortestPath(const Graph<Coordinates> & graph, const vector<Coo
     GraphViewer *gv = new GraphViewer(700, 700, false);
     graphViewerProperties(gv);
 
+    drawGraph(gv,graph);
+
     Vertex<Coordinates> * v;
+    cout << path.size() << endl;
     for(unsigned int i = 0; i < path.size()-1; i++) {
-        gv->addNode(path[i].getId(), path[i].getLatitude(), path[i].getLongitude());
+        gv->clearVertexColor(path[i].getId());
+        gv->setVertexColor(path[i].getId(),"red");
+
         v = graph.findVertex(path[i].getId());
 
-        gv->setVertexLabel(path[i].getId(),"Id: " + to_string(path[i].getId())+ "  Dist: " + to_string(v->getDist()));
+        gv->setVertexLabel(path[i].getId(),"Id: " + to_string(path[i].getId()));
 
         if(i != 0){
-            gv->addEdge(i,path[i-1].getId(),path[i].getId(),EdgeType::DIRECTED);
+            int edgeId = graph.getEdge(path[i-1].getId(),path[i].getId()).getId();
+            gv->clearEdgeColor(edgeId);
+            gv->clearEdgeLabel(edgeId);
+            gv->setEdgeColor(edgeId,"red");
+            gv->setEdgeThickness(edgeId,3);
         }
     }
 
@@ -178,7 +187,7 @@ void viewFloydWarshallShortestPath(const Graph<Coordinates> & graph, const vecto
     graphViewerProperties(gv);
 
     drawGraph(gv,graph);
-    cout << path.size()<<endl;
+
     for(unsigned int i = 0; i < path.size(); i++) {
         gv->clearVertexColor(path[i].getId());
         gv->setVertexColor(path[i].getId(),"red");

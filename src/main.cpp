@@ -33,13 +33,22 @@ int main(int argc, char* argv[]) {
     // Give the request to an employee
     Employee employee(0,Coordinates(10),40,'c',true);
 
-    // Calculate shortest path using FloydWarshall
     Task task(employee,request);
+
+    // Calculate shortest path using FloydWarshall
     task.setFloydWarshallPath(graph);
     vector<Coordinates> path = task.getPath();
 
     // Show shortest path calculated with FloydWarshall
     viewFloydWarshallShortestPath(graph,path);
+
+    // Calculate shortest path using Dijkstra
+    task.setDijkstraPath(graph);
+    path.clear();
+    path = task.getPath();
+
+    // Show shortest path calculated with Dijkstra
+    viewDijkstraShortestPath(graph,path);
 
     //getchar();
     return RUN_ALL_TESTS();

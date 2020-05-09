@@ -16,6 +16,19 @@ void Task::setFloydWarshallPath(Graph<Coordinates> & graph){
     path.insert(path.end(),pathToDest.begin()+1, pathToDest.end());
 }
 
+void Task::setDijkstraPath(Graph<Coordinates> & graph){
+    Coordinates orig = employee.getCoordinates();
+    Coordinates checkpoint = request.getCheckpoints()[0]->getInfo();
+    Coordinates dest = request.getDeliveryAddr()->getInfo();
+
+    graph.dijkstraShortestPath(orig);
+    path = graph.getPathTo(checkpoint);
+
+    graph.dijkstraShortestPath(checkpoint);
+    vector<Coordinates> pathToDest = graph.getPathTo(dest);
+    path.insert(path.end(),pathToDest.begin()+1, pathToDest.end());
+}
+
 const vector<Coordinates> Task::getPath() const{
     return path;
 }
