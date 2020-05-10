@@ -56,29 +56,46 @@ vector<Task*> distributeRequestsByCloseness_FloydWarshall(Graph<Coordinates> & g
     double ** W = graph.getDistancesMatrix();
     int origIdx, destIdx;
     Employee employee;
-    double dist = INF;
+    double dist;
     vector<Task*> tasks;
 
     vector<Employee>::iterator it;
-    vector<Employee>::iterator del;
-    while(!requests.empty() && !employees.empty()){
-        Request request = requests.front();
-        requests.pop();
+    vector<Employee>::iterator choice;
+    // While there are still requests to distribute
+    while(!requests.empty()){
+        // Get first request in queue
+        // Find the Restaurant in the graph
+        destIdx = graph.findVertexIdx(requests.front().getCheckpoints()[0]->getInfo());
 
-        destIdx = graph.findVertexIdx(request.getCheckpoints()[0]->getInfo());
+        employee = Employee(); // Null employee
+        dist = INF;
 
+        // Find the nearest employee available (ready = true)
         for(it = employees.begin(); it != employees.end(); it ++){
+            // Find employee's location
             origIdx = graph.findVertexIdx(it->getCoordinates());
 
-            if(dist > W[origIdx][destIdx]){
-                employee = Employee(*it);
-                del = it;
-                dist = W[origIdx][destIdx];
+            // Employee is ready
+            if(it->isReady()){
+                // Check if the employee is closer to the checkpoint than the previous one
+                if(dist > W[origIdx][destIdx]){
+                    // Save the employee that is closer to the checkpoint
+                    employee = Employee(*it);
+                    choice = it;
+                    dist = W[origIdx][destIdx];
+                }
             }
         }
-        employees.erase(del);
-        tasks.push_back(new Task(employee,request));
-        dist = INF;
+
+        // No more employees available
+        if(employee.getType() == INVALID){
+            break;
+        }
+
+        // An employee was found to fulfill the request
+        choice->setReady(false); // Make employee unavailable for other requests
+        tasks.push_back(new Task(employee,requests.front())); // Create new task for the request
+        requests.pop();
     }
 
     return tasks;

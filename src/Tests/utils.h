@@ -21,6 +21,11 @@ public:
 
     Hour(int hour = -1, int minute = -1) : hour(hour), minute(minute) {};
 
+    Hour(const Hour & h){
+        this->minute = h.getMinute();
+        this->hour = h.getHour();
+    }
+
     int getHour() const {
         return hour;
     }
@@ -48,6 +53,12 @@ class Date {
 
 public:
     Date(int year = -1, int month = -1, int day = -1) : year(year), month(month), day(day) {};
+
+    Date(const Date & d){
+        this->year = d.getYear();
+        this->day = d.getDay();
+        this->month = d.getMonth();
+    }
 
     int getYear() const {
         return year;

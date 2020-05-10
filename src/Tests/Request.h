@@ -22,6 +22,7 @@ class Request {
 public:
     Request(unsigned long id, const Date &requestDate, const Hour &requestHour, int cargo);
     Request(unsigned long id, const Date &requestDate, const Hour &requestHour, vector<Vertex<Coordinates>*> checkpoints, Vertex<Coordinates>* delivery_addr, int cargo);
+    Request(const Request & request);
     unsigned long getId() const;
     void setId(unsigned long id);
     const Date &getRequestDate() const;

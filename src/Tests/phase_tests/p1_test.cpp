@@ -21,7 +21,7 @@ TEST(CAL_T3G4, test_dijkstra_time){
 
     Graph<Coordinates> graph = loadGraph("GridGraphs", "4x4", true);
 
-    Employee employee(0,Coordinates(10),40,'c',true);
+    Employee employee(0,Coordinates(10),40,CAR,true);
 
     // srand(time(NULL));
 
@@ -70,7 +70,7 @@ TEST(CAL_T3G4, test_floyd_wharshall_time){
 
     Graph<Coordinates> graph = loadGraph("GridGraphs", "4x4", true);
 
-    Employee employee(0,Coordinates(10),40,'c',true);
+    Employee employee(0,Coordinates(10),40,CAR,true);
 
     // srand(time(NULL));
 

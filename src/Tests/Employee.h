@@ -8,24 +8,26 @@
 #include "Coordinates.h"
 using namespace std;
 
+enum vehicleType{CAR, BIKE, FOOT, INVALID};
+
 class Employee {
-    unsigned long id;
+    int id;
     Coordinates coordinates;
     int maxCargo;
-    char type;
+    vehicleType type;
     bool ready;
 public:
     Employee();
     Employee(const Employee & e);
-    Employee(unsigned long id, const Coordinates &coordinates, int maxCargo, char type, bool ready);
-    unsigned long getId() const;
-    void setId(unsigned long id);
+    Employee(int id, const Coordinates &coordinates, int maxCargo, vehicleType type, bool ready);
+    int getId() const;
+    void setId(int id);
     const Coordinates &getCoordinates() const;
     void setCoordinates(const Coordinates &coordinates);
     int getMaxCargo() const;
     void setMaxCargo(int maxCargo);
-    char getType() const;
-    void setType(char type);
+    vehicleType getType() const;
+    void setType(vehicleType type);
     bool isReady() const;
     void setReady(bool ready);
 

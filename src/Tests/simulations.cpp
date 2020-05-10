@@ -29,7 +29,7 @@ void simulateFloydWarshallPhase1(){
     Request request(0, Date(2020,10,10), Hour(22,0),restaurants,delivery_addr,20);
 
     // Give the request to an employee
-    Employee employee(0,Coordinates(10),40,'c',true);
+    Employee employee(0,Coordinates(10),40,CAR,true);
 
     Task task(employee,request);
 
@@ -58,7 +58,7 @@ void simulateDijkstraPhase1(){
     Request request(0, Date(2020,10,10), Hour(22,0),restaurants,delivery_addr,20);
 
     // Give the request to an employee
-    Employee employee(0,Coordinates(10),40,'c',true);
+    Employee employee(0,Coordinates(10),40,CAR,true);
 
     Task task(employee,request);
 
@@ -74,11 +74,11 @@ void simulateFloydWarshallPhase2(){
     Graph<Coordinates> graph = loadGraph("GridGraphs", "16x16", true);
 
     vector<Employee> employees;
-    Employee employee1(0,Coordinates(4),40,'c',true);
+    Employee employee1(0,Coordinates(4),40,CAR,true);
     employees.push_back(employee1);
-    Employee employee2(1,Coordinates(9),40,'c',true);
+    Employee employee2(1,Coordinates(9),40,CAR,true);
     employees.push_back(employee2);
-    Employee employee3(2,Coordinates(0),40,'c',true);
+    Employee employee3(2,Coordinates(0),40,CAR,true);
     employees.push_back(employee3);
 
     vector<Request> requests = getRandomRequests(graph,3);

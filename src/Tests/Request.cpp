@@ -14,6 +14,11 @@ Request::Request(unsigned long id, const Date &requestDate, const Hour &requestH
         this->delivery_addr = delivery_addr;
 }
 
+Request::Request(const Request & request): id(request.getId()), request_date(request.getRequestDate()), request_hour(request.getRequestHour()), cargo(request.getCargo()){
+    this->checkpoints = request.checkpoints;
+    this->delivery_addr = request.getDeliveryAddr();
+}
+
 unsigned long Request::getId() const {
     return id;
 }

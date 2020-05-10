@@ -6,18 +6,18 @@
 
 using namespace std;
 
-Employee::Employee(unsigned long id, const Coordinates &coordinates, int maxCargo, char type, bool ready)
+Employee::Employee(int id, const Coordinates &coordinates, int maxCargo, vehicleType type, bool ready)
     : id(id), coordinates(coordinates), maxCargo(maxCargo),type(type),ready(ready) {}
 
-Employee::Employee(): id(0), coordinates(0), maxCargo(0),type(' '),ready(false) {}
+Employee::Employee(): id(-1), coordinates(0), maxCargo(-1),type(INVALID),ready(false) {}
 
 Employee::Employee(const Employee &e): id(e.getId()), coordinates(e.getCoordinates()), maxCargo(e.getMaxCargo()),type(getType()),ready(e.isReady()) {}
 
-unsigned long Employee::getId() const {
+int Employee::getId() const {
     return id;
 }
 
-void Employee::setId(unsigned long id) {
+void Employee::setId(int id) {
     this->id = id;
 }
 
@@ -37,11 +37,11 @@ void Employee::setMaxCargo(int maxCargo) {
     this->maxCargo = maxCargo;
 }
 
-char Employee::getType() const {
+vehicleType Employee::getType() const {
     return type;
 }
 
-void Employee::setType(char type) {
+void Employee::setType(vehicleType type) {
     this->type = type;
 }
 
