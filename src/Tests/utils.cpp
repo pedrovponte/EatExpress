@@ -10,7 +10,6 @@
 #include <edgetype.h>
 #include "utils.h"
 #include "Request.h"
-#include "Task.h"
 
 using namespace std;
 

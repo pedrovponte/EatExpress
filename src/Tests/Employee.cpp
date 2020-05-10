@@ -53,6 +53,11 @@ void Employee::setReady(bool ready) {
     this->ready = ready;
 }
 
+bool Employee::operator==(const Employee &rhs) const {
+    return id == rhs.id && type == rhs.type;
+}
+
+
 std::ostream &operator<<(std::ostream &os, const Employee & employee) {
     os << "Employee: id = " << employee.getId() << "; actual coords id =  " << employee.getCoordinates()<<endl;
     return os;

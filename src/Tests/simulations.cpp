@@ -31,7 +31,7 @@ void simulateFloydWarshallPhase1(){
     // Give the request to an employee
     Employee employee(0,Coordinates(10),40,CAR,true);
 
-    Task task(employee,request);
+    Task task(&employee,request);
 
     // Calculate shortest path using FloydWarshall
     task.setFloydWarshallPath(graph);
@@ -60,7 +60,7 @@ void simulateDijkstraPhase1(){
     // Give the request to an employee
     Employee employee(0,Coordinates(10),40,CAR,true);
 
-    Task task(employee,request);
+    Task task(&employee,request);
 
     // Calculate shortest path using Dijkstra
     task.setDijkstraPath(graph);
@@ -80,8 +80,10 @@ void simulateFloydWarshallPhase2(){
     employees.push_back(employee2);
     Employee employee3(2,Coordinates(0),40,CAR,true);
     employees.push_back(employee3);
+    /*Employee employee4(3,Coordinates(8),40,CAR,true);
+    employees.push_back(employee4);*/
 
-    vector<Request> requests = getRandomRequests(graph,3);
+    vector<Request> requests = getRandomRequests(graph,5);
     queue<Request> requestsQueue;
     for(Request request : requests){
         requestsQueue.push(request);

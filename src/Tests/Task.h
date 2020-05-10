@@ -10,11 +10,11 @@
 #include "Request.h"
 
 class Task {
-    Employee employee;
+    Employee * employee;
     Request request;
     vector<Coordinates> path;
 public:
-    Task(const Employee &employee, const Request &request);
+    Task(Employee *employee, Request request);
     void setFloydWarshallPath(Graph<Coordinates> & graph);
     void setDijkstraPath(Graph<Coordinates> & graph);
     const vector<Coordinates> getPath() const;

@@ -33,6 +33,8 @@ public:
 
     friend std::ostream &operator<<(std::ostream &os, const Employee & employee);
 
+    bool operator==(const Employee &rhs) const;
+
 };
 
 #endif //CAL_T3G4_EMPLOYEE_H
