@@ -12,6 +12,12 @@ Coordinates::Coordinates(unsigned long id) : Coordinates(id,0, 0) {
 Coordinates::Coordinates(unsigned long id, double latitude, double longitude)
         : latitude(latitude), longitude(longitude), id(id) {}
 
+Coordinates::Coordinates(const Coordinates &c) {
+    id = c.getId();
+    latitude = c.getLatitude();
+    longitude = c.getLongitude();
+}
+
 double Coordinates::getLatitude() const  {
     return this->latitude;
 }

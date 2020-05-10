@@ -15,6 +15,8 @@ class Employee {
     char type;
     bool ready;
 public:
+    Employee();
+    Employee(const Employee & e);
     Employee(unsigned long id, const Coordinates &coordinates, int maxCargo, char type, bool ready);
     unsigned long getId() const;
     void setId(unsigned long id);

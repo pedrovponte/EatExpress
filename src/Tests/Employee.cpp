@@ -9,6 +9,10 @@ using namespace std;
 Employee::Employee(unsigned long id, const Coordinates &coordinates, int maxCargo, char type, bool ready)
     : id(id), coordinates(coordinates), maxCargo(maxCargo),type(type),ready(ready) {}
 
+Employee::Employee(): id(0), coordinates(0), maxCargo(0),type(' '),ready(false) {}
+
+Employee::Employee(const Employee &e): id(e.getId()), coordinates(e.getCoordinates()), maxCargo(e.getMaxCargo()),type(getType()),ready(e.isReady()) {}
+
 unsigned long Employee::getId() const {
     return id;
 }

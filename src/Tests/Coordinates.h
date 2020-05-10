@@ -17,6 +17,7 @@ class Coordinates {
 public:
     Coordinates(unsigned long id);
     Coordinates(unsigned long id, double latitude, double longitude);
+    Coordinates(const Coordinates & c);
     double getLatitude() const;
     double getLongitude() const ;
     unsigned long getId() const;

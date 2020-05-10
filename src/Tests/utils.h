@@ -11,6 +11,8 @@
 
 using namespace std;
 
+class Request;
+
 class Hour {
     int hour;
     int minute;
@@ -33,6 +35,10 @@ public:
 
     void setMinute(int minute) {
         Hour::minute = minute;
+    }
+
+    bool operator <(const Hour & h) const{
+        return this->hour < h.getHour() && this->minute < h.getMinute();
     }
 };
 
@@ -74,6 +80,15 @@ public:
 
         return 0;
     }
+
+    bool operator <(const Date & d) const{
+        if(year == d.getYear()){
+            if(month == d.getMonth())
+                return day < d.getDay();
+            return month < d.getMonth();
+        }
+        return year<d.getYear();
+    }
 };
 
 double euclideanDistance(double x1, double y1, double x2, double y2);
@@ -89,10 +104,10 @@ void graphViewerProperties(GraphViewer * gv);
 
 void drawGraph(GraphViewer *gv, const Graph<Coordinates> & graph);
 
-// Simulations First Phase
+vector<Vertex<Coordinates>*> getRestaurantsStub(Graph<Coordinates> &graph, int nr);
 
-void simulateFloydWarshallPhase1();
+vector<Vertex<Coordinates>*> getClientAddressesStub(Graph<Coordinates> &graph, int nr);
 
-void simulateDijkstraPhase1();
+vector<Request> getRandomRequests(Graph<Coordinates> &graph, int nr);
 
 #endif //CAL_T3G4_UTILS_H

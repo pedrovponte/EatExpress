@@ -34,6 +34,8 @@ double haversineDistance(double lat1, double long1, double lat2, double long2){
     return earthRad * c; // in metres
 }
 
+// Graph load and view functions
+
 Graph<Coordinates> loadGraph(string dir, string subDir, bool euclidean, bool preview){
 
     // Create Graph Viewer
@@ -255,66 +257,52 @@ void drawGraph(GraphViewer *gv, const Graph<Coordinates> & graph){
     }
 }
 
+// Stubs
+// Stubs
 
-// Simulations First Phase
-
-void simulateFloydWarshallPhase1(){
-    // User must choose the city and graph is loaded accordingly
-    // Preview city graph if user chooses to
-    Graph<Coordinates> graph = loadGraph("GridGraphs", "8x8", true);
-
-    // Pre-process distances using Floyd Warshall
-    graph.floydWarshallShortestPath();
-
-    // Get possible restaurants and let user choose
-    Vertex<Coordinates> * restaurant = graph.findVertex(Coordinates(20));
+vector<Vertex<Coordinates>*> getRestaurantsStub(Graph<Coordinates> &graph, int nr){
     vector<Vertex<Coordinates>*> restaurants;
-    restaurants.push_back(restaurant);
 
-    // Choose user's position or generate random position and request's dimension, date and hour
-    Vertex<Coordinates> * delivery_addr = graph.findVertex(Coordinates(42));
+    srand(nr);
 
-    // Build Request
-    Request request(0, Date(2020,10,10), Hour(22,0),restaurants,delivery_addr,20);
+    for (int i = 0; i < nr; ++i) {
+        int randV = rand() % graph.getNumVertex();
+        Vertex<Coordinates> * restaurant = graph.findVertex(Coordinates(randV));
+        restaurants.push_back(restaurant);
+    }
 
-    // Give the request to an employee
-    Employee employee(0,Coordinates(10),40,'c',true);
-
-    Task task(employee,request);
-
-    // Calculate shortest path using FloydWarshall
-    task.setFloydWarshallPath(graph);
-    vector<Coordinates> path = task.getPath();
-
-    // Show shortest path calculated with FloydWarshall
-    viewFloydWarshallShortestPath(graph,path);
+    return restaurants;
 }
 
-void simulateDijkstraPhase1(){
-    // User must choose the city and graph is loaded accordingly
-    // Preview city graph if user chooses to
-    Graph<Coordinates> graph = loadGraph("GridGraphs", "8x8", true);
+vector<Vertex<Coordinates>*> getClientAddressesStub(Graph<Coordinates> &graph, int nr){
+    vector<Vertex<Coordinates>*> delivery;
 
-    // Get possible restaurants and let user choose
-    Vertex<Coordinates> * restaurant = graph.findVertex(Coordinates(20));
-    vector<Vertex<Coordinates>*> restaurants;
-    restaurants.push_back(restaurant);
+    srand(nr * 2);
 
-    // Choose user's position or generate random position and request's dimension, date and hour
-    Vertex<Coordinates> * delivery_addr = graph.findVertex(Coordinates(42));
+    for (int i = 0; i < nr; ++i) {
+        int randV = rand() % graph.getNumVertex();
+        Vertex<Coordinates> * address = graph.findVertex(Coordinates(randV));
+        delivery.push_back(address);
+    }
 
-    // Build Request
-    Request request(0, Date(2020,10,10), Hour(22,0),restaurants,delivery_addr,20);
+    return delivery;
+}
 
-    // Give the request to an employee
-    Employee employee(0,Coordinates(10),40,'c',true);
+vector<Request> getRandomRequests(Graph<Coordinates> &graph, int nr){
 
-    Task task(employee,request);
+    vector<Vertex<Coordinates> *> restaurants = getRestaurantsStub(graph, nr);
+    vector<Vertex<Coordinates> *> clients = getClientAddressesStub(graph, nr);
 
-    // Calculate shortest path using Dijkstra
-    task.setDijkstraPath(graph);
-    vector<Coordinates> path = task.getPath();
+    vector<Request> requests;
+    Date date = Date(2020,5,9);
+    Hour hour = Hour(16,44);
+    for (int i = 0; i < nr; ++i) {
+        hour.setMinute(hour.getMinute()+i);
 
-    // Show shortest path calculated with Dijkstra
-    viewDijkstraShortestPath(graph,path);
+        vector<Vertex<Coordinates> *> checkpoints;
+        checkpoints.push_back(restaurants.at(i));
+        requests.push_back(Request(i,date,hour,checkpoints, clients.at(i),i+1));
+    }
+
+    return requests;
 }

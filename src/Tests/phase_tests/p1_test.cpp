@@ -15,53 +15,6 @@
 using namespace std;
 using testing::Eq;
 
-vector<Vertex<Coordinates>*> getRestaurantsStub(Graph<Coordinates> &graph, int nr){
-    vector<Vertex<Coordinates>*> restaurants;
-
-    srand(nr);
-
-    for (int i = 0; i < nr; ++i) {
-        int randV = rand() % graph.getNumVertex();
-        Vertex<Coordinates> * restaurant = graph.findVertex(Coordinates(randV));
-        restaurants.push_back(restaurant);
-    }
-
-    return restaurants;
-}
-
-vector<Vertex<Coordinates>*> getClientAddressesStub(Graph<Coordinates> &graph, int nr){
-    vector<Vertex<Coordinates>*> delivery;
-
-    srand(nr * 2);
-
-    for (int i = 0; i < nr; ++i) {
-        int randV = rand() % graph.getNumVertex();
-        Vertex<Coordinates> * address = graph.findVertex(Coordinates(randV));
-        delivery.push_back(address);
-    }
-
-    return delivery;
-}
-
-vector<Request> getRandomRequests(Graph<Coordinates> &graph, int nr){
-
-    vector<Vertex<Coordinates> *> restaurants = getRestaurantsStub(graph, nr);
-    vector<Vertex<Coordinates> *> clients = getClientAddressesStub(graph, nr);
-
-    vector<Request> requests;
-    Date date = Date(2020,5,9);
-    Hour hour = Hour(16,44);
-    for (int i = 0; i < nr; ++i) {
-        hour.setMinute(hour.getMinute()+i);
-
-        vector<Vertex<Coordinates> *> checkpoints;
-        checkpoints.push_back(restaurants.at(i));
-        requests.push_back(Request(i,date,hour,checkpoints, clients.at(i),i+1));
-    }
-
-    return requests;
-}
-
 TEST(CAL_T3G4, test_dijkstra_time){
 
     vector<vector<int>> output;

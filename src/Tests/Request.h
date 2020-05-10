@@ -9,6 +9,7 @@
 #include <list>
 #include "Vertex.h"
 #include "utils.h"
+
 using namespace std;
 
 class Request {
@@ -33,6 +34,7 @@ public:
     void addCheckpoint(Vertex<Coordinates> * checkpoint);
     int getCargo() const;
     void setCargo(int cargo);
+    bool operator<(Request & request) const;
 };
 
 #endif //CAL_T3G4_REQUEST_H

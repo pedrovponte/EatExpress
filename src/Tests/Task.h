@@ -20,5 +20,7 @@ public:
     const vector<Coordinates> getPath() const;
 };
 
+vector<Task*> distributeRequestsByCloseness_FloydWarshall(Graph<Coordinates> & graph, queue<Request> & requests, vector<Employee> & employees);
+
 
 #endif //CAL_T3G4_TASK_H

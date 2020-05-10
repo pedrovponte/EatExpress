@@ -36,3 +36,36 @@ void Task::setDijkstraPath(Graph<Coordinates> & graph){
 const vector<Coordinates> Task::getPath() const{
     return path;
 }
+
+vector<Task*> distributeRequestsByCloseness_FloydWarshall(Graph<Coordinates> & graph, queue<Request> & requests, vector<Employee> & employees){
+    graph.floydWarshallShortestPath();
+
+    double ** W = graph.getDistancesMatrix();
+    int origIdx, destIdx;
+    Employee employee;
+    double dist = INF;
+    vector<Task*> tasks;
+
+    vector<Employee>::iterator it;
+    vector<Employee>::iterator del;
+    while(!requests.empty() && !employees.empty()){
+        Request request = requests.front();
+        requests.pop();
+
+        destIdx = graph.findVertexIdx(request.getCheckpoints()[0]->getInfo());
+
+        for(it = employees.begin(); it != employees.end(); it ++){
+            origIdx = graph.findVertexIdx(it->getCoordinates());
+
+            if(dist > W[origIdx][destIdx]){
+                employee = Employee(*it);
+                del = it;
+                dist = W[origIdx][destIdx];
+            }
+        }
+        employees.erase(del);
+        tasks.push_back(new Task(employee,request));
+    }
+
+    return tasks;
+}

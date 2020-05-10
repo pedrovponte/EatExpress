@@ -71,3 +71,7 @@ Vertex<Coordinates> *Request::getDeliveryAddr() const {
 void Request::setDeliveryAddr(Vertex<Coordinates> * delivery_addr){
    this->delivery_addr = delivery_addr;
 }
+
+bool Request::operator<(Request & request) const {
+    return this->getRequestDate() < request.getRequestDate() && this->getRequestHour() < request.getRequestHour();
+}
