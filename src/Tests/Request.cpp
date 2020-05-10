@@ -75,3 +75,15 @@ void Request::setDeliveryAddr(Vertex<Coordinates> * delivery_addr){
 bool Request::operator<(Request & request) const {
     return this->getRequestDate() < request.getRequestDate() && this->getRequestHour() < request.getRequestHour();
 }
+
+std::ostream &operator<<(std::ostream &os, const Request & request) {
+    os << "Request: id = " << request.getId() << " Restaurants  id: ";
+
+    for(int i = 0; i < request.getCheckpoints().size();i++){
+        os << request.getCheckpoints()[i]->getInfo() << " ";
+    }
+
+    os << "; Delivery address = " << request.getDeliveryAddr()->getInfo() << endl;
+
+    return os;
+}

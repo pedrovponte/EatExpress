@@ -35,6 +35,8 @@ public:
     int getCargo() const;
     void setCargo(int cargo);
     bool operator<(Request & request) const;
+
+    friend std::ostream &operator<<(std::ostream &os, const Request &request);
 };
 
 #endif //CAL_T3G4_REQUEST_H

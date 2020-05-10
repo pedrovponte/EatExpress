@@ -52,3 +52,8 @@ bool Employee::isReady() const {
 void Employee::setReady(bool ready) {
     this->ready = ready;
 }
+
+std::ostream &operator<<(std::ostream &os, const Employee & employee) {
+    os << "Employee: id = " << employee.getId() << "; actual coords id =  " << employee.getCoordinates()<<endl;
+    return os;
+}

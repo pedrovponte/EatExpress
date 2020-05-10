@@ -37,6 +37,19 @@ const vector<Coordinates> Task::getPath() const{
     return path;
 }
 
+std::ostream &operator<<(std::ostream &os, const Task &task) {
+    os << task.employee;
+    os << task.request;
+
+    cout << "Path: ";
+
+    for(unsigned int i = 0; i < task.path.size(); i++)
+        os << task.path[i] << " ";
+    os << endl;
+
+    return os;
+}
+
 vector<Task*> distributeRequestsByCloseness_FloydWarshall(Graph<Coordinates> & graph, queue<Request> & requests, vector<Employee> & employees){
     graph.floydWarshallShortestPath();
 
@@ -65,6 +78,7 @@ vector<Task*> distributeRequestsByCloseness_FloydWarshall(Graph<Coordinates> & g
         }
         employees.erase(del);
         tasks.push_back(new Task(employee,request));
+        dist = INF;
     }
 
     return tasks;

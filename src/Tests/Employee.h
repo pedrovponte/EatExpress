@@ -29,6 +29,8 @@ public:
     bool isReady() const;
     void setReady(bool ready);
 
+    friend std::ostream &operator<<(std::ostream &os, const Employee & employee);
+
 };
 
 #endif //CAL_T3G4_EMPLOYEE_H

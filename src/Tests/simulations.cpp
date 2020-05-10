@@ -2,7 +2,6 @@
 // Created by diana on 10/05/20.
 //
 
-#include <sstream>
 #include "simulations.h"
 #include "Employee.h"
 #include "Request.h"
@@ -89,15 +88,11 @@ void simulateFloydWarshallPhase2(){
     }
 
     vector<Task*> tasks = distributeRequestsByCloseness_FloydWarshall(graph,requestsQueue,employees);
-    stringstream ss;
+
     for(int i = 0; i < tasks.size(); i++){
         tasks[i]->setFloydWarshallPath(graph);
-        vector<Coordinates> path = tasks[i]->getPath();
 
-        stringstream ss;
-        for(unsigned int i = 0; i < path.size(); i++)
-            ss << path[i] << " ";
-        cout << ss.str()<< endl;
+        cout << *tasks[i] << endl;
 
         //viewFloydWarshallShortestPath(graph,tasks[i]->getPath());
     }

@@ -18,6 +18,8 @@ public:
     void setFloydWarshallPath(Graph<Coordinates> & graph);
     void setDijkstraPath(Graph<Coordinates> & graph);
     const vector<Coordinates> getPath() const;
+
+    friend std::ostream &operator<<(std::ostream &os, const Task &task);
 };
 
 vector<Task*> distributeRequestsByCloseness_FloydWarshall(Graph<Coordinates> & graph, queue<Request> & requests, vector<Employee> & employees);
