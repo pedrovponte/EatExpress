@@ -16,6 +16,7 @@ void Task::setFloydWarshallPath(Graph<Coordinates> & graph){
     path.insert(path.end(),pathToDest.begin()+1, pathToDest.end());
 
     employee->setCoordinates(path.at(path.size()-1));
+    employee->setReady(true);
 }
 
 void Task::setDijkstraPath(Graph<Coordinates> & graph){
@@ -39,10 +40,12 @@ const vector<Coordinates> Task::getPath() const{
 
 std::ostream &operator<<(std::ostream &os, const Task &task) {
     os << *task.employee;
+    if(!task.path.empty())
+        os << "Initial Employee's Position: " << task.path[0] << endl;
+
     os << task.request;
 
-    cout << "Path: ";
-
+    os  <<  "PATH: ";
     for(unsigned int i = 0; i < task.path.size(); i++)
         os << task.path[i] << " ";
     os << endl;

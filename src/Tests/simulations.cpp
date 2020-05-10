@@ -89,13 +89,20 @@ void simulateFloydWarshallPhase2(){
         requestsQueue.push(request);
     }
 
-    vector<Task*> tasks = distributeRequestsByCloseness_FloydWarshall(graph,requestsQueue,employees);
+    int requestsRound = 1;
+    if(employees.empty())
+        return;
+    
+    while(!requestsQueue.empty()){
+        cout << "REQUESTS ROUND " << requestsRound << endl;
+        vector<Task*> tasks = distributeRequestsByCloseness_FloydWarshall(graph,requestsQueue,employees);
 
-    for(int i = 0; i < tasks.size(); i++){
-        tasks[i]->setFloydWarshallPath(graph);
-
-        cout << *tasks[i] << endl;
-
-        //viewFloydWarshallShortestPath(graph,tasks[i]->getPath());
+        for(int i = 0; i < tasks.size(); i++){
+            // TODO - Call this function in a thread to execute all tasks from one round of requests at the same time
+            tasks[i]->setFloydWarshallPath(graph);
+            cout << *tasks[i] << endl;
+            //viewFloydWarshallShortestPath(graph,tasks[i]->getPath());
+        }
+        requestsRound++;
     }
 }

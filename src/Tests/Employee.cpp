@@ -59,6 +59,6 @@ bool Employee::operator==(const Employee &rhs) const {
 
 
 std::ostream &operator<<(std::ostream &os, const Employee & employee) {
-    os << "Employee: id = " << employee.getId() << "; actual coords id =  " << employee.getCoordinates()<<endl;
+    os << "EMPLOYEE: Id = " << employee.getId() << "; Actual Position =  " << employee.getCoordinates()<<endl;
     return os;
 }
