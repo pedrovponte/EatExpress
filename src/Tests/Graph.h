@@ -278,7 +278,6 @@ double ** Graph<T>::getDistancesMatrix() const{
     return W;
 }
 
-/**************** Minimum Spanning Tree  ***************/
 template <class T>
 bool Graph<T>::addBidirectionalEdge(unsigned long idSourc, unsigned  long idDest, const T &sourc, const T &dest, double w) {
     // TODO

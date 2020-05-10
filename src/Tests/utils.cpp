@@ -305,3 +305,52 @@ vector<Request> getRandomRequests(Graph<Coordinates> &graph, int nr){
 
     return requests;
 }
+
+void generateRandomGrid(int n, bool random, ostream &nodes, ostream &edges){
+
+    // Call this on main:
+    //    ofstream nodes , edges;
+    //    nodes.open("../Mapas/GridGraphs/20x20/nodes.txt",ios_base::trunc);
+    //    edges.open("../Mapas/GridGraphs/20x20/edges.txt",ios_base::trunc);
+    //    generateRandomGrid(20, true, nodes, edges);
+
+    int totalNodes = n * n;
+    nodes << totalNodes << endl;
+
+    int x = 0;
+    int y = 0;
+
+    srand(time(NULL));
+
+    for (int i = 0; i < n; ++i) {
+        for (int j = 0; j < n; ++j) {
+            nodes << "(" << j + i * n << ", " << x << ", " << y << ")" << endl;
+            if (random)
+                y += rand() % 100 + 20;
+            else
+                y += 50;
+        }
+        y = 0;
+        if (random)
+            x += rand() % 100 + 20;
+        else
+            x += 50;
+    }
+
+    cout << "#############" << endl;
+
+    int totalEdges = totalNodes * 2 - n * 2;
+
+    edges << totalEdges << endl;
+
+    for (int k = 0; k < totalNodes; ++k) {
+        if (k + 1 < totalNodes && (k + 1) % n != 0){
+            edges << "(" << k << ", " << k + 1 << ")" << endl;
+        }
+        if (k + n < totalNodes){
+            edges << "(" << k << ", " << k + n << ")" << endl;
+        }
+    }
+
+
+}

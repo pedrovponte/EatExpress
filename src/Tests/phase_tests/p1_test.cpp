@@ -15,11 +15,11 @@
 using namespace std;
 using testing::Eq;
 
-TEST(CAL_T3G4, test_dijkstra_time){
+TEST(CAL_T3G4, test_dijkstra_time_ph1){
 
     vector<vector<int>> output;
 
-    Graph<Coordinates> graph = loadGraph("GridGraphs", "4x4", true);
+    Graph<Coordinates> graph = loadGraph("GridGraphs", "30x30", true);
 
     Employee employee(0,Coordinates(10),40,CAR,true);
 
@@ -62,13 +62,13 @@ TEST(CAL_T3G4, test_dijkstra_time){
 
 }
 
-TEST(CAL_T3G4, test_floyd_wharshall_time){
+TEST(CAL_T3G4, test_floyd_wharshall_time_ph1){
 
     vector<vector<int>> output;
 
     bool preprocessed = false;
 
-    Graph<Coordinates> graph = loadGraph("GridGraphs", "4x4", true);
+    Graph<Coordinates> graph = loadGraph("GridGraphs", "30x30", true);
 
     Employee employee(0,Coordinates(10),40,CAR,true);
 
