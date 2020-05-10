@@ -106,12 +106,6 @@ TEST(CAL_T3G4, test_dijkstra) {
     checkSinglePath(realGraph.getPathTo(Coordinates(14)), "0 1 6 11 12 13 14 ");
 
     checkSinglePath(realGraph.getPathTo(Coordinates(21)), "0 5 10 15 20 21 ");
-
-
-    realGraph.dijkstraShortestPath(Coordinates(15));
-    checkSinglePath(realGraph.getPathTo(Coordinates(2)), "2 ");
-
-    checkSinglePath(realGraph.getPathTo(Coordinates(24)), "15 16 21 22 23 24 ");
 }
 
 TEST(CAL_T3G4, test_floydWarshall) {
@@ -128,8 +122,6 @@ TEST(CAL_T3G4, test_floydWarshall) {
     checkSinglePath(realGraph.getfloydWarshallPath(Coordinates(0),Coordinates(14)), "0 1 2 3 4 9 14 ");
 
     checkSinglePath(realGraph.getfloydWarshallPath(Coordinates(0),Coordinates(21)), "0 1 6 11 16 21 ");
-
-    checkSinglePath(realGraph.getfloydWarshallPath(Coordinates(15),Coordinates(2)), "");
 
     checkSinglePath(realGraph.getfloydWarshallPath(Coordinates(15),Coordinates(24)), "15 16 17 18 19 24 ");
 }

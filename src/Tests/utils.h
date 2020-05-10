@@ -89,4 +89,10 @@ void graphViewerProperties(GraphViewer * gv);
 
 void drawGraph(GraphViewer *gv, const Graph<Coordinates> & graph);
 
+// Simulations First Phase
+
+void simulateFloydWarshallPhase1();
+
+void simulateDijkstraPhase1();
+
 #endif //CAL_T3G4_UTILS_H

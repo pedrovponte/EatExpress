@@ -9,6 +9,8 @@
 #include <cmath>
 #include <edgetype.h>
 #include "utils.h"
+#include "Request.h"
+#include "Task.h"
 
 using namespace std;
 
@@ -104,6 +106,10 @@ Graph<Coordinates> loadGraph(string dir, string subDir, bool euclidean, bool pre
 
     if (edges.is_open()) {
         getline(edges, firstLine);
+        if(dir == "GridGraphs"){
+            firstLine = to_string(stoi(firstLine)*2);
+        }
+
         while(i < stoi(firstLine)){
             string edge;
             unsigned long origId, destId;
@@ -137,6 +143,15 @@ Graph<Coordinates> loadGraph(string dir, string subDir, bool euclidean, bool pre
                 gv->addEdge(i, origId, destId, EdgeType::DIRECTED);
                 gv->setEdgeLabel(i,"Dist: " + to_string(dist));
                 //gv->setEdgeWeight(i,dist);
+            }
+
+            if(dir == "GridGraphs"){
+                i++;
+                g.addEdge(i,destCoords, origCoords,dist);
+                if(preview){
+                    gv->addEdge(i, destId, origId, EdgeType::DIRECTED);
+                    gv->setEdgeLabel(i,"Dist: " + to_string(dist));
+                }
             }
 
             i++;
@@ -238,4 +253,68 @@ void drawGraph(GraphViewer *gv, const Graph<Coordinates> & graph){
             //gv->setEdgeLabel(e.getId(),"Dist: " + to_string(e.getWeight()));
         }
     }
+}
+
+
+// Simulations First Phase
+
+void simulateFloydWarshallPhase1(){
+    // User must choose the city and graph is loaded accordingly
+    // Preview city graph if user chooses to
+    Graph<Coordinates> graph = loadGraph("GridGraphs", "8x8", true);
+
+    // Pre-process distances using Floyd Warshall
+    graph.floydWarshallShortestPath();
+
+    // Get possible restaurants and let user choose
+    Vertex<Coordinates> * restaurant = graph.findVertex(Coordinates(20));
+    vector<Vertex<Coordinates>*> restaurants;
+    restaurants.push_back(restaurant);
+
+    // Choose user's position or generate random position and request's dimension, date and hour
+    Vertex<Coordinates> * delivery_addr = graph.findVertex(Coordinates(42));
+
+    // Build Request
+    Request request(0, Date(2020,10,10), Hour(22,0),restaurants,delivery_addr,20);
+
+    // Give the request to an employee
+    Employee employee(0,Coordinates(10),40,'c',true);
+
+    Task task(employee,request);
+
+    // Calculate shortest path using FloydWarshall
+    task.setFloydWarshallPath(graph);
+    vector<Coordinates> path = task.getPath();
+
+    // Show shortest path calculated with FloydWarshall
+    viewFloydWarshallShortestPath(graph,path);
+}
+
+void simulateDijkstraPhase1(){
+    // User must choose the city and graph is loaded accordingly
+    // Preview city graph if user chooses to
+    Graph<Coordinates> graph = loadGraph("GridGraphs", "8x8", true);
+
+    // Get possible restaurants and let user choose
+    Vertex<Coordinates> * restaurant = graph.findVertex(Coordinates(20));
+    vector<Vertex<Coordinates>*> restaurants;
+    restaurants.push_back(restaurant);
+
+    // Choose user's position or generate random position and request's dimension, date and hour
+    Vertex<Coordinates> * delivery_addr = graph.findVertex(Coordinates(42));
+
+    // Build Request
+    Request request(0, Date(2020,10,10), Hour(22,0),restaurants,delivery_addr,20);
+
+    // Give the request to an employee
+    Employee employee(0,Coordinates(10),40,'c',true);
+
+    Task task(employee,request);
+
+    // Calculate shortest path using Dijkstra
+    task.setDijkstraPath(graph);
+    vector<Coordinates> path = task.getPath();
+
+    // Show shortest path calculated with Dijkstra
+    viewDijkstraShortestPath(graph,path);
 }
