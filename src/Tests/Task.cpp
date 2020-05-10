@@ -53,8 +53,9 @@ std::ostream &operator<<(std::ostream &os, const Task &task) {
     return os;
 }
 
+// Request distribution Phase 2
+
 vector<Task*> distributeRequestsByCloseness_FloydWarshall(Graph<Coordinates> & graph, queue<Request> & requests, vector<Employee> & employees){
-    graph.floydWarshallShortestPath();
     double ** W = graph.getDistancesMatrix();
     int origIdx, destIdx;
     double dist;

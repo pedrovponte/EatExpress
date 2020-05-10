@@ -73,6 +73,10 @@ void simulateDijkstraPhase1(){
 void simulateFloydWarshallPhase2(){
     Graph<Coordinates> graph = loadGraph("GridGraphs", "16x16", true);
 
+    // Pre-process Distances with Floyd Warshall
+    graph.floydWarshallShortestPath();
+
+    // Add Employees
     vector<Employee> employees;
     Employee employee1(0,Coordinates(4),40,CAR,true);
     employees.push_back(employee1);
@@ -83,6 +87,7 @@ void simulateFloydWarshallPhase2(){
     /*Employee employee4(3,Coordinates(8),40,CAR,true);
     employees.push_back(employee4);*/
 
+    // Add Requests
     vector<Request> requests = getRandomRequests(graph,5);
     queue<Request> requestsQueue;
     for(Request request : requests){
@@ -90,13 +95,20 @@ void simulateFloydWarshallPhase2(){
     }
 
     int requestsRound = 1;
-    if(employees.empty())
-        return;
-    
+
+    // No employees to fulfill the requests
+    if(employees.empty()) return;
+
+    //
     while(!requestsQueue.empty()){
         cout << "REQUESTS ROUND " << requestsRound << endl;
         vector<Task*> tasks = distributeRequestsByCloseness_FloydWarshall(graph,requestsQueue,employees);
 
+        // Couldn't find any Employees to fulfill the remaining requests
+        if(tasks.empty())
+            return;
+
+        // Get requests distribution and paths
         for(int i = 0; i < tasks.size(); i++){
             // TODO - Call this function in a thread to execute all tasks from one round of requests at the same time
             tasks[i]->setFloydWarshallPath(graph);
