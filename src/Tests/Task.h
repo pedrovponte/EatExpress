@@ -22,7 +22,10 @@ public:
     friend std::ostream &operator<<(std::ostream &os, const Task &task);
 };
 
+// Request distribution Phase 2
+
 vector<Task*> distributeRequestsByCloseness_FloydWarshall(Graph<Coordinates> & graph, queue<Request> & requests, vector<Employee> & employees);
 
+vector<Task*> distributeRequestsByCloseness_Dijkstra(Graph<Coordinates> & graph, queue<Request> & requests, vector<Employee> & employees);
 
 #endif //CAL_T3G4_TASK_H

@@ -61,7 +61,7 @@ Graph<Coordinates> loadGraph(string dir, string subDir, bool euclidean, bool pre
         transform(subDir.begin(), subDir.end(), subDir.begin(), ::tolower);
 
         edgesFile << "/edges_" << subDir << ".txt";
-        nodesFile << "/nodes_lat_lon" << subDir << ".txt";
+        nodesFile << "/nodes_lat_lon_" << subDir << ".txt";
     }
 
     ifstream nodes, edges;

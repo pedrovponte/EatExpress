@@ -84,8 +84,6 @@ void simulateFloydWarshallPhase2(){
     employees.push_back(employee2);
     Employee employee3(2,Coordinates(0),40,CAR,true);
     employees.push_back(employee3);
-    /*Employee employee4(3,Coordinates(8),40,CAR,true);
-    employees.push_back(employee4);*/
 
     // Add Requests
     vector<Request> requests = getRandomRequests(graph,5);
@@ -99,7 +97,6 @@ void simulateFloydWarshallPhase2(){
     // No employees to fulfill the requests
     if(employees.empty()) return;
 
-    //
     while(!requestsQueue.empty()){
         cout << "REQUESTS ROUND " << requestsRound << endl;
         vector<Task*> tasks = distributeRequestsByCloseness_FloydWarshall(graph,requestsQueue,employees);
@@ -114,6 +111,48 @@ void simulateFloydWarshallPhase2(){
             tasks[i]->setFloydWarshallPath(graph);
             cout << *tasks[i] << endl;
             //viewFloydWarshallShortestPath(graph,tasks[i]->getPath());
+        }
+        requestsRound++;
+    }
+}
+
+void simulateDijkstraPhase2(){
+    Graph<Coordinates> graph = loadGraph("GridGraphs", "16x16", true);
+
+    // Add Employees
+    vector<Employee> employees;
+    Employee employee1(0,Coordinates(4),40,CAR,true);
+    employees.push_back(employee1);
+    Employee employee2(1,Coordinates(9),40,CAR,true);
+    employees.push_back(employee2);
+    Employee employee3(2,Coordinates(0),40,CAR,true);
+    employees.push_back(employee3);
+
+    // Add Requests
+    vector<Request> requests = getRandomRequests(graph,5);
+    queue<Request> requestsQueue;
+    for(Request request : requests){
+        requestsQueue.push(request);
+    }
+
+    int requestsRound = 1;
+
+    // No employees to fulfill the requests
+    if(employees.empty()) return;
+
+    while(!requestsQueue.empty()){
+        cout << "REQUESTS ROUND " << requestsRound << endl;
+        vector<Task*> tasks = distributeRequestsByCloseness_Dijkstra(graph,requestsQueue,employees);
+
+        // Couldn't find any Employees to fulfill the remaining requests
+        if(tasks.empty())
+            return;
+
+        // Get requests distribution and paths
+        for(int i = 0; i < tasks.size(); i++){
+            tasks[i]->setDijkstraPath(graph);
+            cout << *tasks[i] << endl;
+            // viewDijkstraShortestPath(graph,tasks[i]->getPath());
         }
         requestsRound++;
     }
