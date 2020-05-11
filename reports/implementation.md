@@ -40,6 +40,6 @@ Com isto, confirmamos também a complexidade temporal destes algoritmos e reafir
 
 Nesta segunda fase, voltámos a analisar a execução dos algoritmos, desta vez, tendo em conta a existência de vários estafetas e a distribuição de vários pedidos pelos funcionários disponíveis e elegíveis para os entregar. É de notar que a escolha do estafeta encarregue de determinado pedido era diretamente influenciada pela sua proximidade ao restaurante, o que implicava ainda mais cálculos intermédios e mais execuções dos algoritmos usados. Foram gerados, portanto, pedidos aleatórios e a cada tarefa concluída, o estafeta atualizava a sua posição. Para efeitos de teste da eficiência temporal desta fase de implementação, considerou-se a existência de 3 estafetas, distribuídos aleatoriamente por um grafo, representativo de uma área urbana, de dimensões $16 \times 16$, e geraram-se até 2000 pedidos também aleatórios. Os dados obtidos foram os seguintes:
 
-> Falta o gráfico dos valores q já foram recolhidos
+![](logs/../../logs/phase2/Dijkstra_Floyd.png)
 
-Bla bla bla dps escrevo
+Bla bla bla dps escrevo, a amarelo e a azul é mentira, poderiam ser o A* e o bidirecional ahahaha
