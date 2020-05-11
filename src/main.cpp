@@ -4,7 +4,7 @@
 int main(int argc, char* argv[]) {
     testing::InitGoogleTest(&argc, argv);
 
-    simulateDijkstraPhase2();
+    simulateFloydWarshallPhase2();
 
     return RUN_ALL_TESTS();
 }

@@ -9,9 +9,10 @@
 #include <graphviewer.h>
 #include <string>
 
-using namespace std;
-
+class Task;
 class Request;
+
+using namespace std;
 
 class Hour {
     int hour;
@@ -110,6 +111,8 @@ Graph<Coordinates> loadGraph(string folder, string subFolder, bool euclidean, bo
 void viewDijkstraShortestPath(const Graph<Coordinates> & graph, const vector<Coordinates> &  path);
 
 void viewFloydWarshallShortestPath(const Graph<Coordinates> & graph, const vector<Coordinates> & path);
+
+void viewMultiplePaths_FloydWarshall(const Graph<Coordinates> & graph, const vector<Task * > tasks);
 
 void graphViewerProperties(GraphViewer * gv);
 

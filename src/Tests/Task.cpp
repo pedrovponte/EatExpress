@@ -39,6 +39,18 @@ const vector<Coordinates> Task::getPath() const{
     return path;
 }
 
+bool Task::isCheckpoint(Coordinates coordinates){
+    vector<Vertex<Coordinates> * > checkpoints = request.getCheckpoints();
+    for(int i = 0; i< checkpoints.size(); i++){
+        if(checkpoints[i]->getInfo() == coordinates)
+            return true;
+    }
+    return false;
+}
+bool Task::isDeliveryAddress(Coordinates coordinates){
+    return request.getDeliveryAddr()->getInfo() == coordinates;
+}
+
 std::ostream &operator<<(std::ostream &os, const Task &task) {
     os << *task.employee;
     if(!task.path.empty())

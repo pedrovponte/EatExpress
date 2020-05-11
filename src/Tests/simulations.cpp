@@ -110,8 +110,8 @@ void simulateFloydWarshallPhase2(){
             // TODO - Call this function in a thread to execute all tasks from one round of requests at the same time
             tasks[i]->setFloydWarshallPath(graph);
             cout << *tasks[i] << endl;
-            //viewFloydWarshallShortestPath(graph,tasks[i]->getPath());
         }
+        viewMultiplePaths_FloydWarshall(graph,tasks);
         requestsRound++;
     }
 }
