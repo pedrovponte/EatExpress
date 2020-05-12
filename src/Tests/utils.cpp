@@ -9,7 +9,7 @@
 #include <cmath>
 #include <edgetype.h>
 #include "utils.h"
-#include "Request.h"
+#include "Task.h"
 
 using namespace std;
 
@@ -234,10 +234,66 @@ void viewFloydWarshallShortestPath(const Graph<Coordinates> & graph, const vecto
     gv->rearrange();
 }
 
+void viewMultiplePaths_FloydWarshall(const Graph<Coordinates> & graph, const vector<Task * > tasks){
+    double dist = 0;
+    double ** W = graph.getDistancesMatrix();
+    int origIdx, destIdx;
+
+    GraphViewer *gv = new GraphViewer(700, 700, false);
+    graphViewerProperties(gv);
+
+    drawGraph(gv,graph);
+
+    for(int j= 0; j< tasks.size(); j++){
+        dist = 0;
+
+        vector<Coordinates> path = tasks[j]->getPath();
+
+        for(unsigned int i = 0; i < path.size(); i++) {
+            if(i == 0){
+                origIdx = graph.findVertexIdx(path[i]);
+                destIdx = origIdx;
+
+                // TODO -> select image based on mean of transport
+                gv->setVertexIcon(path[i].getId(),"../Mapas/icons/car.png");
+            }
+            else{
+                origIdx = graph.findVertexIdx(path[i-1]);
+                destIdx = graph.findVertexIdx(path[i]);
+
+                if(tasks[j]->isCheckpoint(path[i])){
+                    gv->setVertexIcon(path[i].getId(),"../Mapas/icons/restaurant.png");
+                }
+                else if(tasks[j]->isDeliveryAddress(path[i])){
+                    gv->setVertexIcon(path[i].getId(),"../Mapas/icons/house.png");
+                }
+                else{
+                    gv->setVertexColor(path[i].getId(),"red");
+                }
+            }
+            dist += W[origIdx][destIdx];
+            string strDist = to_string(dist).substr(0, to_string(dist).find(".") + 2 + 1);
+
+            gv->clearVertexLabel(path[i].getId());
+            gv->setVertexLabel(path[i].getId(),"Id: " + to_string(path[i].getId())+ "  Dist: " + strDist);
+
+            if(i != 0){
+                int edgeId = graph.getEdge(path[i-1].getId(),path[i].getId()).getId();
+                gv->clearEdgeColor(edgeId);
+                gv->clearEdgeLabel(edgeId);
+                gv->setEdgeColor(edgeId,"red");
+                gv->setEdgeThickness(edgeId,3);
+            }
+        }
+    }
+
+    gv->rearrange();
+}
+
 void graphViewerProperties(GraphViewer * gv){
     gv->createWindow(700, 700);
-    gv->defineVertexColor("blue");
-    gv->defineEdgeColor("black");
+    gv->defineVertexColor("gray");
+    gv->defineEdgeColor("gray");
 }
 
 void drawGraph(GraphViewer *gv, const Graph<Coordinates> & graph){
@@ -256,7 +312,6 @@ void drawGraph(GraphViewer *gv, const Graph<Coordinates> & graph){
     }
 }
 
-// Stubs
 // Stubs
 
 vector<Vertex<Coordinates>*> getRestaurantsStub(Graph<Coordinates> &graph, int nr){
