@@ -124,6 +124,8 @@ vector<Vertex<Coordinates>*> getClientAddressesStub(Graph<Coordinates> &graph, i
 
 vector<Request> getRandomRequests(Graph<Coordinates> &graph, int nr);
 
-void generateRandomGrid(int n, bool random, ostream &nodes, ostream &edges);
+void generateRandomGrid(int n, bool random, ostream &nodes, ostream &edges, bool bike);
+
+void cleanGraph(Graph<Coordinates> *graph);
 
 #endif //CAL_T3G4_UTILS_H

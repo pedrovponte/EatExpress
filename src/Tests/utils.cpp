@@ -361,7 +361,7 @@ vector<Request> getRandomRequests(Graph<Coordinates> &graph, int nr){
     return requests;
 }
 
-void generateRandomGrid(int n, bool random, ostream &nodes, ostream &edges){
+void generateRandomGrid(int n, bool random, ostream &nodes, ostream &edges, bool bike){
 
     // Call this on main:
     //    ofstream nodes , edges;
@@ -375,7 +375,7 @@ void generateRandomGrid(int n, bool random, ostream &nodes, ostream &edges){
     int x = 0;
     int y = 0;
 
-    srand(time(NULL));
+    srand(n);
 
     for (int i = 0; i < n; ++i) {
         for (int j = 0; j < n; ++j) {
@@ -399,6 +399,10 @@ void generateRandomGrid(int n, bool random, ostream &nodes, ostream &edges){
     edges << totalEdges << endl;
 
     for (int k = 0; k < totalNodes; ++k) {
+
+        if (bike && rand() % 4 < 3)
+            continue;
+
         if (k + 1 < totalNodes && (k + 1) % n != 0){
             edges << "(" << k << ", " << k + 1 << ")" << endl;
         }
@@ -406,6 +410,18 @@ void generateRandomGrid(int n, bool random, ostream &nodes, ostream &edges){
             edges << "(" << k << ", " << k + n << ")" << endl;
         }
     }
+}
 
+void cleanGraph(Graph<Coordinates> *graph){
+
+    vector<Vertex<Coordinates> *> vertexes;
+
+    for (Vertex<Coordinates> *vertex : graph->getVertexSet()) {
+        if(vertex->getAdj().size() > 0){
+            vertexes.push_back(vertex);
+        }
+    }
+
+    graph->setVertexSet(vertexes);
 
 }
