@@ -9,6 +9,8 @@
 #include "Employee.h"
 #include "Request.h"
 
+class Request;
+
 class Task {
     Employee * employee;
     Request request;
@@ -18,6 +20,8 @@ public:
     void setFloydWarshallPath(Graph<Coordinates> & graph);
     void setDijkstraPath(Graph<Coordinates> & graph);
     const vector<Coordinates> getPath() const;
+    bool isCheckpoint(Coordinates coordinates);
+    bool isDeliveryAddress(Coordinates coordinates);
 
     friend std::ostream &operator<<(std::ostream &os, const Task &task);
 };
