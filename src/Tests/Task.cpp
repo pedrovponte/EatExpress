@@ -158,3 +158,6 @@ vector<Task*> distributeRequestsByCloseness_Dijkstra(Graph<Coordinates> & graph,
     }
     return tasks;
 }
+
+// Request distribution Phase 3
+

@@ -8,7 +8,7 @@
 #include "Task.h"
 #include "Graph.h"
 
-
+// Phase 1
 void simulateFloydWarshallPhase1(){
     // User must choose the city and graph is loaded accordingly
     // Preview city graph if user chooses to
@@ -70,6 +70,8 @@ void simulateDijkstraPhase1(){
     viewDijkstraShortestPath(graph,path);
 }
 
+// Phase 2
+
 void simulateFloydWarshallPhase2(){
     Graph<Coordinates> graph = loadGraph("GridGraphs", "16x16", true);
 
@@ -111,7 +113,7 @@ void simulateFloydWarshallPhase2(){
             tasks[i]->setFloydWarshallPath(graph);
             cout << *tasks[i] << endl;
         }
-        viewMultiplePaths_FloydWarshall(graph,tasks);
+        //viewMultiplePaths_FloydWarshall(graph,tasks);
         requestsRound++;
     }
 }
@@ -157,3 +159,5 @@ void simulateDijkstraPhase2(){
         requestsRound++;
     }
 }
+
+// Phase 3
