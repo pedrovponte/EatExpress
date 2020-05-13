@@ -10,6 +10,11 @@ template <class T> class Vertex;
 
 using namespace std;
 
+class NullEdgeException{
+public:
+    explicit NullEdgeException(){};
+};
+
 template <class T>
 class Edge {
     Vertex<T> *orig;

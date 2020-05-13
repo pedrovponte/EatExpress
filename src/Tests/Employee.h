@@ -8,14 +8,16 @@
 #include "Coordinates.h"
 using namespace std;
 
-enum vehicleType{CAR, BIKE, FOOT, INVALID};
+enum vehicleType{CAR, MOTORCYCLE, BIKE, FOOT, INVALID};
 
 class Employee {
     int id;
     Coordinates coordinates;
     int maxCargo;
     vehicleType type;
+    int avgVelocity;
     bool ready;
+    double dist;
 public:
     Employee();
     Employee(const Employee & e);
@@ -30,10 +32,15 @@ public:
     void setType(vehicleType type);
     bool isReady() const;
     void setReady(bool ready);
+    double getDist() const;
+    void setDist(double dist);
+    int getAvgVelocity() const;
 
     friend std::ostream &operator<<(std::ostream &os, const Employee & employee);
 
     bool operator==(const Employee &rhs) const;
+
+    bool operator<(const Employee &rhs) const;
 
 };
 

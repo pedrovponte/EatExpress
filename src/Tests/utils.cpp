@@ -8,6 +8,7 @@
 #include <string>
 #include <cmath>
 #include <edgetype.h>
+#include <sys/time.h>
 #include "utils.h"
 #include "Task.h"
 

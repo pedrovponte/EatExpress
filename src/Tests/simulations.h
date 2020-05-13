@@ -13,4 +13,6 @@ void simulateFloydWarshallPhase2();
 
 void simulateDijkstraPhase2();
 
+void simulatePhase3();
+
 #endif //CAL_T3G4_SIMULATIONS_H

@@ -44,7 +44,8 @@ public:
     }
 
     bool operator <(const Hour & h) const{
-        return this->hour < h.getHour() && this->minute < h.getMinute();
+        if(hour == h.getHour()) return this->minute < h.getMinute();
+        else return hour < h.getHour();
     }
 };
 
@@ -61,37 +62,26 @@ public:
         this->month = d.getMonth();
     }
 
+    bool operator==(const Date &rhs) const {
+        return year == rhs.year &&
+               month == rhs.month &&
+               day == rhs.day;
+    }
+
     int getYear() const {
         return year;
     }
 
-    void setYear(int year) {
-        Date::year = year;
-    }
 
     int getMonth() const {
         return month;
     }
 
-    void setMonth(int month) {
-        Date::month = month;
-    }
 
     int getDay() const {
         return day;
     }
 
-    void setDay(int day) {
-        Date::day = day;
-    }
-
-    friend int validDate(int d, int m, int y) {
-        if (d < 1 || d > 31) return 1;
-        if (m < 1 || m > 12) return 1;
-        if (y < 0) return 1;
-
-        return 0;
-    }
 
     bool operator <(const Date & d) const{
         if(year == d.getYear()){

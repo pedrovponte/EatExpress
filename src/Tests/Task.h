@@ -22,7 +22,7 @@ public:
     const vector<Coordinates> getPath() const;
     bool isCheckpoint(Coordinates coordinates);
     bool isDeliveryAddress(Coordinates coordinates);
-
+    vehicleType getVehicleType() const;
     friend std::ostream &operator<<(std::ostream &os, const Task &task);
 };
 
@@ -31,5 +31,15 @@ public:
 vector<Task*> distributeRequestsByCloseness_FloydWarshall(Graph<Coordinates> & graph, queue<Request> & requests, vector<Employee> & employees);
 
 vector<Task*> distributeRequestsByCloseness_Dijkstra(Graph<Coordinates> & graph, queue<Request> & requests, vector<Employee> & employees);
+
+// Request distribution Phase 3
+
+vector<Employee*> getEligibleEmployees(vector<Employee*> & employees, const Request & request);
+
+void setDistancesToCheckpoint(Graph<Coordinates> & graph, Graph<Coordinates> & reducedGraph, vector<Employee*> & employees, const Request & request);
+
+bool compareEmployees(Employee * e1, Employee * e2);
+
+vector<Task*> distributeRequests(Graph<Coordinates> & graph, Graph<Coordinates> & reducedGraph, min_priority_queue & requests, vector<Employee*> & employees);
 
 #endif //CAL_T3G4_TASK_H

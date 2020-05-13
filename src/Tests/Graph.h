@@ -114,16 +114,15 @@ const Edge<T> & Graph<T>::getEdge(const T &sourc, const T &dest) const{
     auto v1 = findVertex(sourc);
     auto v2 = findVertex(dest);
 
-    Edge<T> nullEdge = Edge<T>();
     if (v1 == nullptr || v2 == nullptr){
-        return nullEdge;
+        throw NullEdgeException();
     }
 
     for(unsigned int i = 0; i < v1->adj.size(); i++){
         if(v1->adj[i].dest == v2)
             return v1->adj[i];
     }
-    return nullEdge;
+    throw NullEdgeException();
 }
 
 

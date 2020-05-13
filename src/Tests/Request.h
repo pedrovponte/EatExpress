@@ -22,6 +22,7 @@ class Request {
 public:
     Request(unsigned long id, const Date &requestDate, const Hour &requestHour, int cargo);
     Request(unsigned long id, const Date &requestDate, const Hour &requestHour, vector<Vertex<Coordinates>*> checkpoints, Vertex<Coordinates>* delivery_addr, int cargo);
+    Request(unsigned long id, const Date &requestDate, const Hour &requestHour,Vertex<Coordinates>* checkpoint, Vertex<Coordinates>* delivery_addr, int cargo);
     Request(const Request & request);
     unsigned long getId() const;
     void setId(unsigned long id);
@@ -35,9 +36,18 @@ public:
     void addCheckpoint(Vertex<Coordinates> * checkpoint);
     int getCargo() const;
     void setCargo(int cargo);
-    bool operator<(Request & request) const;
+    bool operator<(const Request & request) const;
 
     friend std::ostream &operator<<(std::ostream &os, const Request &request);
 };
+
+class requestComparator {
+public:
+    int operator()(const Request & r1, const Request & r2) {
+        return r2 < r1;
+    }
+};
+
+typedef priority_queue <Request, vector<Request>, requestComparator>  min_priority_queue;
 
 #endif //CAL_T3G4_REQUEST_H

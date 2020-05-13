@@ -51,12 +51,24 @@ bool Task::isDeliveryAddress(Coordinates coordinates){
     return request.getDeliveryAddr()->getInfo() == coordinates;
 }
 
+vehicleType Task::getVehicleType() const{
+    if(employee == nullptr)
+        return INVALID;
+    return employee->getType();
+}
+
 std::ostream &operator<<(std::ostream &os, const Task &task) {
+    if(task.employee == nullptr){
+        os << task.request;
+        os << "Request couldn't be completed!"<< endl;
+        return os;
+    }
+
+    os << task.request;
+
     os << *task.employee;
     if(!task.path.empty())
         os << "Initial Employee's Position: " << task.path[0] << endl;
-
-    os << task.request;
 
     os  <<  "PATH: ";
     for(unsigned int i = 0; i < task.path.size(); i++)
@@ -161,3 +173,97 @@ vector<Task*> distributeRequestsByCloseness_Dijkstra(Graph<Coordinates> & graph,
 
 // Request distribution Phase 3
 
+vector<Employee*> getEligibleEmployees(vector<Employee*> & employees, const Request & request){
+    vector<Employee*> eligibleEmployees;
+    vector<Employee*>::iterator it = employees.begin();
+
+    while(it != employees.end()){
+        if((*it)->isReady() && (*it)->getMaxCargo() >= request.getCargo() && (*it)->getDist() != INF){
+            eligibleEmployees.push_back(*it);
+        }
+        it++;
+    }
+    return eligibleEmployees;
+}
+
+void setDistancesToCheckpoint(Graph<Coordinates> & graph, Graph<Coordinates> & reducedGraph, vector<Employee*> & employees, const Request & request){
+    int origIdx;
+    int checkpointIdx1 = graph.findVertexIdx(request.getCheckpoints()[0]->getInfo());
+    int checkpointIdx2 = reducedGraph.findVertexIdx(request.getCheckpoints()[0]->getInfo());
+
+    double ** distsGraph = graph.getDistancesMatrix();
+    double ** distsReducedGraph = reducedGraph.getDistancesMatrix();
+
+    vector<Employee*>::iterator it = employees.begin();
+    while(it != employees.end()){
+
+        if((*it)->getType() == CAR || (*it)->getType() == MOTORCYCLE){
+            origIdx =  graph.findVertexIdx((*it)->getCoordinates());
+            (*it)->setDist(distsGraph[origIdx][checkpointIdx1]);
+        }
+        else if((*it)->getType() == BIKE || (*it)->getType() == FOOT){
+            origIdx =  reducedGraph.findVertexIdx((*it)->getCoordinates());
+            (*it)->setDist(distsReducedGraph[origIdx][checkpointIdx2]);
+        }
+        it++;
+    }
+}
+
+bool compareEmployees(Employee * e1, Employee * e2){
+    return *e1 < *e2;
+}
+
+vector<Task*> distributeRequests(Graph<Coordinates> & graph, Graph<Coordinates> & reducedGraph, min_priority_queue & requests, vector<Employee*> & employees){
+    vector<Task*> tasks;
+    vector<Task*> roundTasks;
+    min_priority_queue pendingRequests;
+    int availableEmployees = employees.size();
+
+    if(employees.empty()) return tasks;
+
+    while(!requests.empty()){
+
+        setDistancesToCheckpoint(graph, reducedGraph, employees,requests.top());
+
+        vector<Employee*> eligibleEmployees = getEligibleEmployees(employees, requests.top());
+
+        if(eligibleEmployees.empty()){
+            pendingRequests.push(requests.top());
+        }
+        else{
+            sort(eligibleEmployees.begin(), eligibleEmployees.end(),compareEmployees);
+            eligibleEmployees[0]->setReady(false);
+
+            Task * task = new Task(eligibleEmployees[0], requests.top());
+            availableEmployees--;
+            roundTasks.push_back(task);
+        }
+        requests.pop();
+
+        if(requests.empty() && !pendingRequests.empty()){
+            if(availableEmployees == employees.size()){
+                while(!pendingRequests.empty()){
+                    roundTasks.push_back(new Task(nullptr,pendingRequests.top()));
+                    pendingRequests.pop();
+                }
+            }
+
+            requests = pendingRequests;
+            availableEmployees = employees.size();
+
+            while(!pendingRequests.empty())
+                pendingRequests.pop();
+
+            for(Task * task: roundTasks){
+                if(task->getVehicleType() == BIKE || task->getVehicleType() == FOOT)
+                    task->setFloydWarshallPath(reducedGraph);
+                else if(task->getVehicleType() == CAR || task->getVehicleType() == MOTORCYCLE)
+                    task->setFloydWarshallPath(graph);
+            }
+            tasks.insert(tasks.end(),roundTasks.begin(), roundTasks.end());
+            roundTasks.clear();
+        }
+    }
+
+    return tasks;
+}

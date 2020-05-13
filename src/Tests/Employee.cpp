@@ -7,18 +7,29 @@
 using namespace std;
 
 Employee::Employee(int id, const Coordinates &coordinates, int maxCargo, vehicleType type, bool ready)
-    : id(id), coordinates(coordinates), maxCargo(maxCargo),type(type),ready(ready) {}
+    : id(id), coordinates(coordinates), maxCargo(maxCargo),type(type),ready(ready) {
+
+    if(type == CAR || type == MOTORCYCLE){
+        avgVelocity = 40;
+    }
+    else if(type == BIKE){
+        avgVelocity = 20;
+    }
+    else if(type == FOOT){
+        avgVelocity = 8;
+    }
+    avgVelocity = 0;
+}
 
 Employee::Employee(): id(-1), coordinates(0), maxCargo(-1),type(INVALID),ready(false) {}
 
-Employee::Employee(const Employee &e): id(e.getId()), coordinates(e.getCoordinates()), maxCargo(e.getMaxCargo()),type(getType()),ready(e.isReady()) {}
+Employee::Employee(const Employee &e): id(e.getId()), coordinates(e.getCoordinates()), maxCargo(e.getMaxCargo()),type(getType()),ready(e.isReady()) {
+
+
+}
 
 int Employee::getId() const {
     return id;
-}
-
-void Employee::setId(int id) {
-    this->id = id;
 }
 
 const Coordinates &Employee::getCoordinates() const {
@@ -33,16 +44,8 @@ int Employee::getMaxCargo() const {
     return maxCargo;
 }
 
-void Employee::setMaxCargo(int maxCargo) {
-    this->maxCargo = maxCargo;
-}
-
 vehicleType Employee::getType() const {
     return type;
-}
-
-void Employee::setType(vehicleType type) {
-    this->type = type;
 }
 
 bool Employee::isReady() const {
@@ -59,6 +62,45 @@ bool Employee::operator==(const Employee &rhs) const {
 
 
 std::ostream &operator<<(std::ostream &os, const Employee & employee) {
-    os << "EMPLOYEE: Id = " << employee.getId() << "; Actual Position =  " << employee.getCoordinates()<<endl;
+    os << "EMPLOYEE: Id = " << employee.getId() << " Vehicle = ";
+
+    string vehicleType;
+
+    switch(employee.getType()) {
+        case CAR:
+            os << "Car";
+            break;
+        case MOTORCYCLE:
+            os << "Motorcycle";
+            break;
+        case BIKE:
+            os << "Bike";
+            break;
+        case FOOT:
+            os << "By Foot";
+            break;
+        default:
+            os << "Invalid";
+            break;
+    }
+
+    os << "; MaxCargo = " << employee.getMaxCargo() << endl;
+
     return os;
+}
+
+bool Employee::operator<(const Employee &rhs) const {
+    return rhs.getDist()*0.5 + rhs.getMaxCargo()* 0.3 + rhs.getAvgVelocity() * 0.2 < dist*0.5 + maxCargo*0.3 + avgVelocity * 0.2;
+}
+
+double Employee::getDist() const {
+    return dist;
+}
+
+void Employee::setDist(double dist) {
+    Employee::dist = dist;
+}
+
+int Employee::getAvgVelocity() const {
+    return avgVelocity;
 }

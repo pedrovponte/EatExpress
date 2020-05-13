@@ -7,6 +7,7 @@
 #include "Request.h"
 #include "Task.h"
 #include "Graph.h"
+#include "algorithm"
 
 // Phase 1
 void simulateFloydWarshallPhase1(){
@@ -109,7 +110,6 @@ void simulateFloydWarshallPhase2(){
 
         // Get requests distribution and paths
         for(int i = 0; i < tasks.size(); i++){
-            // TODO - Call this function in a thread to execute all tasks from one round of requests at the same time
             tasks[i]->setFloydWarshallPath(graph);
             cout << *tasks[i] << endl;
         }
@@ -158,6 +158,40 @@ void simulateDijkstraPhase2(){
         }
         requestsRound++;
     }
+}
+
+void simulatePhase3(){
+    Graph<Coordinates> graph = loadGraph("GridGraphs", "16x16", true);
+
+    // Pre-process Distances with Floyd Warshall
+    graph.floydWarshallShortestPath();
+
+    // Add Employees
+    vector<Employee*> employees;
+    Employee * employee1 = new Employee(0,Coordinates(4),40,MOTORCYCLE,true);
+    employees.push_back(employee1);
+    Employee * employee2 = new Employee(1,Coordinates(9),20,FOOT,true);
+    employees.push_back(employee2);
+    Employee * employee3 = new Employee(2,Coordinates(0),60,CAR,true);
+    employees.push_back(employee3);
+
+    // Add Requests
+    min_priority_queue requests;
+    requests.push(Request(0, Date(2020,07,10), Hour(21,0),graph.findVertex(Coordinates(3)),graph.findVertex(Coordinates(66)),20));
+    requests.push(Request(1, Date(2020,07,10), Hour(20,0),graph.findVertex(Coordinates(9)),graph.findVertex(Coordinates(7)),20));
+    requests.push(Request(2, Date(2020,07,10), Hour(18,0),graph.findVertex(Coordinates(76)),graph.findVertex(Coordinates(10)),35));
+    requests.push(Request(3, Date(2020,07,10), Hour(9,40),graph.findVertex(Coordinates(22)),graph.findVertex(Coordinates(80)),20));
+    requests.push(Request(4, Date(2020,07,10), Hour(18,30),graph.findVertex(Coordinates(9)),graph.findVertex(Coordinates(200)),10));
+    requests.push(Request(5, Date(2020,07,10), Hour(15,30),graph.findVertex(Coordinates(76)),graph.findVertex(Coordinates(100)),30));
+    requests.push(Request(6, Date(2020,07,10), Hour(12,10),graph.findVertex(Coordinates(3)),graph.findVertex(Coordinates(4)),50));
+
+    vector<Task*> tasks = distributeRequests(graph,graph,requests,employees);
+    vector<Task*>::const_iterator it = tasks.begin();
+    while(it != tasks.end()){
+        cout << **it << endl;
+        it++;
+    }
+
 }
 
 // Phase 3

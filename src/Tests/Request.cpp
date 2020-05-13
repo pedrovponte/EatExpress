@@ -14,6 +14,11 @@ Request::Request(unsigned long id, const Date &requestDate, const Hour &requestH
         this->delivery_addr = delivery_addr;
 }
 
+Request::Request(unsigned long id, const Date &requestDate, const Hour &requestHour,Vertex<Coordinates>* checkpoint, Vertex<Coordinates>* delivery_addr, int cargo): Request(id,requestDate,requestHour,cargo){
+    this->checkpoints.push_back(checkpoint);
+    this->delivery_addr = delivery_addr;
+}
+
 Request::Request(const Request & request): id(request.getId()), request_date(request.getRequestDate()), request_hour(request.getRequestHour()), cargo(request.getCargo()){
     this->checkpoints = request.checkpoints;
     this->delivery_addr = request.getDeliveryAddr();
@@ -77,8 +82,11 @@ void Request::setDeliveryAddr(Vertex<Coordinates> * delivery_addr){
    this->delivery_addr = delivery_addr;
 }
 
-bool Request::operator<(Request & request) const {
-    return this->getRequestDate() < request.getRequestDate() && this->getRequestHour() < request.getRequestHour();
+bool Request::operator<(const Request & request) const {
+    if(this->request_date == request.getRequestDate())
+        return this->request_hour < request.getRequestHour();
+    else
+        return this->request_date < request.getRequestDate();
 }
 
 std::ostream &operator<<(std::ostream &os, const Request & request) {
@@ -88,7 +96,7 @@ std::ostream &operator<<(std::ostream &os, const Request & request) {
         os << request.getCheckpoints()[i]->getInfo() << " ";
     }
 
-    os << "; Delivery address = " << request.getDeliveryAddr()->getInfo() << endl;
+    os << "; Delivery address = " << request.getDeliveryAddr()->getInfo() << "; Cargo = " << request.getCargo() << endl;
 
     return os;
 }
