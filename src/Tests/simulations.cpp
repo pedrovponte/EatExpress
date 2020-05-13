@@ -163,13 +163,12 @@ void simulateDijkstraPhase2(){
 // Phase 3
 
 void simulatePhase3(){
-    Graph<Coordinates> graph = loadGraph("GridGraphs", "30x30", true);
-    Graph<Coordinates> reducedGraph = loadGraph("GridGraphs", "30x30", true);
+    Graph<Coordinates> graph = loadGraph("GridGraphs", "20x20Grid", true);
+    Graph<Coordinates> reducedGraph = loadGraph("GridGraphs", "20x20Grid", true);
 
     // Pre-process Distances with Floyd Warshall
     graph.floydWarshallShortestPath();
     reducedGraph.floydWarshallShortestPath();
-
 
     // Add Employees
     vector<Employee*> employees;
@@ -182,9 +181,9 @@ void simulatePhase3(){
 
     // Add Requests
     min_priority_queue requests;
-    requests.push(Request(0, Date(2020,07,10), Hour(21,0),Coordinates(3),Coordinates(66),40));
+    requests.push(Request(0, Date(2020,07,10), Hour(21,0),Coordinates(3),Coordinates(64),40));
     requests.push(Request(1, Date(2020,07,10), Hour(20,0),Coordinates(9),Coordinates(7),20));
-    requests.push(Request(2, Date(2020,07,10), Hour(18,0),Coordinates(76),Coordinates(10),12));
+    requests.push(Request(2, Date(2020,07,10), Hour(18,0),Coordinates(25),Coordinates(10),12));
     requests.push(Request(3, Date(2020,07,10), Hour(9,40),Coordinates(22),Coordinates(80),60));
     requests.push(Request(4, Date(2020,07,10), Hour(18,30),Coordinates(9),Coordinates(200),10));
     requests.push(Request(5, Date(2020,07,10), Hour(15,30),Coordinates(76),Coordinates(100),30));

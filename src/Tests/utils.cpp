@@ -163,6 +163,8 @@ Graph<Coordinates> loadGraph(string dir, string subDir, bool euclidean, bool pre
 
     if(preview) gv->rearrange();
 
+    cleanGraph(g);
+
     return g;
 }
 
@@ -413,16 +415,15 @@ void generateRandomGrid(int n, bool random, ostream &nodes, ostream &edges, bool
     }
 }
 
-void cleanGraph(Graph<Coordinates> *graph){
+void cleanGraph(Graph<Coordinates> &graph){
 
     vector<Vertex<Coordinates> *> vertexes;
 
-    for (Vertex<Coordinates> *vertex : graph->getVertexSet()) {
+    for (Vertex<Coordinates> *vertex : graph.getVertexSet()) {
         if(vertex->getAdj().size() > 0){
             vertexes.push_back(vertex);
         }
     }
 
-    graph->setVertexSet(vertexes);
-
+    graph.setVertexSet(vertexes);
 }

@@ -5,7 +5,6 @@
 #ifndef CAL_T3G4_TASK_H
 #define CAL_T3G4_TASK_H
 
-
 #include "Employee.h"
 #include "Request.h"
 
