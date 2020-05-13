@@ -108,12 +108,14 @@ void graphViewerProperties(GraphViewer * gv);
 
 void drawGraph(GraphViewer *gv, const Graph<Coordinates> & graph);
 
-vector<Vertex<Coordinates>*> getRestaurantsStub(Graph<Coordinates> &graph, int nr);
+vector<Coordinates> getRestaurantsStub(Graph<Coordinates> &graph, int nr);
 
-vector<Vertex<Coordinates>*> getClientAddressesStub(Graph<Coordinates> &graph, int nr);
+vector<Coordinates> getClientAddressesStub(Graph<Coordinates> &graph, int nr);
 
 vector<Request> getRandomRequests(Graph<Coordinates> &graph, int nr);
 
-void generateRandomGrid(int n, bool random, ostream &nodes, ostream &edges);
+void generateRandomGrid(int n, bool random, ostream &nodes, ostream &edges, bool bike);
+
+void cleanGraph(Graph<Coordinates> *graph);
 
 #endif //CAL_T3G4_UTILS_H

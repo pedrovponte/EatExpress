@@ -315,28 +315,28 @@ void drawGraph(GraphViewer *gv, const Graph<Coordinates> & graph){
 
 // Stubs
 
-vector<Vertex<Coordinates>*> getRestaurantsStub(Graph<Coordinates> &graph, int nr){
-    vector<Vertex<Coordinates>*> restaurants;
+vector<Coordinates> getRestaurantsStub(Graph<Coordinates> &graph, int nr){
+    vector<Coordinates> restaurants;
 
     srand(nr);
 
     for (int i = 0; i < nr; ++i) {
         int randV = rand() % graph.getNumVertex();
-        Vertex<Coordinates> * restaurant = graph.findVertex(Coordinates(randV));
+        Coordinates restaurant = Coordinates(randV);
         restaurants.push_back(restaurant);
     }
 
     return restaurants;
 }
 
-vector<Vertex<Coordinates>*> getClientAddressesStub(Graph<Coordinates> &graph, int nr){
-    vector<Vertex<Coordinates>*> delivery;
+vector<Coordinates> getClientAddressesStub(Graph<Coordinates> &graph, int nr){
+    vector<Coordinates> delivery;
 
     srand(nr * 2);
 
     for (int i = 0; i < nr; ++i) {
         int randV = rand() % graph.getNumVertex();
-        Vertex<Coordinates> * address = graph.findVertex(Coordinates(randV));
+        Coordinates address = Coordinates(randV);
         delivery.push_back(address);
     }
 
@@ -345,8 +345,8 @@ vector<Vertex<Coordinates>*> getClientAddressesStub(Graph<Coordinates> &graph, i
 
 vector<Request> getRandomRequests(Graph<Coordinates> &graph, int nr){
 
-    vector<Vertex<Coordinates> *> restaurants = getRestaurantsStub(graph, nr);
-    vector<Vertex<Coordinates> *> clients = getClientAddressesStub(graph, nr);
+    vector<Coordinates> restaurants = getRestaurantsStub(graph, nr);
+    vector<Coordinates> clients = getClientAddressesStub(graph, nr);
 
     vector<Request> requests;
     Date date = Date(2020,5,9);
@@ -354,7 +354,7 @@ vector<Request> getRandomRequests(Graph<Coordinates> &graph, int nr){
     for (int i = 0; i < nr; ++i) {
         hour.setMinute(hour.getMinute()+i);
 
-        vector<Vertex<Coordinates> *> checkpoints;
+        vector<Coordinates> checkpoints;
         checkpoints.push_back(restaurants.at(i));
         requests.push_back(Request(i,date,hour,checkpoints, clients.at(i),i+1));
     }
@@ -362,7 +362,7 @@ vector<Request> getRandomRequests(Graph<Coordinates> &graph, int nr){
     return requests;
 }
 
-void generateRandomGrid(int n, bool random, ostream &nodes, ostream &edges){
+void generateRandomGrid(int n, bool random, ostream &nodes, ostream &edges, bool bike){
 
     // Call this on main:
     //    ofstream nodes , edges;
@@ -376,7 +376,7 @@ void generateRandomGrid(int n, bool random, ostream &nodes, ostream &edges){
     int x = 0;
     int y = 0;
 
-    srand(time(NULL));
+    srand(n);
 
     for (int i = 0; i < n; ++i) {
         for (int j = 0; j < n; ++j) {
@@ -400,6 +400,10 @@ void generateRandomGrid(int n, bool random, ostream &nodes, ostream &edges){
     edges << totalEdges << endl;
 
     for (int k = 0; k < totalNodes; ++k) {
+
+        if (bike && rand() % 4 < 3)
+            continue;
+
         if (k + 1 < totalNodes && (k + 1) % n != 0){
             edges << "(" << k << ", " << k + 1 << ")" << endl;
         }
@@ -407,6 +411,18 @@ void generateRandomGrid(int n, bool random, ostream &nodes, ostream &edges){
             edges << "(" << k << ", " << k + n << ")" << endl;
         }
     }
+}
 
+void cleanGraph(Graph<Coordinates> *graph){
+
+    vector<Vertex<Coordinates> *> vertexes;
+
+    for (Vertex<Coordinates> *vertex : graph->getVertexSet()) {
+        if(vertex->getAdj().size() > 0){
+            vertexes.push_back(vertex);
+        }
+    }
+
+    graph->setVertexSet(vertexes);
 
 }

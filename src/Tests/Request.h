@@ -16,13 +16,15 @@ class Request {
     unsigned long id;
     Date request_date;
     Hour request_hour;
-    vector<Vertex<Coordinates>*> checkpoints;
-    Vertex<Coordinates> * delivery_addr;
+    vector<Coordinates> checkpoints;
+    Coordinates delivery_addr;
     int cargo;
+    bool deliverableByFoot;
+    bool deliverableByCar;
 public:
     Request(unsigned long id, const Date &requestDate, const Hour &requestHour, int cargo);
-    Request(unsigned long id, const Date &requestDate, const Hour &requestHour, vector<Vertex<Coordinates>*> checkpoints, Vertex<Coordinates>* delivery_addr, int cargo);
-    Request(unsigned long id, const Date &requestDate, const Hour &requestHour,Vertex<Coordinates>* checkpoint, Vertex<Coordinates>* delivery_addr, int cargo);
+    Request(unsigned long id, const Date &requestDate, const Hour &requestHour, vector<Coordinates> checkpoints, Coordinates delivery_addr, int cargo);
+    Request(unsigned long id, const Date &requestDate, const Hour &requestHour,Coordinates checkpoint, Coordinates delivery_addr, int cargo);
     Request(const Request & request);
     unsigned long getId() const;
     void setId(unsigned long id);
@@ -30,13 +32,18 @@ public:
     void setRequestDate(const Date &requestDate);
     const Hour &getRequestHour() const;
     void setRequestHour(const Hour &requestHour);
-    vector<Vertex<Coordinates>*> getCheckpoints() const;
-    Vertex<Coordinates> *getDeliveryAddr() const;
-    void setDeliveryAddr(Vertex<Coordinates> * delivery_addr);
-    void addCheckpoint(Vertex<Coordinates> * checkpoint);
+    vector<Coordinates> getCheckpoints() const;
+    Coordinates getDeliveryAddr() const;
+    void setDeliveryAddr(Coordinates delivery_addr);
+    void addCheckpoint(Coordinates checkpoint);
     int getCargo() const;
     void setCargo(int cargo);
     bool operator<(const Request & request) const;
+    bool isDeliverableByFoot() const;
+    void setDeliverableByFoot(bool deliverableByFoot);
+    bool isDeliverableByCar() const;
+    void setDeliverableByCar(bool deliverableByCar);
+
 
     friend std::ostream &operator<<(std::ostream &os, const Request &request);
 };

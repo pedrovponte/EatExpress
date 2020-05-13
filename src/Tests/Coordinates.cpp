@@ -3,8 +3,18 @@
 //
 
 #include "Coordinates.h"
+#include <algorithm>
+
+#define INF std::numeric_limits<double>::max()
 
 using namespace std;
+
+Coordinates::Coordinates(){
+
+    id = INF;
+    latitude = 0;
+    longitude = 0;
+}
 
 Coordinates::Coordinates(unsigned long id) : Coordinates(id,0, 0) {
 }

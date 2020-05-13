@@ -6,15 +6,18 @@
 
 using namespace std;
 
-Request::Request(unsigned long id, const Date &requestDate, const Hour &requestHour, int cargo): id(id), request_date(requestDate),request_hour(requestHour), cargo(cargo) {}
+Request::Request(unsigned long id, const Date &requestDate, const Hour &requestHour, int cargo): id(id), request_date(requestDate),request_hour(requestHour), cargo(cargo) {
+    this->deliverableByFoot = false;
+    this->deliverableByCar = false;
+}
 
-Request::Request(unsigned long id, const Date &requestDate, const Hour &requestHour,vector<Vertex<Coordinates>*> checkpoints, Vertex<Coordinates>* delivery_addr,
+Request::Request(unsigned long id, const Date &requestDate, const Hour &requestHour,vector<Coordinates> checkpoints, Coordinates delivery_addr,
         int cargo): Request(id,requestDate,requestHour,cargo){
         this->checkpoints = checkpoints;
         this->delivery_addr = delivery_addr;
 }
 
-Request::Request(unsigned long id, const Date &requestDate, const Hour &requestHour,Vertex<Coordinates>* checkpoint, Vertex<Coordinates>* delivery_addr, int cargo): Request(id,requestDate,requestHour,cargo){
+Request::Request(unsigned long id, const Date &requestDate, const Hour &requestHour,Coordinates checkpoint, Coordinates delivery_addr, int cargo): Request(id,requestDate,requestHour,cargo){
     this->checkpoints.push_back(checkpoint);
     this->delivery_addr = delivery_addr;
 }
@@ -22,6 +25,8 @@ Request::Request(unsigned long id, const Date &requestDate, const Hour &requestH
 Request::Request(const Request & request): id(request.getId()), request_date(request.getRequestDate()), request_hour(request.getRequestHour()), cargo(request.getCargo()){
     this->checkpoints = request.checkpoints;
     this->delivery_addr = request.getDeliveryAddr();
+    this->deliverableByFoot = request.isDeliverableByFoot();
+    this->deliverableByCar = request.isDeliverableByCar();
 }
 
 unsigned long Request::getId() const {
@@ -54,12 +59,12 @@ void Request::setRequestHour(const Hour &requestHour) {
 }
 
 
-vector<Vertex<Coordinates>*> Request::getCheckpoints() const {
+vector<Coordinates> Request::getCheckpoints() const {
     return checkpoints;
 }
 
 
-void Request::addCheckpoint(Vertex<Coordinates> * checkpoint) {
+void Request::addCheckpoint(Coordinates checkpoint) {
     checkpoints.push_back(checkpoint);
 }
 
@@ -74,11 +79,11 @@ void Request::setCargo(int cargo) {
 }
 
 
-Vertex<Coordinates> *Request::getDeliveryAddr() const {
+Coordinates Request::getDeliveryAddr() const {
     return delivery_addr;
 }
 
-void Request::setDeliveryAddr(Vertex<Coordinates> * delivery_addr){
+void Request::setDeliveryAddr(Coordinates delivery_addr){
    this->delivery_addr = delivery_addr;
 }
 
@@ -93,10 +98,26 @@ std::ostream &operator<<(std::ostream &os, const Request & request) {
     os << "REQUEST: Id = " << request.getId() << "; Restaurants = ";
 
     for(int i = 0; i < request.getCheckpoints().size();i++){
-        os << request.getCheckpoints()[i]->getInfo() << " ";
+        os << request.getCheckpoints()[i] << " ";
     }
 
-    os << "; Delivery address = " << request.getDeliveryAddr()->getInfo() << "; Cargo = " << request.getCargo() << endl;
+    os << "; Delivery address = " << request.getDeliveryAddr() << "; Cargo = " << request.getCargo() << endl;
 
     return os;
+}
+
+bool Request::isDeliverableByFoot() const {
+    return deliverableByFoot;
+}
+
+void Request::setDeliverableByFoot(bool deliverableByFoot) {
+    Request::deliverableByFoot = deliverableByFoot;
+}
+
+bool Request::isDeliverableByCar() const {
+    return deliverableByCar;
+}
+
+void Request::setDeliverableByCar(bool deliverableByCar) {
+    Request::deliverableByCar = deliverableByCar;
 }

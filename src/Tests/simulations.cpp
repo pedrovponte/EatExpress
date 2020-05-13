@@ -19,12 +19,12 @@ void simulateFloydWarshallPhase1(){
     graph.floydWarshallShortestPath();
 
     // Get possible restaurants and let user choose
-    Vertex<Coordinates> * restaurant = graph.findVertex(Coordinates(20));
-    vector<Vertex<Coordinates>*> restaurants;
+    Coordinates  restaurant = Coordinates(20);
+    vector<Coordinates> restaurants;
     restaurants.push_back(restaurant);
 
     // Choose user's position or generate random position and request's dimension, date and hour
-    Vertex<Coordinates> * delivery_addr = graph.findVertex(Coordinates(42));
+    Coordinates delivery_addr = Coordinates(42);
 
     // Build Request
     Request request(0, Date(2020,10,10), Hour(22,0),restaurants,delivery_addr,20);
@@ -48,12 +48,12 @@ void simulateDijkstraPhase1(){
     Graph<Coordinates> graph = loadGraph("GridGraphs", "8x8", true);
 
     // Get possible restaurants and let user choose
-    Vertex<Coordinates> * restaurant = graph.findVertex(Coordinates(20));
-    vector<Vertex<Coordinates>*> restaurants;
+    Coordinates restaurant = Coordinates(20);
+    vector<Coordinates> restaurants;
     restaurants.push_back(restaurant);
 
     // Choose user's position or generate random position and request's dimension, date and hour
-    Vertex<Coordinates> * delivery_addr = graph.findVertex(Coordinates(42));
+    Coordinates delivery_addr = Coordinates(42);
 
     // Build Request
     Request request(0, Date(2020,10,10), Hour(22,0),restaurants,delivery_addr,20);
@@ -160,11 +160,16 @@ void simulateDijkstraPhase2(){
     }
 }
 
+// Phase 3
+
 void simulatePhase3(){
-    Graph<Coordinates> graph = loadGraph("GridGraphs", "16x16", true);
+    Graph<Coordinates> graph = loadGraph("GridGraphs", "30x30", true);
+    Graph<Coordinates> reducedGraph = loadGraph("GridGraphs", "30x30Bike", true);
 
     // Pre-process Distances with Floyd Warshall
     graph.floydWarshallShortestPath();
+    reducedGraph.floydWarshallShortestPath();
+
 
     // Add Employees
     vector<Employee*> employees;
@@ -177,15 +182,16 @@ void simulatePhase3(){
 
     // Add Requests
     min_priority_queue requests;
-    requests.push(Request(0, Date(2020,07,10), Hour(21,0),graph.findVertex(Coordinates(3)),graph.findVertex(Coordinates(66)),20));
-    requests.push(Request(1, Date(2020,07,10), Hour(20,0),graph.findVertex(Coordinates(9)),graph.findVertex(Coordinates(7)),20));
-    requests.push(Request(2, Date(2020,07,10), Hour(18,0),graph.findVertex(Coordinates(76)),graph.findVertex(Coordinates(10)),35));
-    requests.push(Request(3, Date(2020,07,10), Hour(9,40),graph.findVertex(Coordinates(22)),graph.findVertex(Coordinates(80)),20));
-    requests.push(Request(4, Date(2020,07,10), Hour(18,30),graph.findVertex(Coordinates(9)),graph.findVertex(Coordinates(200)),10));
-    requests.push(Request(5, Date(2020,07,10), Hour(15,30),graph.findVertex(Coordinates(76)),graph.findVertex(Coordinates(100)),30));
-    requests.push(Request(6, Date(2020,07,10), Hour(12,10),graph.findVertex(Coordinates(3)),graph.findVertex(Coordinates(4)),50));
+    requests.push(Request(0, Date(2020,07,10), Hour(21,0),Coordinates(3),Coordinates(66),40));
+    requests.push(Request(1, Date(2020,07,10), Hour(20,0),Coordinates(9),Coordinates(7),20));
+    requests.push(Request(2, Date(2020,07,10), Hour(18,0),Coordinates(76),Coordinates(10),12));
+    requests.push(Request(3, Date(2020,07,10), Hour(9,40),Coordinates(22),Coordinates(80),60));
+    requests.push(Request(4, Date(2020,07,10), Hour(18,30),Coordinates(9),Coordinates(200),10));
+    requests.push(Request(5, Date(2020,07,10), Hour(15,30),Coordinates(76),Coordinates(100),30));
+    requests.push(Request(6, Date(2020,07,10), Hour(12,10),Coordinates(3),Coordinates(6),5));
 
-    vector<Task*> tasks = distributeRequests(graph,graph,requests,employees);
+    vector<Task*> tasks = distributeRequests(graph,reducedGraph,requests,employees);
+
     vector<Task*>::const_iterator it = tasks.begin();
     while(it != tasks.end()){
         cout << **it << endl;
@@ -193,5 +199,3 @@ void simulatePhase3(){
     }
 
 }
-
-// Phase 3

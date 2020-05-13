@@ -34,6 +34,10 @@ vector<Task*> distributeRequestsByCloseness_Dijkstra(Graph<Coordinates> & graph,
 
 // Request distribution Phase 3
 
+min_priority_queue setRequestsDeliverability(const Graph<Coordinates> & graph, const Graph<Coordinates> & reducedGraph, min_priority_queue & requests);
+
+bool isDeliverableByVehicle(vehicleType vehicleType, const Request & request);
+
 vector<Employee*> getEligibleEmployees(vector<Employee*> & employees, const Request & request);
 
 void setDistancesToCheckpoint(Graph<Coordinates> & graph, Graph<Coordinates> & reducedGraph, vector<Employee*> & employees, const Request & request);

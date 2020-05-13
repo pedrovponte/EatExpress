@@ -32,6 +32,9 @@ public:
     const Edge<T> & getEdge(const T &sourc, const T &dest) const;
 	int getNumVertex() const;
 	vector<Vertex<T> *> getVertexSet() const;
+
+    void setVertexSet(const vector<Vertex<T>*> vertexSet);
+
     int findVertexIdx(const T &in) const;
 
 	// Single source
@@ -281,6 +284,13 @@ template <class T>
 bool Graph<T>::addBidirectionalEdge(unsigned long idSourc, unsigned  long idDest, const T &sourc, const T &dest, double w) {
     // TODO
     return addEdge(idSourc, sourc,dest,w) && addEdge(idDest, dest,sourc,w);
+}
+
+template<class T>
+void Graph<T>::setVertexSet(const vector<Vertex<T>*> vertexSet) {
+    this->vertexSet.clear();
+
+    this->vertexSet.insert(this->vertexSet.begin(), vertexSet.begin(), vertexSet.end());
 }
 
 #endif /* GRAPH_H_ */

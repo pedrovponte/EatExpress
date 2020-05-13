@@ -8,21 +8,20 @@ Task::Task(Employee * employee, Request request) : employee(employee), request(r
 
 void Task::setFloydWarshallPath(Graph<Coordinates> & graph){
     Coordinates orig = employee->getCoordinates();
-    Coordinates checkpoint = request.getCheckpoints()[0]->getInfo();
-    Coordinates dest = request.getDeliveryAddr()->getInfo();
+    Coordinates checkpoint = request.getCheckpoints()[0];
+    Coordinates dest = request.getDeliveryAddr();
 
     path = graph.getfloydWarshallPath(orig, checkpoint);
     vector<Coordinates> pathToDest = graph.getfloydWarshallPath(checkpoint, dest);
     path.insert(path.end(),pathToDest.begin()+1, pathToDest.end());
-
     employee->setCoordinates(path.at(path.size()-1));
     employee->setReady(true);
 }
 
 void Task::setDijkstraPath(Graph<Coordinates> & graph){
     Coordinates orig = employee->getCoordinates();
-    Coordinates checkpoint = request.getCheckpoints()[0]->getInfo();
-    Coordinates dest = request.getDeliveryAddr()->getInfo();
+    Coordinates checkpoint = request.getCheckpoints()[0];
+    Coordinates dest = request.getDeliveryAddr();
 
     graph.dijkstraShortestPath(orig);
     path = graph.getPathTo(checkpoint);
@@ -40,15 +39,16 @@ const vector<Coordinates> Task::getPath() const{
 }
 
 bool Task::isCheckpoint(Coordinates coordinates){
-    vector<Vertex<Coordinates> * > checkpoints = request.getCheckpoints();
+    vector<Coordinates> checkpoints = request.getCheckpoints();
     for(int i = 0; i< checkpoints.size(); i++){
-        if(checkpoints[i]->getInfo() == coordinates)
+        if(checkpoints[i] == coordinates)
             return true;
     }
     return false;
 }
+
 bool Task::isDeliveryAddress(Coordinates coordinates){
-    return request.getDeliveryAddr()->getInfo() == coordinates;
+    return request.getDeliveryAddr() == coordinates;
 }
 
 vehicleType Task::getVehicleType() const{
@@ -91,7 +91,7 @@ vector<Task*> distributeRequestsByCloseness_FloydWarshall(Graph<Coordinates> & g
     while(!requests.empty()){
         // Get first request in queue
         // Find the Restaurant in the graph
-        destIdx = graph.findVertexIdx(requests.front().getCheckpoints()[0]->getInfo());
+        destIdx = graph.findVertexIdx(requests.front().getCheckpoints()[0]);
 
         employeeIdx = -1; // Null employee
         dist = INF;
@@ -139,7 +139,7 @@ vector<Task*> distributeRequestsByCloseness_Dijkstra(Graph<Coordinates> & graph,
         // Find the nearest employee available (ready = true)
         for(int i = 0; i < employees.size(); i++){
             // Get first request in queue - find the Restaurant in the graph
-            Coordinates checkpoint = requests.front().getCheckpoints()[0]->getInfo();
+            Coordinates checkpoint = requests.front().getCheckpoints()[0];
             Vertex<Coordinates> * v = graph.findVertex(checkpoint);
 
             // Employee is ready
@@ -173,13 +173,50 @@ vector<Task*> distributeRequestsByCloseness_Dijkstra(Graph<Coordinates> & graph,
 
 // Request distribution Phase 3
 
+min_priority_queue setRequestsDeliverability(const Graph<Coordinates> & graph, const Graph<Coordinates> & reducedGraph, min_priority_queue & requests){
+    double ** distsGraph = graph.getDistancesMatrix();
+    double ** distsReducedGraph = reducedGraph.getDistancesMatrix();
+
+    int origIdx1, origIdx2, destIdx1, destIdx2;
+    min_priority_queue requestsQueue;
+
+    while(!requests.empty()){
+        Request request = requests.top();
+        requests.pop();
+
+        origIdx1 = graph.findVertexIdx(request.getCheckpoints()[0]);
+        destIdx1 = graph.findVertexIdx(request.getDeliveryAddr());
+
+        origIdx2 = reducedGraph.findVertexIdx(request.getCheckpoints()[0]);
+        destIdx2 = reducedGraph.findVertexIdx(request.getDeliveryAddr());
+
+        if(distsGraph[origIdx1][destIdx1] != INF)
+            request.setDeliverableByCar(true);
+
+        if(distsReducedGraph[origIdx2][destIdx2] != INF)
+            request.setDeliverableByFoot(true);
+
+        requestsQueue.push(request);
+    }
+
+    return requestsQueue;
+}
+
+bool isDeliverableByVehicle(vehicleType vehicleType, const Request & request){
+    if(vehicleType == FOOT || vehicleType == BIKE) return request.isDeliverableByFoot();
+    else if(vehicleType == CAR || vehicleType == MOTORCYCLE)return request.isDeliverableByCar();
+    else return false;
+}
+
 vector<Employee*> getEligibleEmployees(vector<Employee*> & employees, const Request & request){
     vector<Employee*> eligibleEmployees;
     vector<Employee*>::iterator it = employees.begin();
 
     while(it != employees.end()){
-        if((*it)->isReady() && (*it)->getMaxCargo() >= request.getCargo() && (*it)->getDist() != INF){
-            eligibleEmployees.push_back(*it);
+        if(isDeliverableByVehicle((*it)->getType(), request)){
+            if((*it)->isReady() && (*it)->getMaxCargo() >= request.getCargo() && (*it)->getDist() != INF){
+                eligibleEmployees.push_back(*it);
+            }
         }
         it++;
     }
@@ -188,8 +225,8 @@ vector<Employee*> getEligibleEmployees(vector<Employee*> & employees, const Requ
 
 void setDistancesToCheckpoint(Graph<Coordinates> & graph, Graph<Coordinates> & reducedGraph, vector<Employee*> & employees, const Request & request){
     int origIdx;
-    int checkpointIdx1 = graph.findVertexIdx(request.getCheckpoints()[0]->getInfo());
-    int checkpointIdx2 = reducedGraph.findVertexIdx(request.getCheckpoints()[0]->getInfo());
+    int checkpointIdx1 = graph.findVertexIdx(request.getCheckpoints()[0]);
+    int checkpointIdx2 = reducedGraph.findVertexIdx(request.getCheckpoints()[0]);
 
     double ** distsGraph = graph.getDistancesMatrix();
     double ** distsReducedGraph = reducedGraph.getDistancesMatrix();
@@ -220,6 +257,8 @@ vector<Task*> distributeRequests(Graph<Coordinates> & graph, Graph<Coordinates> 
     int availableEmployees = employees.size();
 
     if(employees.empty()) return tasks;
+
+    requests = setRequestsDeliverability(graph,reducedGraph,requests);
 
     while(!requests.empty()){
 
