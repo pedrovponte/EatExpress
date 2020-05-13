@@ -164,7 +164,7 @@ void simulateDijkstraPhase2(){
 
 void simulatePhase3(){
     Graph<Coordinates> graph = loadGraph("GridGraphs", "30x30", true);
-    Graph<Coordinates> reducedGraph = loadGraph("GridGraphs", "30x30Bike", true);
+    Graph<Coordinates> reducedGraph = loadGraph("GridGraphs", "30x30", true);
 
     // Pre-process Distances with Floyd Warshall
     graph.floydWarshallShortestPath();
@@ -199,3 +199,4 @@ void simulatePhase3(){
     }
 
 }
+

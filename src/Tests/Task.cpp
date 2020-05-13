@@ -265,6 +265,7 @@ vector<Task*> distributeRequests(Graph<Coordinates> & graph, Graph<Coordinates> 
         setDistancesToCheckpoint(graph, reducedGraph, employees,requests.top());
 
         vector<Employee*> eligibleEmployees = getEligibleEmployees(employees, requests.top());
+        cout << eligibleEmployees.size() << endl;
 
         if(eligibleEmployees.empty()){
             pendingRequests.push(requests.top());
@@ -274,6 +275,7 @@ vector<Task*> distributeRequests(Graph<Coordinates> & graph, Graph<Coordinates> 
             eligibleEmployees[0]->setReady(false);
 
             Task * task = new Task(eligibleEmployees[0], requests.top());
+            cout << *eligibleEmployees[0];
             availableEmployees--;
             roundTasks.push_back(task);
         }
@@ -301,6 +303,16 @@ vector<Task*> distributeRequests(Graph<Coordinates> & graph, Graph<Coordinates> 
             }
             tasks.insert(tasks.end(),roundTasks.begin(), roundTasks.end());
             roundTasks.clear();
+        }
+        else if(requests.empty() && pendingRequests.empty()){
+            for(Task * task: roundTasks){
+                if(task->getVehicleType() == BIKE || task->getVehicleType() == FOOT)
+                    task->setFloydWarshallPath(reducedGraph);
+                else if(task->getVehicleType() == CAR || task->getVehicleType() == MOTORCYCLE)
+                    task->setFloydWarshallPath(graph);
+                tasks.insert(tasks.end(),roundTasks.begin(), roundTasks.end());
+                roundTasks.clear();
+            }
         }
     }
 
