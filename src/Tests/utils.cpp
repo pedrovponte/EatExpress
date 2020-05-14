@@ -5,10 +5,10 @@
 #include <sstream>
 #include <fstream>
 #include <iostream>
+#include <map>
 #include <string>
 #include <cmath>
 #include <edgetype.h>
-#include <sys/time.h>
 #include "utils.h"
 #include "Task.h"
 
@@ -49,9 +49,11 @@ Graph<Coordinates> loadGraph(string dir, string subDir, bool euclidean, bool pre
     }
 
     istringstream ss;
-    stringstream edgesFile, nodesFile;
+    stringstream edgesFile, nodesFile, tagsFile;
     Graph<Coordinates> g;
     string firstLine;
+
+    map<unsigned long, VertexType> vTypes;
 
     edgesFile << "../Mapas/" << dir << "/" << subDir;
     nodesFile << "../Mapas/" << dir << "/" << subDir;
@@ -59,12 +61,14 @@ Graph<Coordinates> loadGraph(string dir, string subDir, bool euclidean, bool pre
     if(dir == "GridGraphs"){
         edgesFile << "/edges.txt";
         nodesFile << "/nodes.txt";
+        tagsFile << "../Mapas/" << dir << "Tags/" << subDir.substr(0,5) << "/tags_" << subDir.substr(0,5) <<".txt";
+        vTypes  = loadTags(tagsFile.str());
     }
     else{
         transform(subDir.begin(), subDir.end(), subDir.begin(), ::tolower);
 
         edgesFile << "/edges_" << subDir << ".txt";
-        nodesFile << "/nodes_lat_lon_" << subDir << ".txt";
+        nodesFile << "/nodes_x_y_" << subDir << ".txt";
     }
 
     ifstream nodes, edges;
@@ -93,11 +97,28 @@ Graph<Coordinates> loadGraph(string dir, string subDir, bool euclidean, bool pre
             ss.str(node.substr(0,node.length() - 1));
             ss >> longitude;
 
-            g.addVertex(Coordinates(id,latitude, longitude));
+            g.addVertex(Coordinates(id,latitude, longitude), vTypes[id]);
 
             if(preview){
                 gv->addNode(id,latitude,longitude);
                 gv->setVertexLabel(id, to_string(id));
+
+                switch(vTypes[id]){
+                    case RESTAURANT:
+                        gv->setVertexIcon(id,"../Mapas/icons/restaurant.png");
+                        break;
+                    case FAST_FOOD:
+                        gv->setVertexIcon(id,"../Mapas/icons/fast_food.png");
+                        break;
+                    case VEGETARIAN:
+                        gv->setVertexIcon(id,"../Mapas/icons/vegetarian.png");
+                        break;
+                    case PIZZA:
+                        gv->setVertexIcon(id,"../Mapas/icons/pizza.png");
+                        break;
+                    default:
+                        break;
+                }
             }
 
             i++;
@@ -145,8 +166,6 @@ Graph<Coordinates> loadGraph(string dir, string subDir, bool euclidean, bool pre
 
             if(preview){
                 gv->addEdge(i, origId, destId, EdgeType::DIRECTED);
-                gv->setEdgeLabel(i,"Dist: " + to_string(dist));
-                //gv->setEdgeWeight(i,dist);
             }
 
             if(dir == "GridGraphs"){
@@ -154,7 +173,6 @@ Graph<Coordinates> loadGraph(string dir, string subDir, bool euclidean, bool pre
                 g.addEdge(i,destCoords, origCoords,dist);
                 if(preview){
                     gv->addEdge(i, destId, origId, EdgeType::DIRECTED);
-                    gv->setEdgeLabel(i,"Dist: " + to_string(dist));
                 }
             }
 
@@ -170,32 +188,66 @@ Graph<Coordinates> loadGraph(string dir, string subDir, bool euclidean, bool pre
     return g;
 }
 
-void loadTags(Graph<Coordinates>, string path){
+map<unsigned long, VertexType> loadTags(string path){
     istringstream ss;
     string nCategories, category, nNodes;
+    map<unsigned long, VertexType> tagsMap;
 
-    ifstream tags;
-    tags.open("../Mapas/" + path);
+    ifstream tagsFile;
+    tagsFile.open(path);
 
-    int i = 0;
-    if (tags.is_open()) {
-        getline(tags, nCategories);
+    int i;
+    if (tagsFile.is_open()) {
+        i = 0;
+        getline(tagsFile, nCategories);
+
         while(i < stoi(nCategories)){
-            getline(tags,category);
-            getline(tags,nNodes);
+            getline(tagsFile,category);
+            getline(tagsFile,nNodes);
+
+            VertexType vType;
+            if(category == "restaurant"){
+                vType = RESTAURANT;
+            }else if(category == "fast_food"){
+                vType = FAST_FOOD;
+            }else if(category == "vegetarian"){
+                vType = VEGETARIAN;
+            }else if(category == "pizza"){
+                vType = PIZZA;
+            }else{
+                vType = OTHER;
+            }
+
+            string idStr;
+            unsigned long id;
             int j = 0;
             while(j < stoi(nNodes)){
-                unsigned long id;
+                getline(tagsFile, idStr);
+                ss.str(idStr);
                 ss >> id;
                 ss.clear();
-
-                //TODO Add tag to graph vertex if exists
+                tagsMap.insert(pair<unsigned long, VertexType>(id,vType));
                 j++;
             }
             i++;
         }
     }
-    tags.close();
+    tagsFile.close();
+
+    return tagsMap;
+}
+
+void cleanGraph(Graph<Coordinates> &graph){
+
+    vector<Vertex<Coordinates> *> vertexes;
+
+    for (Vertex<Coordinates> *vertex : graph.getVertexSet()) {
+        if(vertex->getAdj().size() > 0){
+            vertexes.push_back(vertex);
+        }
+    }
+
+    graph.setVertexSet(vertexes);
 }
 
 // Graphic Viewer
@@ -325,6 +377,14 @@ void viewMultiplePaths_FloydWarshall(const Graph<Coordinates> & graph, const vec
     gv->rearrange();
 }
 
+void viewEmployeePath(){}
+
+void viewEmployeesPaths(vector<Task*> tasks){
+    for(Task * task: tasks){
+
+    }
+}
+
 void graphViewerProperties(GraphViewer * gv){
     gv->createWindow(700, 700);
     gv->defineVertexColor("gray");
@@ -345,19 +405,6 @@ void drawGraph(GraphViewer *gv, const Graph<Coordinates> & graph){
             //gv->setEdgeLabel(e.getId(),"Dist: " + to_string(e.getWeight()));
         }
     }
-}
-
-void cleanGraph(Graph<Coordinates> &graph){
-
-    vector<Vertex<Coordinates> *> vertexes;
-
-    for (Vertex<Coordinates> *vertex : graph.getVertexSet()) {
-        if(vertex->getAdj().size() > 0){
-            vertexes.push_back(vertex);
-        }
-    }
-
-    graph.setVertexSet(vertexes);
 }
 
 // Stubs and utils for test functions

@@ -5,13 +5,11 @@
 #include "Coordinates.h"
 #include <algorithm>
 
-#define INF std::numeric_limits<double>::max()
-
 using namespace std;
 
 Coordinates::Coordinates(){
 
-    id = INF;
+    id = INT64_MAX;
     latitude = 0;
     longitude = 0;
 }

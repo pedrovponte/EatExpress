@@ -174,8 +174,6 @@ vector<Task*> distributeRequestsByCloseness_Dijkstra(Graph<Coordinates> & graph,
 // Request distribution Phase 3
 
 min_priority_queue setRequestsDeliverability(const Graph<Coordinates> & graph, const Graph<Coordinates> & reducedGraph, min_priority_queue & requests){
-    double ** distsGraph = graph.getDistancesMatrix();
-    double ** distsReducedGraph = reducedGraph.getDistancesMatrix();
 
     int origIdx1, origIdx2, destIdx1, destIdx2;
     min_priority_queue requestsQueue;
@@ -190,10 +188,10 @@ min_priority_queue setRequestsDeliverability(const Graph<Coordinates> & graph, c
         origIdx2 = reducedGraph.findVertexIdx(request.getCheckpoints()[0]);
         destIdx2 = reducedGraph.findVertexIdx(request.getDeliveryAddr());
 
-        if(distsGraph[origIdx1][destIdx1] != INF)
+        if(origIdx1 != -1 && destIdx1 != -1 && graph.getDist(origIdx1,destIdx1) != INF)
             request.setDeliverableByCar(true);
 
-        if(origIdx2 != -1 && destIdx2 != -1 && distsReducedGraph[origIdx2][destIdx2] != INF)
+        if(origIdx2 != -1 && destIdx2 != -1 && reducedGraph.getDist(origIdx2,destIdx2) != INF)
             request.setDeliverableByFoot(true);
 
         requestsQueue.push(request);
@@ -202,48 +200,41 @@ min_priority_queue setRequestsDeliverability(const Graph<Coordinates> & graph, c
     return requestsQueue;
 }
 
-bool isDeliverableByVehicle(vehicleType vehicleType, const Request & request){
-    if(vehicleType == FOOT || vehicleType == BIKE) return request.isDeliverableByFoot();
-    else if(vehicleType == CAR || vehicleType == MOTORCYCLE)return request.isDeliverableByCar();
-    else return false;
-}
-
-vector<Employee*> getEligibleEmployees(vector<Employee*> & employees, const Request & request){
-    vector<Employee*> eligibleEmployees;
-    vector<Employee*>::iterator it = employees.begin();
-
-    while(it != employees.end()){
-        if(isDeliverableByVehicle((*it)->getType(), request)){
-            if((*it)->isReady() && (*it)->getMaxCargo() >= request.getCargo() && (*it)->getDist() != INF){
-                eligibleEmployees.push_back(*it);
-            }
-        }
-        it++;
-    }
-    return eligibleEmployees;
-}
-
 void setDistancesToCheckpoint(Graph<Coordinates> & graph, Graph<Coordinates> & reducedGraph, vector<Employee*> & employees, const Request & request){
     int origIdx;
     int checkpointIdx1 = graph.findVertexIdx(request.getCheckpoints()[0]);
     int checkpointIdx2 = reducedGraph.findVertexIdx(request.getCheckpoints()[0]);
 
-    double ** distsGraph = graph.getDistancesMatrix();
-    double ** distsReducedGraph = reducedGraph.getDistancesMatrix();
+    for(Employee * e : employees){
 
-    vector<Employee*>::iterator it = employees.begin();
-    while(it != employees.end()){
-
-        if((*it)->getType() == CAR || (*it)->getType() == MOTORCYCLE){
-            origIdx =  graph.findVertexIdx((*it)->getCoordinates());
-            (*it)->setDist(distsGraph[origIdx][checkpointIdx1]);
+        if(e->getType() == CAR || e->getType() == MOTORCYCLE){
+            origIdx =  graph.findVertexIdx(e->getCoordinates());
+            e->setDist(graph.getDist(origIdx, checkpointIdx1));
         }
-        else if((*it)->getType() == BIKE || (*it)->getType() == FOOT){
-            origIdx =  reducedGraph.findVertexIdx((*it)->getCoordinates());
-            (*it)->setDist(distsReducedGraph[origIdx][checkpointIdx2]);
+        else if(e->getType() == BIKE || e->getType() == FOOT){
+            origIdx =  reducedGraph.findVertexIdx(e->getCoordinates());
+            e->setDist(reducedGraph.getDist(origIdx, checkpointIdx2));
         }
-        it++;
     }
+}
+
+vector<Employee*> getEligibleEmployees(vector<Employee*> & employees, const Request & request){
+    vector<Employee*> eligibleEmployees;
+
+    for(Employee * e: employees){
+        if(isDeliverableByVehicle(e->getType(), request)){
+            if(e->isReady() && e->getMaxCargo() >= request.getCargo() && e->getDist() != INF){
+                eligibleEmployees.push_back(e);
+            }
+        }
+    }
+    return eligibleEmployees;
+}
+
+bool isDeliverableByVehicle(vehicleType vehicleType, const Request & request){
+    if(vehicleType == FOOT || vehicleType == BIKE) return request.isDeliverableByFoot();
+    else if(vehicleType == CAR || vehicleType == MOTORCYCLE)return request.isDeliverableByCar();
+    else return false;
 }
 
 bool compareEmployees(Employee * e1, Employee * e2){
@@ -279,8 +270,9 @@ vector<Task*> distributeRequests(Graph<Coordinates> & graph, Graph<Coordinates> 
         }
         requests.pop();
 
-        if(requests.empty() && !pendingRequests.empty()){
-            if(availableEmployees == employees.size()){
+        if(requests.empty()){
+
+            if(!pendingRequests.empty() && availableEmployees == employees.size()){
                 while(!pendingRequests.empty()){
                     roundTasks.push_back(new Task(nullptr,pendingRequests.top()));
                     pendingRequests.pop();
@@ -301,16 +293,6 @@ vector<Task*> distributeRequests(Graph<Coordinates> & graph, Graph<Coordinates> 
             }
             tasks.insert(tasks.end(),roundTasks.begin(), roundTasks.end());
             roundTasks.clear();
-        }
-        else if(requests.empty() && pendingRequests.empty()){
-            for(Task * task: roundTasks){
-                if(task->getVehicleType() == BIKE || task->getVehicleType() == FOOT)
-                    task->setFloydWarshallPath(reducedGraph);
-                else if(task->getVehicleType() == CAR || task->getVehicleType() == MOTORCYCLE)
-                    task->setFloydWarshallPath(graph);
-                tasks.insert(tasks.end(),roundTasks.begin(), roundTasks.end());
-                roundTasks.clear();
-            }
         }
     }
 

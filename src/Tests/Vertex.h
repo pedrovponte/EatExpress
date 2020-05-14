@@ -12,10 +12,12 @@
 
 using namespace std;
 
+enum VertexType{ OTHER, RESTAURANT, FAST_FOOD, VEGETARIAN, PIZZA};
+
 template <class T>
 class Vertex {
     T info;                // contents
-    char type;             // r for restaurant, a for address, ' ' for others (for now)
+    VertexType type;
     vector<Edge<T> > adj;  // outgoing edges
     bool visited;          // auxiliary field
     double dist = 0;
@@ -23,7 +25,7 @@ class Vertex {
     int queueIndex = 0; 		// required by MutablePriorityQueue
     void addEdge(unsigned long id, Vertex<T> *dest, double w);
 public:
-    Vertex(T in, char type);
+    Vertex(T in, VertexType type = OTHER);
     bool operator<(Vertex<T> & vertex) const; // // required by MutablePriorityQueue
     T getInfo() const;
     double getDist() const;
@@ -35,7 +37,7 @@ public:
 
 
 template <class T>
-Vertex<T>::Vertex(T in, char type): info(in), type(type){}
+Vertex<T>::Vertex(T in, VertexType type): info(in), type(type){}
 
 /*
  * Auxiliary function to add an outgoing edge to a vertex (this),

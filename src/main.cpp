@@ -8,7 +8,9 @@ using namespace std;
 int main(int argc, char* argv[]) {
     testing::InitGoogleTest(&argc, argv);
 
-    simulatePhase3();
+    //simulatePhase3();
+
+    Graph<Coordinates> g = loadGraph("GridGraphs", "30x30Bike",true, true);
 
     return 0;
     return RUN_ALL_TESTS();

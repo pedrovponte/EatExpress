@@ -1,0 +1,7 @@
+2
+restaurant
+1
+5
+fast_food
+1
+19

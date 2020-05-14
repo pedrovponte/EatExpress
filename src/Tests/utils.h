@@ -8,6 +8,7 @@
 #include "Graph.h"
 #include <graphviewer.h>
 #include <string>
+#include <map>
 
 class Task;
 class Request;
@@ -105,7 +106,7 @@ double haversineDistance(double lat1, double long1, double lat2, double long2);
 
 Graph<Coordinates> loadGraph(string folder, string subFolder, bool euclidean, bool preview = false);
 
-void loadTags(Graph<Coordinates>, string path);
+map<unsigned long, VertexType> loadTags(string path);
 
 void cleanGraph(Graph<Coordinates> &graph);
 
@@ -116,6 +117,10 @@ void viewDijkstraShortestPath(const Graph<Coordinates> & graph, const vector<Coo
 void viewFloydWarshallShortestPath(const Graph<Coordinates> & graph, const vector<Coordinates> & path);
 
 void viewMultiplePaths_FloydWarshall(const Graph<Coordinates> & graph, const vector<Task * > tasks);
+
+void viewEmployeePath();
+
+void viewEmployeesPaths(vector<Task*> tasks);
 
 void graphViewerProperties(GraphViewer * gv);
 
