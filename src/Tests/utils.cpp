@@ -14,6 +14,8 @@
 
 using namespace std;
 
+// Distances
+
 double euclideanDistance(double x1, double y1, double x2, double y2){
     return (sqrt(pow(x1 - x2,2) + pow(y1 - y2,2)));
 }
@@ -34,7 +36,7 @@ double haversineDistance(double lat1, double long1, double lat2, double long2){
     return earthRad * c; // in metres
 }
 
-// Graph load and view functions
+// Load Graphs and Tags
 
 Graph<Coordinates> loadGraph(string dir, string subDir, bool euclidean, bool preview){
 
@@ -167,6 +169,36 @@ Graph<Coordinates> loadGraph(string dir, string subDir, bool euclidean, bool pre
 
     return g;
 }
+
+void loadTags(Graph<Coordinates>, string path){
+    istringstream ss;
+    string nCategories, category, nNodes;
+
+    ifstream tags;
+    tags.open("../Mapas/" + path);
+
+    int i = 0;
+    if (tags.is_open()) {
+        getline(tags, nCategories);
+        while(i < stoi(nCategories)){
+            getline(tags,category);
+            getline(tags,nNodes);
+            int j = 0;
+            while(j < stoi(nNodes)){
+                unsigned long id;
+                ss >> id;
+                ss.clear();
+
+                //TODO Add tag to graph vertex if exists
+                j++;
+            }
+            i++;
+        }
+    }
+    tags.close();
+}
+
+// Graphic Viewer
 
 void viewDijkstraShortestPath(const Graph<Coordinates> & graph, const vector<Coordinates> & path){
     // Create Graph Viewer
@@ -315,7 +347,20 @@ void drawGraph(GraphViewer *gv, const Graph<Coordinates> & graph){
     }
 }
 
-// Stubs
+void cleanGraph(Graph<Coordinates> &graph){
+
+    vector<Vertex<Coordinates> *> vertexes;
+
+    for (Vertex<Coordinates> *vertex : graph.getVertexSet()) {
+        if(vertex->getAdj().size() > 0){
+            vertexes.push_back(vertex);
+        }
+    }
+
+    graph.setVertexSet(vertexes);
+}
+
+// Stubs and utils for test functions
 
 vector<Coordinates> getRestaurantsStub(Graph<Coordinates> &graph, int nr){
     vector<Coordinates> restaurants;
@@ -413,17 +458,4 @@ void generateRandomGrid(int n, bool random, ostream &nodes, ostream &edges, bool
             edges << "(" << k << ", " << k + n << ")" << endl;
         }
     }
-}
-
-void cleanGraph(Graph<Coordinates> &graph){
-
-    vector<Vertex<Coordinates> *> vertexes;
-
-    for (Vertex<Coordinates> *vertex : graph.getVertexSet()) {
-        if(vertex->getAdj().size() > 0){
-            vertexes.push_back(vertex);
-        }
-    }
-
-    graph.setVertexSet(vertexes);
 }

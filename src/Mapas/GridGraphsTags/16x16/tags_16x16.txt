@@ -1,0 +1,12 @@
+4
+amenity=restaurant
+2
+
+amenity=fast_food
+2
+
+amenity=pizzeria
+1
+
+amenity=vegetarian
+1

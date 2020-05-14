@@ -14,6 +14,8 @@ class Request;
 
 using namespace std;
 
+// Date and Hour Classes
+
 class Hour {
     int hour;
     int minute;
@@ -93,10 +95,21 @@ public:
     }
 };
 
+// Distances
+
 double euclideanDistance(double x1, double y1, double x2, double y2);
+
 double haversineDistance(double lat1, double long1, double lat2, double long2);
 
+// Load Graphs and Tags
+
 Graph<Coordinates> loadGraph(string folder, string subFolder, bool euclidean, bool preview = false);
+
+void loadTags(Graph<Coordinates>, string path);
+
+void cleanGraph(Graph<Coordinates> &graph);
+
+// Graphic Viewer
 
 void viewDijkstraShortestPath(const Graph<Coordinates> & graph, const vector<Coordinates> &  path);
 
@@ -108,6 +121,8 @@ void graphViewerProperties(GraphViewer * gv);
 
 void drawGraph(GraphViewer *gv, const Graph<Coordinates> & graph);
 
+// Stubs and utils for test functions
+
 vector<Coordinates> getRestaurantsStub(Graph<Coordinates> &graph, int nr);
 
 vector<Coordinates> getClientAddressesStub(Graph<Coordinates> &graph, int nr);
@@ -115,7 +130,5 @@ vector<Coordinates> getClientAddressesStub(Graph<Coordinates> &graph, int nr);
 vector<Request> getRandomRequests(Graph<Coordinates> &graph, int nr);
 
 void generateRandomGrid(int n, bool random, ostream &nodes, ostream &edges, bool bike);
-
-void cleanGraph(Graph<Coordinates> &graph);
 
 #endif //CAL_T3G4_UTILS_H
