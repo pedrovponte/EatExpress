@@ -193,7 +193,7 @@ void simulatePhase3(){
 
     for(Task * task : tasks){
         cout << *task << endl;
-        // viewFloydWarshallShortestPath(graph,task->getPath());
+        //viewFloydWarshallShortestPath(graph,task->getPath());
     }
 
 }

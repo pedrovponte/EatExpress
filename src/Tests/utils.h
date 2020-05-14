@@ -118,7 +118,7 @@ void viewFloydWarshallShortestPath(const Graph<Coordinates> & graph, const vecto
 
 void viewMultiplePaths_FloydWarshall(const Graph<Coordinates> & graph, const vector<Task * > tasks);
 
-void viewEmployeePath();
+void viewEmployeePath(const vector<Task*> & tasks);
 
 void viewEmployeesPaths(vector<Task*> tasks);
 

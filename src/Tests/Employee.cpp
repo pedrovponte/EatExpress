@@ -90,7 +90,7 @@ std::ostream &operator<<(std::ostream &os, const Employee & employee) {
 }
 
 bool Employee::operator<(const Employee &rhs) const {
-    return rhs.getDist()*0.5 + rhs.getMaxCargo()* 0.3 + rhs.getAvgVelocity() * 0.2 < dist*0.5 + maxCargo*0.3 + avgVelocity * 0.2;
+    return dist*0.5 + maxCargo*0.3 + avgVelocity * 0.2 < rhs.getDist()*0.5 + rhs.getMaxCargo()* 0.3 + rhs.getAvgVelocity() * 0.2 ;
 }
 
 double Employee::getDist() const {

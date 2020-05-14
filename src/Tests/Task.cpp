@@ -4,6 +4,8 @@
 
 #include "Task.h"
 
+// Task class
+
 Task::Task(Employee * employee, Request request) : employee(employee), request(request) {}
 
 void Task::setFloydWarshallPath(Graph<Coordinates> & graph){
@@ -77,6 +79,22 @@ std::ostream &operator<<(std::ostream &os, const Task &task) {
 
     return os;
 }
+
+bool  Task::operator <(const Task & task){
+    if(this->getVehicleType() != INVALID && task.getVehicleType() != INVALID){
+        if(employee->getId() == task.employee->getId()){
+            return request < task.getRequest();
+        }
+        return employee->getId() < task.employee->getId();
+    }
+
+    return(this->getVehicleType() != INVALID && task.getVehicleType() == INVALID);
+}
+
+const Request & Task::getRequest() const {
+    return request;
+}
+
 
 // Request distribution Phase 2
 
@@ -170,6 +188,7 @@ vector<Task*> distributeRequestsByCloseness_Dijkstra(Graph<Coordinates> & graph,
     }
     return tasks;
 }
+
 
 // Request distribution Phase 3
 

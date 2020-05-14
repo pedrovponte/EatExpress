@@ -377,9 +377,15 @@ void viewMultiplePaths_FloydWarshall(const Graph<Coordinates> & graph, const vec
     gv->rearrange();
 }
 
-void viewEmployeePath(){}
+void viewEmployeePath(const vector<Task*> & tasks){
+    for(Task * task : tasks){
+
+    }
+}
 
 void viewEmployeesPaths(vector<Task*> tasks){
+    int id;
+
     for(Task * task: tasks){
 
     }

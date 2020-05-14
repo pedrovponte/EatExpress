@@ -22,8 +22,12 @@ public:
     bool isCheckpoint(Coordinates coordinates);
     bool isDeliveryAddress(Coordinates coordinates);
     vehicleType getVehicleType() const;
+    const Request & getRequest() const;
+    bool operator <(const Task & task);
     friend std::ostream &operator<<(std::ostream &os, const Task &task);
 };
+
+bool compareTasks(Task * t1, Task * t2);
 
 // Request distribution Phase 2
 
