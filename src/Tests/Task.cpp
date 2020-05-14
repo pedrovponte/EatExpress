@@ -193,7 +193,7 @@ min_priority_queue setRequestsDeliverability(const Graph<Coordinates> & graph, c
         if(distsGraph[origIdx1][destIdx1] != INF)
             request.setDeliverableByCar(true);
 
-        if(distsReducedGraph[origIdx2][destIdx2] != INF)
+        if(origIdx2 != -1 && destIdx2 != -1 && distsReducedGraph[origIdx2][destIdx2] != INF)
             request.setDeliverableByFoot(true);
 
         requestsQueue.push(request);

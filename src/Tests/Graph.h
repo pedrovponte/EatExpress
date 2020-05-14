@@ -253,7 +253,7 @@ void Graph<T>::floydWarshallShortestPath() {
 			for(unsigned j = 0; j < n; j++) {
 				if(W[i][k] == INF || W[k][j] == INF)
 					continue; // avoid overflow
-				int val = W[i][k] + W[k][j];
+				double val = W[i][k] + W[k][j];
 				if (val < W[i][j]) {
 					W[i][j] = val;
 					P[i][j] = P[k][j];

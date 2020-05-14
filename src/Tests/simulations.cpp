@@ -2,7 +2,6 @@
 // Created by diana on 10/05/20.
 //
 
-#include "simulations.h"
 #include "Employee.h"
 #include "Request.h"
 #include "Task.h"
@@ -10,6 +9,7 @@
 #include "algorithm"
 
 // Phase 1
+
 void simulateFloydWarshallPhase1(){
     // User must choose the city and graph is loaded accordingly
     // Preview city graph if user chooses to
@@ -163,8 +163,8 @@ void simulateDijkstraPhase2(){
 // Phase 3
 
 void simulatePhase3(){
-    Graph<Coordinates> graph = loadGraph("GridGraphs", "20x20Grid", true);
-    Graph<Coordinates> reducedGraph = loadGraph("GridGraphs", "20x20Grid", true);
+    Graph<Coordinates> graph = loadGraph("GridGraphs", "20x20", true);
+    Graph<Coordinates> reducedGraph = loadGraph("GridGraphs", "20x20Bike", true);
 
     // Pre-process Distances with Floyd Warshall
     graph.floydWarshallShortestPath();
@@ -186,15 +186,14 @@ void simulatePhase3(){
     requests.push(Request(2, Date(2020,07,10), Hour(18,0),Coordinates(25),Coordinates(10),12));
     requests.push(Request(3, Date(2020,07,10), Hour(9,40),Coordinates(22),Coordinates(80),60));
     requests.push(Request(4, Date(2020,07,10), Hour(18,30),Coordinates(9),Coordinates(200),10));
-    requests.push(Request(5, Date(2020,07,10), Hour(15,30),Coordinates(76),Coordinates(100),30));
+    requests.push(Request(5, Date(2020,07,10), Hour(15,30),Coordinates(76),Coordinates(10),30));
     requests.push(Request(6, Date(2020,07,10), Hour(12,10),Coordinates(3),Coordinates(6),5));
 
     vector<Task*> tasks = distributeRequests(graph,reducedGraph,requests,employees);
 
-    vector<Task*>::const_iterator it = tasks.begin();
-    while(it != tasks.end()){
-        cout << **it << endl;
-        it++;
+    for(Task * task : tasks){
+        cout << *task << endl;
+        viewFloydWarshallShortestPath(graph,task->getPath());
     }
 
 }

@@ -15,7 +15,7 @@
 using namespace std;
 
 double euclideanDistance(double x1, double y1, double x2, double y2){
-    return sqrt(pow(x1 - x2,2) + pow(y1-y2,2));
+    return (sqrt(pow(x1 - x2,2) + pow(y1 - y2,2)));
 }
 
 double haversineDistance(double lat1, double long1, double lat2, double long2){
@@ -177,7 +177,7 @@ void viewDijkstraShortestPath(const Graph<Coordinates> & graph, const vector<Coo
 
     Vertex<Coordinates> * v;
     cout << path.size() << endl;
-    for(unsigned int i = 0; i < path.size()-1; i++) {
+    for(unsigned int i = 0; i < path.size(); i++) {
         gv->clearVertexColor(path[i].getId());
         gv->setVertexColor(path[i].getId(),"red");
 
