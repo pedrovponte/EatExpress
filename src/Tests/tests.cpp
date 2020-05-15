@@ -10,29 +10,6 @@
 using namespace std;
 using testing::Eq;
 
-
-/*Graph<int> createTestGraph() {
-	Graph<int> myGraph;
-
-	for(int i = 1; i < 8; i++)
-		myGraph.addVertex(i);
-
-	myGraph.addBidirectionalEdge(1, 2, 2);
-	myGraph.addBidirectionalEdge(1, 4, 7);
-	myGraph.addBidirectionalEdge(2, 4, 3);
-	myGraph.addBidirectionalEdge(2, 5, 5);
-	myGraph.addBidirectionalEdge(3, 1, 2);
-	myGraph.addBidirectionalEdge(3, 6, 5);
-	myGraph.addBidirectionalEdge(4, 3, 1);
-	myGraph.addBidirectionalEdge(4, 5, 1);
-	myGraph.addBidirectionalEdge(4, 7, 4);
-	myGraph.addBidirectionalEdge(5, 7, 2);
-	myGraph.addBidirectionalEdge(6, 4, 3);
-	myGraph.addBidirectionalEdge(7, 6, 4);
-
-	return myGraph;
-}*/
-
 Graph<int> CreateTestGraph() {
     Graph<int> myGraph;
 

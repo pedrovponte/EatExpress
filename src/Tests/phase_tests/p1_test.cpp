@@ -11,7 +11,6 @@
 #include "../Request.h"
 #include "../Task.h"
 
-
 using namespace std;
 using testing::Eq;
 
@@ -21,7 +20,7 @@ TEST(CAL_T3G4, test_dijkstra_time_ph1){
 
     Graph<Coordinates> graph = loadGraph("GridGraphs", "30x30", true);
 
-    Employee employee(0,Coordinates(10),40,CAR,true);
+    Employee employee(0,Coordinates(10),1000,CAR,true);
 
     // srand(time(NULL));
 
@@ -70,7 +69,7 @@ TEST(CAL_T3G4, test_floyd_wharshall_time_ph1){
 
     Graph<Coordinates> graph = loadGraph("GridGraphs", "30x30", true);
 
-    Employee employee(0,Coordinates(10),40,CAR,true);
+    Employee employee(0,Coordinates(10),1000,CAR,true);
 
     // srand(time(NULL));
 

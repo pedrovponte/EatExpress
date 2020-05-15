@@ -20,11 +20,11 @@ long test_dijkstra_time(int nrequests){
 
     // Add Employees
     vector<Employee> employees;
-    Employee employee1(0,Coordinates(10),40,CAR,true);
+    Employee employee1(0,Coordinates(10),1000,CAR,true);
     employees.push_back(employee1);
-    Employee employee2(1,Coordinates(20),40,CAR,true);
+    Employee employee2(1,Coordinates(20),1000,CAR,true);
     employees.push_back(employee2);
-    Employee employee3(2,Coordinates(30),40,CAR,true);
+    Employee employee3(2,Coordinates(30),1000,CAR,true);
     employees.push_back(employee3);
 
     // Add Requests

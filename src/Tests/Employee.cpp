@@ -24,8 +24,6 @@ Employee::Employee(int id, const Coordinates &coordinates, int maxCargo, Vehicle
 Employee::Employee(): id(-1), coordinates(0), maxCargo(-1),type(INVALID),ready(false) {}
 
 Employee::Employee(const Employee &e): id(e.getId()), coordinates(e.getCoordinates()), maxCargo(e.getMaxCargo()),type(getType()),ready(e.isReady()) {
-
-
 }
 
 int Employee::getId() const {
