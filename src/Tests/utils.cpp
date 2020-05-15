@@ -103,22 +103,7 @@ Graph<Coordinates> loadGraph(string dir, string subDir, bool euclidean, bool pre
                 gv->addNode(id,latitude,longitude);
                 gv->setVertexLabel(id, to_string(id));
 
-                switch(vTypes[id]){
-                    case RESTAURANT:
-                        gv->setVertexIcon(id,"../Mapas/icons/restaurant.png");
-                        break;
-                    case FAST_FOOD:
-                        gv->setVertexIcon(id,"../Mapas/icons/fast_food.png");
-                        break;
-                    case VEGETARIAN:
-                        gv->setVertexIcon(id,"../Mapas/icons/vegetarian.png");
-                        break;
-                    case PIZZA:
-                        gv->setVertexIcon(id,"../Mapas/icons/pizza.png");
-                        break;
-                    default:
-                        break;
-                }
+                setRestaurantIcon(gv,vTypes[id],id);
             }
 
             i++;
@@ -252,21 +237,26 @@ void cleanGraph(Graph<Coordinates> &graph){
 
 // Graphic Viewer
 
-void viewDijkstraShortestPath(const Graph<Coordinates> & graph, const vector<Coordinates> & path){
-    // Create Graph Viewer
+void viewSinglePath(const Graph<Coordinates> & graph, const vector<Coordinates> & path, VehicleType type){
+
     GraphViewer *gv = new GraphViewer(700, 700, false);
     graphViewerProperties(gv);
 
     drawGraph(gv,graph);
 
-    Vertex<Coordinates> * v;
-    cout << path.size() << endl;
     for(unsigned int i = 0; i < path.size(); i++) {
         gv->clearVertexColor(path[i].getId());
         gv->setVertexColor(path[i].getId(),"red");
 
-        v = graph.findVertex(path[i].getId());
+        if(i == 0){
+            setVehicleIcon(gv,type,path[i].getId());
+        }
+        else{
+            if(i == path.size()-1)
+                gv->setVertexIcon(path[i].getId(),"../Mapas/icons/house.png");
+        }
 
+        gv->clearVertexLabel(path[i].getId());
         gv->setVertexLabel(path[i].getId(),"Id: " + to_string(path[i].getId()));
 
         if(i != 0){
@@ -281,114 +271,82 @@ void viewDijkstraShortestPath(const Graph<Coordinates> & graph, const vector<Coo
     gv->rearrange();
 }
 
-void viewFloydWarshallShortestPath(const Graph<Coordinates> & graph, const vector<Coordinates> & path){
-    double dist = 0;
-    double ** W = graph.getDistancesMatrix();
-    int origIdx, destIdx;
+void viewEmployeePath(const Graph<Coordinates> & graph, const vector<Task*> & tasks){
 
     GraphViewer *gv = new GraphViewer(700, 700, false);
     graphViewerProperties(gv);
 
     drawGraph(gv,graph);
 
-    for(unsigned int i = 0; i < path.size(); i++) {
-        gv->clearVertexColor(path[i].getId());
-        gv->setVertexColor(path[i].getId(),"red");
+    int i = 0;
+    for(Task * task: tasks){
+        vector<Coordinates> path = task->getPath();
+        for(int j = 0; j< path.size();j++){
 
-        if(i == 0){
-            origIdx = graph.findVertexIdx(path[i]);
-            destIdx = origIdx;
-        }
-        else{
-            origIdx = graph.findVertexIdx(path[i-1]);
-            destIdx = graph.findVertexIdx(path[i]);
-        }
-        dist += W[origIdx][destIdx];
-        string strDist = to_string(dist).substr(0, to_string(dist).find(".") + 2 + 1);
+            gv->clearVertexColor(path[j].getId());
+            gv->setVertexColor(path[j].getId(),"red");
 
-        gv->clearVertexLabel(path[i].getId());
-        gv->setVertexLabel(path[i].getId(),"Id: " + to_string(path[i].getId())+ "  Dist: " + strDist);
-
-        if(i != 0){
-            int edgeId = graph.getEdge(path[i-1].getId(),path[i].getId()).getId();
-            gv->clearEdgeColor(edgeId);
-            gv->clearEdgeLabel(edgeId);
-            gv->setEdgeColor(edgeId,"red");
-            gv->setEdgeThickness(edgeId,3);
-        }
-    }
-
-    gv->rearrange();
-}
-
-void viewMultiplePaths_FloydWarshall(const Graph<Coordinates> & graph, const vector<Task * > tasks){
-    double dist = 0;
-    double ** W = graph.getDistancesMatrix();
-    int origIdx, destIdx;
-
-    GraphViewer *gv = new GraphViewer(700, 700, false);
-    graphViewerProperties(gv);
-
-    drawGraph(gv,graph);
-
-    for(int j= 0; j< tasks.size(); j++){
-        dist = 0;
-
-        vector<Coordinates> path = tasks[j]->getPath();
-
-        for(unsigned int i = 0; i < path.size(); i++) {
-            if(i == 0){
-                origIdx = graph.findVertexIdx(path[i]);
-                destIdx = origIdx;
-
-                // TODO -> select image based on mean of transport
-                gv->setVertexIcon(path[i].getId(),"../Mapas/icons/car.png");
+            if(i == 0 && j == 0){
+                setVehicleIcon(gv,task->getVehicleType(),path[0].getId());
             }
-            else{
-                origIdx = graph.findVertexIdx(path[i-1]);
-                destIdx = graph.findVertexIdx(path[i]);
-
-                if(tasks[j]->isCheckpoint(path[i])){
-                    gv->setVertexIcon(path[i].getId(),"../Mapas/icons/restaurant.png");
-                }
-                else if(tasks[j]->isDeliveryAddress(path[i])){
-                    gv->setVertexIcon(path[i].getId(),"../Mapas/icons/house.png");
-                }
-                else{
-                    gv->setVertexColor(path[i].getId(),"red");
-                }
+            else if(task->isCheckpoint(path[j])){
+                setRestaurantIcon(gv,graph.findVertex(path[j])->getType(),path[j].getId());
             }
-            dist += W[origIdx][destIdx];
-            string strDist = to_string(dist).substr(0, to_string(dist).find(".") + 2 + 1);
+            else if(task->isDeliveryAddress(path[j])){
+                gv->setVertexIcon(path[i].getId(),"../Mapas/icons/house.png");
+            }
 
-            gv->clearVertexLabel(path[i].getId());
-            gv->setVertexLabel(path[i].getId(),"Id: " + to_string(path[i].getId())+ "  Dist: " + strDist);
-
-            if(i != 0){
-                int edgeId = graph.getEdge(path[i-1].getId(),path[i].getId()).getId();
+            if(j != 0){
+                int edgeId = graph.getEdge(path[j-1].getId(),path[j].getId()).getId();
                 gv->clearEdgeColor(edgeId);
                 gv->clearEdgeLabel(edgeId);
                 gv->setEdgeColor(edgeId,"red");
                 gv->setEdgeThickness(edgeId,3);
             }
         }
+        i++;
     }
-
     gv->rearrange();
 }
 
-void viewEmployeePath(const vector<Task*> & tasks){
-    for(Task * task : tasks){
+void viewEmployeesPaths(const Graph<Coordinates> & graph,const Graph<Coordinates> & reducedGraph,vector<Task*> tasks){
+    int id = -1;
+    VehicleType vehicleType = INVALID;
+    vector<Task*> employeeTasks;
 
-    }
-}
-
-void viewEmployeesPaths(vector<Task*> tasks){
-    int id;
+    sort(tasks.begin(), tasks.end(), compareTasks);
 
     for(Task * task: tasks){
+        // No employee assigned to the task
+        if(task->getEmployee() == nullptr)
+            continue;
 
+        // First task
+        if(id == -1){
+            id = task->getEmployee()->getId();
+            vehicleType = task->getVehicleType();
+        }
+
+        if(id != task->getEmployee()->getId()){
+            // View all tasks from the same employee
+            if(vehicleType == CAR || vehicleType == MOTORCYCLE)
+                viewEmployeePath(graph,employeeTasks);
+            else if(vehicleType == FOOT || vehicleType == BIKE)
+                viewEmployeePath(reducedGraph,employeeTasks);
+
+            id = task->getEmployee()->getId();
+            vehicleType = task->getVehicleType();
+            employeeTasks.clear();
+        }
+
+        employeeTasks.push_back(task);
     }
+
+    // View all tasks from the same employee
+    if(vehicleType == CAR || vehicleType == MOTORCYCLE)
+        viewEmployeePath(graph,employeeTasks);
+    else if(vehicleType == FOOT || vehicleType == BIKE)
+        viewEmployeePath(reducedGraph,employeeTasks);
 }
 
 void graphViewerProperties(GraphViewer * gv){
@@ -397,12 +355,53 @@ void graphViewerProperties(GraphViewer * gv){
     gv->defineEdgeColor("gray");
 }
 
+void setRestaurantIcon(GraphViewer * gv, VertexType type, unsigned long id){
+    switch(type){
+        case RESTAURANT:
+            gv->setVertexIcon(id,"../Mapas/icons/restaurant.png");
+            break;
+        case FAST_FOOD:
+            gv->setVertexIcon(id,"../Mapas/icons/fast_food.png");
+            break;
+        case VEGETARIAN:
+            gv->setVertexIcon(id,"../Mapas/icons/vegetarian.png");
+            break;
+        case PIZZA:
+            gv->setVertexIcon(id,"../Mapas/icons/pizza.png");
+            break;
+        default:
+            break;
+    }
+}
+
+void setVehicleIcon(GraphViewer * gv, VehicleType type, unsigned long id){
+    switch(type){
+        case CAR:
+            gv->setVertexIcon(id,"../Mapas/icons/car.png");
+            break;
+        case MOTORCYCLE:
+            gv->setVertexIcon(id,"../Mapas/icons/motorcycle.png");
+            break;
+        case BIKE:
+            gv->setVertexIcon(id,"../Mapas/icons/bike.png");
+            break;
+        case FOOT:
+            gv->setVertexIcon(id,"../Mapas/icons/foot.png");
+            break;
+        default:
+            break;
+    }
+}
+
 void drawGraph(GraphViewer *gv, const Graph<Coordinates> & graph){
     vector<Vertex<Coordinates>*> v = graph.getVertexSet();
 
     for(int i = 0; i < v.size(); i++){
         gv->addNode(v[i]->getInfo().getId(),v[i]->getInfo().getLatitude(),v[i]->getInfo().getLongitude());
-        //gv->setVertexLabel(v[i]->getInfo().getId(), to_string(v[i]->getInfo().getId()));
+
+        gv->setVertexLabel(v[i]->getInfo().getId(), to_string(v[i]->getInfo().getId()));
+
+        setRestaurantIcon(gv,v[i]->getType(),v[i]->getInfo().getId());
     }
 
     for(int i = 0; i < v.size(); i++){

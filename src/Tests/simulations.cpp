@@ -39,7 +39,7 @@ void simulateFloydWarshallPhase1(){
     vector<Coordinates> path = task.getPath();
 
     // Show shortest path calculated with FloydWarshall
-    viewFloydWarshallShortestPath(graph,path);
+    viewSinglePath(graph,path);
 }
 
 void simulateDijkstraPhase1(){
@@ -68,7 +68,7 @@ void simulateDijkstraPhase1(){
     vector<Coordinates> path = task.getPath();
 
     // Show shortest path calculated with Dijkstra
-    viewDijkstraShortestPath(graph,path);
+    viewSinglePath(graph,path);
 }
 
 // Phase 2
@@ -113,7 +113,6 @@ void simulateFloydWarshallPhase2(){
             tasks[i]->setFloydWarshallPath(graph);
             cout << *tasks[i] << endl;
         }
-        //viewMultiplePaths_FloydWarshall(graph,tasks);
         requestsRound++;
     }
 }
@@ -154,7 +153,7 @@ void simulateDijkstraPhase2(){
         for(int i = 0; i < tasks.size(); i++){
             tasks[i]->setDijkstraPath(graph);
             cout << *tasks[i] << endl;
-            // viewDijkstraShortestPath(graph,tasks[i]->getPath());
+            // viewSinglePath(graph,tasks[i]->getPath());
         }
         requestsRound++;
     }
@@ -193,8 +192,10 @@ void simulatePhase3(){
 
     for(Task * task : tasks){
         cout << *task << endl;
-        //viewFloydWarshallShortestPath(graph,task->getPath());
+        viewSinglePath(graph,task->getPath(),task->getVehicleType());
     }
+
+    viewEmployeesPaths(graph,reducedGraph,tasks);
 
 }
 

@@ -8,28 +8,28 @@
 #include "Coordinates.h"
 using namespace std;
 
-enum vehicleType{CAR, MOTORCYCLE, BIKE, FOOT, INVALID};
+enum VehicleType{CAR, MOTORCYCLE, BIKE, FOOT, INVALID};
 
 class Employee {
     int id;
     Coordinates coordinates;
     int maxCargo;
-    vehicleType type;
+    VehicleType type;
     int avgVelocity;
     bool ready;
     double dist;
 public:
     Employee();
     Employee(const Employee & e);
-    Employee(int id, const Coordinates &coordinates, int maxCargo, vehicleType type, bool ready);
+    Employee(int id, const Coordinates &coordinates, int maxCargo, VehicleType type, bool ready);
     int getId() const;
     void setId(int id);
     const Coordinates &getCoordinates() const;
     void setCoordinates(const Coordinates &coordinates);
     int getMaxCargo() const;
     void setMaxCargo(int maxCargo);
-    vehicleType getType() const;
-    void setType(vehicleType type);
+    VehicleType getType() const;
+    void setType(VehicleType type);
     bool isReady() const;
     void setReady(bool ready);
     double getDist() const;

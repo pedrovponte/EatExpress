@@ -53,7 +53,7 @@ bool Task::isDeliveryAddress(Coordinates coordinates){
     return request.getDeliveryAddr() == coordinates;
 }
 
-vehicleType Task::getVehicleType() const{
+VehicleType Task::getVehicleType() const{
     if(employee == nullptr)
         return INVALID;
     return employee->getType();
@@ -95,11 +95,17 @@ const Request & Task::getRequest() const {
     return request;
 }
 
+Employee *Task::getEmployee() const {
+    return employee;
+}
+
+bool compareTasks(Task * t1, Task * t2){
+    return *t1 < *t2;
+}
 
 // Request distribution Phase 2
 
 vector<Task*> distributeRequestsByCloseness_FloydWarshall(Graph<Coordinates> & graph, queue<Request> & requests, vector<Employee> & employees){
-    double ** W = graph.getDistancesMatrix();
     int origIdx, destIdx;
     double dist;
     vector<Task*> tasks;
@@ -122,10 +128,10 @@ vector<Task*> distributeRequestsByCloseness_FloydWarshall(Graph<Coordinates> & g
             // Employee is ready
             if(employees[i].isReady()){
                 // Check if the employee is closer to the checkpoint than the previous one
-                if(dist > W[origIdx][destIdx]){
+                if(dist > graph.getDist(origIdx,destIdx)){
                     // Save the employee that is closer to the checkpoint
                     employeeIdx = i;
-                    dist = W[origIdx][destIdx];
+                    dist = graph.getDist(origIdx,destIdx);
                 }
             }
         }
@@ -141,7 +147,6 @@ vector<Task*> distributeRequestsByCloseness_FloydWarshall(Graph<Coordinates> & g
 
         requests.pop();
     }
-
     return tasks;
 }
 
@@ -250,7 +255,7 @@ vector<Employee*> getEligibleEmployees(vector<Employee*> & employees, const Requ
     return eligibleEmployees;
 }
 
-bool isDeliverableByVehicle(vehicleType vehicleType, const Request & request){
+bool isDeliverableByVehicle(VehicleType vehicleType, const Request & request){
     if(vehicleType == FOOT || vehicleType == BIKE) return request.isDeliverableByFoot();
     else if(vehicleType == CAR || vehicleType == MOTORCYCLE)return request.isDeliverableByCar();
     else return false;

@@ -21,8 +21,9 @@ public:
     const vector<Coordinates> getPath() const;
     bool isCheckpoint(Coordinates coordinates);
     bool isDeliveryAddress(Coordinates coordinates);
-    vehicleType getVehicleType() const;
+    VehicleType getVehicleType() const;
     const Request & getRequest() const;
+    Employee *getEmployee() const;
     bool operator <(const Task & task);
     friend std::ostream &operator<<(std::ostream &os, const Task &task);
 };
@@ -43,7 +44,7 @@ void setDistancesToCheckpoint(Graph<Coordinates> & graph, Graph<Coordinates> & r
 
 vector<Employee*> getEligibleEmployees(vector<Employee*> & employees, const Request & request);
 
-bool isDeliverableByVehicle(vehicleType vehicleType, const Request & request);
+bool isDeliverableByVehicle(VehicleType vehicleType, const Request & request);
 
 bool compareEmployees(Employee * e1, Employee * e2);
 

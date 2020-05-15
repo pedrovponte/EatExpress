@@ -9,7 +9,7 @@ using namespace std;
 
 Coordinates::Coordinates(){
 
-    id = INT64_MAX;
+    id = INT32_MAX;
     latitude = 0;
     longitude = 0;
 }

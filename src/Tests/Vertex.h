@@ -30,6 +30,7 @@ public:
     T getInfo() const;
     double getDist() const;
     Vertex *getPath() const;
+    VertexType getType() const;
     const vector<Edge<T>> &getAdj() const;
     friend class Graph<T>;
     friend class MutablePriorityQueue<Vertex<T>>;
@@ -71,6 +72,11 @@ Vertex<T> *Vertex<T>::getPath() const {
 template<class T>
 const vector<Edge<T>> &Vertex<T>::getAdj() const {
     return adj;
+}
+
+template<class T>
+VertexType Vertex<T>::getType() const {
+    return type;
 }
 
 #endif //CAL_T3G4_VERTEX_H

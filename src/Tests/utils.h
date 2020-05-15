@@ -6,6 +6,7 @@
 #define CAL_T3G4_UTILS_H
 
 #include "Graph.h"
+#include "Employee.h"
 #include <graphviewer.h>
 #include <string>
 #include <map>
@@ -112,17 +113,17 @@ void cleanGraph(Graph<Coordinates> &graph);
 
 // Graphic Viewer
 
-void viewDijkstraShortestPath(const Graph<Coordinates> & graph, const vector<Coordinates> &  path);
+void viewSinglePath(const Graph<Coordinates> & graph, const vector<Coordinates> & path, VehicleType type = CAR);
 
-void viewFloydWarshallShortestPath(const Graph<Coordinates> & graph, const vector<Coordinates> & path);
+void viewEmployeePath(const Graph<Coordinates> & graph, const vector<Task*> & tasks);
 
-void viewMultiplePaths_FloydWarshall(const Graph<Coordinates> & graph, const vector<Task * > tasks);
-
-void viewEmployeePath(const vector<Task*> & tasks);
-
-void viewEmployeesPaths(vector<Task*> tasks);
+void viewEmployeesPaths(const Graph<Coordinates> & graph,const Graph<Coordinates> & reducedGraph, vector<Task*> tasks);
 
 void graphViewerProperties(GraphViewer * gv);
+
+void setRestaurantIcon(GraphViewer * gv, VertexType type, unsigned long id);
+
+void setVehicleIcon(GraphViewer * gv, VehicleType type, unsigned long id);
 
 void drawGraph(GraphViewer *gv, const Graph<Coordinates> & graph);
 

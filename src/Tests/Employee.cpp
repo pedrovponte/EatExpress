@@ -6,7 +6,7 @@
 
 using namespace std;
 
-Employee::Employee(int id, const Coordinates &coordinates, int maxCargo, vehicleType type, bool ready)
+Employee::Employee(int id, const Coordinates &coordinates, int maxCargo, VehicleType type, bool ready)
     : id(id), coordinates(coordinates), maxCargo(maxCargo),type(type),ready(ready) {
 
     if(type == CAR || type == MOTORCYCLE){
@@ -44,7 +44,7 @@ int Employee::getMaxCargo() const {
     return maxCargo;
 }
 
-vehicleType Employee::getType() const {
+VehicleType Employee::getType() const {
     return type;
 }
 
@@ -64,7 +64,7 @@ bool Employee::operator==(const Employee &rhs) const {
 std::ostream &operator<<(std::ostream &os, const Employee & employee) {
     os << "EMPLOYEE: Id = " << employee.getId() << " Vehicle = ";
 
-    string vehicleType;
+    string VehicleType;
 
     switch(employee.getType()) {
         case CAR:
