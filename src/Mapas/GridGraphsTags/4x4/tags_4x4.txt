@@ -1,7 +1,10 @@
-2
+3
 restaurant
 1
 5
 fast_food
 1
 19
+pizza
+1
+2

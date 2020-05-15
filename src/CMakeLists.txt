@@ -15,6 +15,6 @@ include_directories(lib/graphViewer)
 
 add_executable(CAL_T3G4 main.cpp Tests/tests.cpp Tests/Graph.h Tests/MutablePriorityQueue.h Tests/Vertex.h Tests/Edge.h Tests/utils.cpp
         Tests/utils.h Tests/Coordinates.h Tests/Coordinates.cpp lib/graphViewer/connection.cpp lib/graphViewer/graphviewer.cpp Tests/Employee.h Tests/Employee.cpp
-        Tests/Request.cpp Tests/Request.h Tests/Task.cpp Tests/Task.h Tests/phase_tests/p1_test.cpp Tests/simulations.cpp Tests/simulations.h Tests/phase_tests/p2_test.cpp)
+        Tests/Request.cpp Tests/Request.h Tests/Task.cpp Tests/Task.h Tests/phase_tests/p1_test.cpp Tests/simulations.cpp Tests/simulations.h Tests/phase_tests/p2_test.cpp Tests/app.cpp Tests/app.h)
 
 target_link_libraries(CAL_T3G4 gtest gtest_main)
