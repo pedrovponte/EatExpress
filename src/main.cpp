@@ -11,10 +11,10 @@ int main(int argc, char* argv[]) {
 
     chooseMap();
 
-    //simulatePhase3();
-
-    // Graph<Coordinates> g = loadGraph("GridGraphs", "16x16",true, true);
+    // simulatePhase3();
+    //simulateMultipleRestaurantsRequest();
     // getchar();
+
     return 0;
     return RUN_ALL_TESTS();
 }

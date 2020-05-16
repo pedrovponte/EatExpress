@@ -199,3 +199,39 @@ void simulatePhase3(){
 
 }
 
+// Multiple restaurants request
+
+void simulateMultipleRestaurantsRequest(){
+    Graph<Coordinates> graph = loadGraph("GridGraphs", "20x20", true);
+    Graph<Coordinates> reducedGraph = loadGraph("GridGraphs", "20x20Bike", true);
+
+    // Pre-process Distances with Floyd Warshall
+    graph.floydWarshallShortestPath();
+    reducedGraph.floydWarshallShortestPath();
+
+    // Add Employees
+    vector<Employee*> employees;
+    Employee * employee1 = new Employee(0,Coordinates(150),20,CAR,true);
+    employees.push_back(employee1);
+    Employee * employee2 = new Employee(1,Coordinates(17),6,FOOT,true);
+    employees.push_back(employee2);
+    Employee * employee3 = new Employee(2,Coordinates(290),10,MOTORCYCLE,true);
+    employees.push_back(employee3);
+
+    vector<Coordinates> checkpoints;
+    checkpoints.push_back(Coordinates(280));
+    checkpoints.push_back(Coordinates(4));
+
+    Request r(0, Date(2020,07,10), Hour(21,0),checkpoints,Coordinates(64),6);
+
+    Task * task = multipleRestaurantsRequest(graph, reducedGraph, employees,r);
+
+    vector<Task*> tasks;
+    tasks.push_back(task);
+    if (task->getVehicleType() == CAR || task->getVehicleType() == MOTORCYCLE)
+        viewEmployeePath(graph,tasks);
+    else if(task->getVehicleType() == BIKE || task->getVehicleType() == FOOT)
+        viewEmployeePath(reducedGraph,tasks);
+
+}
+

@@ -36,6 +36,7 @@ public:
     Coordinates getDeliveryAddr() const;
     void setDeliveryAddr(Coordinates delivery_addr);
     void addCheckpoint(Coordinates checkpoint);
+    void setCheckpoints(const vector<Coordinates> &checkpoints);
     int getCargo() const;
     void setCargo(int cargo);
     bool operator<(const Request & request) const;

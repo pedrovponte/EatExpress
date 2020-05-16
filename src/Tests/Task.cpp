@@ -10,12 +10,23 @@ Task::Task(Employee * employee, Request request) : employee(employee), request(r
 
 void Task::setFloydWarshallPath(Graph<Coordinates> & graph){
     Coordinates orig = employee->getCoordinates();
-    Coordinates checkpoint = request.getCheckpoints()[0];
+    vector<Coordinates> tempPath;
+
+    int i = 0;
+    for(Coordinates checkpoint: request.getCheckpoints()){
+        tempPath = graph.getfloydWarshallPath(orig, checkpoint);
+
+        if(i == 0) path = tempPath;
+        else path.insert(path.end(),tempPath.begin()+1, tempPath.end());
+
+        orig = checkpoint;
+        i++;
+    }
+
     Coordinates dest = request.getDeliveryAddr();
 
-    path = graph.getfloydWarshallPath(orig, checkpoint);
-    vector<Coordinates> pathToDest = graph.getfloydWarshallPath(checkpoint, dest);
-    path.insert(path.end(),pathToDest.begin()+1, pathToDest.end());
+    tempPath = graph.getfloydWarshallPath(orig, dest);
+    path.insert(path.end(),tempPath.begin()+1, tempPath.end());
     employee->setCoordinates(path.at(path.size()-1));
     employee->setReady(true);
 }
@@ -263,7 +274,9 @@ vector<Employee*> getEligibleEmployees(vector<Employee*> & employees, const Requ
 }
 
 bool isDeliverableByVehicle(VehicleType vehicleType, const Request & request){
-    if(vehicleType == FOOT || vehicleType == BIKE) return request.isDeliverableByFoot();
+    if(vehicleType == FOOT || vehicleType == BIKE){
+        return request.isDeliverableByFoot();
+    }
     else if(vehicleType == CAR || vehicleType == MOTORCYCLE)return request.isDeliverableByCar();
     else return false;
 }
@@ -328,4 +341,141 @@ vector<Task*> distributeRequests(Graph<Coordinates> & graph, Graph<Coordinates> 
     }
 
     return tasks;
+}
+
+// Multiple Restaurants request
+
+vector<Employee*> getEligibleEmployeesMultipleRestaurants(vector<Employee*> & employees, const Request & request){
+    vector<Employee*> eligibleEmployees;
+
+    for(Employee * e: employees){
+        if(e->isReady() && e->getMaxCargo() >= request.getCargo()){
+            eligibleEmployees.push_back(e);
+        }
+    }
+    return eligibleEmployees;
+}
+
+int getNearestRestaurant(Graph<Coordinates> & graph, const Coordinates & origin, vector<Coordinates> & restaurants){
+    int origIdx = graph.findVertexIdx(origin);
+    int destIdx, nearestRestaurantPos;
+    double nearestRestaurantDist = INF;
+
+    int i = 0;
+    for(Coordinates restaurant: restaurants){
+        destIdx = graph.findVertexIdx(restaurant);
+
+        if(destIdx == -1 || origIdx == -1)
+            return -1;
+
+        if(graph.getDist(origIdx,destIdx) < nearestRestaurantDist){
+            nearestRestaurantDist = graph.getDist(origIdx,destIdx);
+            nearestRestaurantPos = i;
+        }
+        i++;
+    }
+
+    return nearestRestaurantPos;
+}
+
+Task * multipleRestaurantsRequest(Graph<Coordinates> & graph, Graph<Coordinates> & reducedGraph, vector<Employee*> & employees, Request & request){
+    vector<Coordinates> restaurants;
+
+    int nearestRestaurantPos, nearestEmployeePos;
+    double nearestEmployeeDist = INF;
+
+    employees = getEligibleEmployeesMultipleRestaurants(employees, request);
+    int i = 0;
+    for(Employee * e: employees){
+        double totalDist = 0;
+        Coordinates origin = e->getCoordinates();
+        vector<Coordinates> requestRestaurants = request.getCheckpoints();
+        vector<Coordinates> restaurantsPath;
+
+        for(int j = 0; j < request.getCheckpoints().size(); j++){
+            double dist = 0;
+            if(e->getType() == CAR || e->getType() == MOTORCYCLE){
+                nearestRestaurantPos = getNearestRestaurant(graph,origin, requestRestaurants);
+                // One of the restaurants does not exist
+                if(nearestRestaurantPos == -1)
+                    return new Task(nullptr,request);
+
+                dist = graph.getDist(graph.findVertexIdx(origin),graph.findVertexIdx(requestRestaurants[nearestRestaurantPos]));
+
+                // No path found for this employee
+                if(dist == INF){
+                    totalDist = INF;
+                    break;
+                }
+            }
+            else if (e->getType() == BIKE || e->getType() == FOOT){
+                nearestRestaurantPos = getNearestRestaurant(reducedGraph,origin, requestRestaurants);
+
+                // One of the restaurants does not exist
+                if(nearestRestaurantPos == -1){
+                    totalDist = INF;
+                    break;
+                }
+
+                dist = reducedGraph.getDist(reducedGraph.findVertexIdx(origin),reducedGraph.findVertexIdx(requestRestaurants[nearestRestaurantPos]));
+
+                // No path found for this employee
+                if(dist == INF){
+                    totalDist = INF;
+                    break;
+                }
+            }
+
+            totalDist += dist;
+            restaurantsPath.push_back(requestRestaurants[nearestRestaurantPos]);
+            origin = requestRestaurants[nearestRestaurantPos];
+            requestRestaurants.erase(requestRestaurants.begin()+nearestRestaurantPos);
+        }
+
+        if(totalDist == INF){
+            i++;
+            break;
+        }
+
+        // Check if path from last restaurant to delivery address exists
+        if(e->getType() == CAR || e->getType() == MOTORCYCLE){
+            double dist = INF;
+            int deliveryIdx = graph.findVertexIdx(request.getDeliveryAddr());
+                if(deliveryIdx != -1){
+                    dist = graph.getDist(graph.findVertexIdx(restaurantsPath[restaurantsPath.size()-1]),deliveryIdx);
+                    if(dist == INF) break;
+                    totalDist += dist;
+            } else break;
+        }
+        else if (e->getType() == BIKE || e->getType() == FOOT){
+            double dist = INF;
+            int deliveryIdx = reducedGraph.findVertexIdx(request.getDeliveryAddr());
+            if(deliveryIdx != -1){
+                dist = reducedGraph.getDist(reducedGraph.findVertexIdx(restaurantsPath[restaurantsPath.size()-1]),deliveryIdx);
+                if(dist == INF) break;
+                totalDist += dist;
+            } else break;
+        }
+
+        if(totalDist < nearestEmployeeDist){
+            nearestEmployeePos = i;
+            nearestEmployeeDist = totalDist;
+            restaurants = restaurantsPath;
+        }
+
+        i++;
+    }
+
+    if(nearestEmployeeDist == INF) return new Task(nullptr, request);
+
+    request.setCheckpoints(restaurants);
+
+    Task * task =  new Task(employees[nearestEmployeePos], request);
+
+    if(task->getVehicleType() == CAR || task->getVehicleType() == MOTORCYCLE)
+        task->setFloydWarshallPath(graph);
+    else if (task->getVehicleType() == BIKE || task->getVehicleType() == FOOT)
+        task->setFloydWarshallPath(reducedGraph);
+
+    return task;
 }

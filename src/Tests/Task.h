@@ -50,4 +50,12 @@ bool compareEmployees(Employee * e1, Employee * e2);
 
 vector<Task*> distributeRequests(Graph<Coordinates> & graph, Graph<Coordinates> & reducedGraph, min_priority_queue & requests, vector<Employee*> & employees);
 
+
+// Multiple Restaurants request
+vector<Employee*> getEligibleEmployeesMultipleRestaurants(vector<Employee*> & employees, const Request & request);
+
+int getNearestRestaurant(Graph<Coordinates> & graph, const Coordinates & origin, vector<Coordinates> & restaurants);
+
+Task * multipleRestaurantsRequest(Graph<Coordinates> & graph, Graph<Coordinates> & reducedGraph, vector<Employee*> & employees, Request & request);
+
 #endif //CAL_T3G4_TASK_H
