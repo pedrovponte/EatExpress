@@ -13,7 +13,7 @@ using namespace std;
 vector<Employee*> employees;
 
 int make_request() {
-
+    return 0;
 }
 
 int grid4x4() {
@@ -49,19 +49,19 @@ int grid16x16() {
     graph.floydWarshallShortestPath();
     reducedGraph.floydWarshallShortestPath();
 
-    
+    return 0;
 }
 
 int grid20x20() {
-
+    return 0;
 }
 
 int grid30x30() {
-
+    return 0;
 }
 
 int grid50x50() {
-
+    return 0;
 }
 
 int chooseMap() {

@@ -224,7 +224,7 @@ min_priority_queue setRequestsDeliverability(const Graph<Coordinates> & graph, c
     return requestsQueue;
 }
 
-void setDistancesToCheckpoint(Graph<Coordinates> & graph, Graph<Coordinates> & reducedGraph, vector<Employee*> & employees, const Request & request){
+void setDistancesToCheckpoint(Graph<Coordinates> & graph, Graph<Coordinates> & reducedGraph, vector<Employee*> & employees, Request & request){
     int origIdx;
     int checkpointIdx1 = graph.findVertexIdx(request.getCheckpoints()[0]);
     int checkpointIdx2 = reducedGraph.findVertexIdx(request.getCheckpoints()[0]);
@@ -233,11 +233,18 @@ void setDistancesToCheckpoint(Graph<Coordinates> & graph, Graph<Coordinates> & r
 
         if(e->getType() == CAR || e->getType() == MOTORCYCLE){
             origIdx =  graph.findVertexIdx(e->getCoordinates());
-            e->setDist(graph.getDist(origIdx, checkpointIdx1));
+            if(origIdx != -1 && checkpointIdx1 != -1)
+                e->setDist(graph.getDist(origIdx, checkpointIdx1));
+            else
+                request.setDeliverableByCar(false);
+
         }
         else if(e->getType() == BIKE || e->getType() == FOOT){
             origIdx =  reducedGraph.findVertexIdx(e->getCoordinates());
-            e->setDist(reducedGraph.getDist(origIdx, checkpointIdx2));
+            if(origIdx != -1 && checkpointIdx2 != -1)
+                e->setDist(reducedGraph.getDist(origIdx, checkpointIdx2));
+            else
+                request.setDeliverableByFoot(false);
         }
     }
 }
@@ -276,8 +283,8 @@ vector<Task*> distributeRequests(Graph<Coordinates> & graph, Graph<Coordinates> 
     requests = setRequestsDeliverability(graph,reducedGraph,requests);
 
     while(!requests.empty()){
-
-        setDistancesToCheckpoint(graph, reducedGraph, employees,requests.top());
+        Request r = requests.top();
+        setDistancesToCheckpoint(graph, reducedGraph, employees,r);
 
         vector<Employee*> eligibleEmployees = getEligibleEmployees(employees, requests.top());
 
