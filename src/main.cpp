@@ -9,7 +9,7 @@ using namespace std;
 int main(int argc, char* argv[]) {
     testing::InitGoogleTest(&argc, argv);
 
-    //simulatePhase3();
+    chooseMap();
 
     //Graph<Coordinates> g = loadGraph("GridGraphs", "30x30",true, true);
     //getchar();

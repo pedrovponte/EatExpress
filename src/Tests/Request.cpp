@@ -121,3 +121,7 @@ bool Request::isDeliverableByCar() const {
 void Request::setDeliverableByCar(bool deliverableByCar) {
     Request::deliverableByCar = deliverableByCar;
 }
+
+void Request::setCheckpoints(const vector<Coordinates> &checkpoints) {
+    Request::checkpoints = checkpoints;
+}

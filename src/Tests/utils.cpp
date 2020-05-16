@@ -289,13 +289,13 @@ void viewEmployeePath(const Graph<Coordinates> & graph, const vector<Task*> & ta
             gv->setVertexColor(path[j].getId(),"red");
 
             if(i == 0 && j == 0){
-                setVehicleIcon(gv,task->getVehicleType(),path[0].getId());
+                setVehicleIcon(gv,task->getVehicleType(),path[j].getId());
             }
             else if(task->isCheckpoint(path[j])){
                 setRestaurantIcon(gv,graph.findVertex(path[j])->getType(),path[j].getId());
             }
             else if(task->isDeliveryAddress(path[j])){
-                gv->setVertexIcon(path[i].getId(),"../Mapas/icons/house.png");
+                gv->setVertexIcon(path[j].getId(),"../Mapas/icons/house.png");
             }
 
             if(j != 0){
