@@ -71,6 +71,8 @@ Graph<Coordinates> loadGraph(string dir, string subDir, bool euclidean, bool pre
         nodesFile << "/nodes_x_y_" << subDir << ".txt";
     }
 
+    g.setVTypes(vTypes);
+
     ifstream nodes, edges;
 
     nodes.open(nodesFile.str());

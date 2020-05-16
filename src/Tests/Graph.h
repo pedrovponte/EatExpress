@@ -9,6 +9,7 @@
 #include <limits>
 #include <algorithm>
 #include <unordered_set>
+#include <map>
 #include "MutablePriorityQueue.h"
 #include "Vertex.h"
 #include "Edge.h"
@@ -20,7 +21,7 @@ using namespace std;
 template <class T>
 class Graph {
 	vector<Vertex<T> *> vertexSet;    // vertex set
-
+    map<unsigned long, VertexType> vTypes; //save restaurants
 	Vertex<T> * initSingleSource(const T &orig);
 	bool relax(Vertex<T> *v, Vertex<T> *w, double weight);
 	double ** W = nullptr;   // dist
@@ -37,7 +38,11 @@ public:
 
     int findVertexIdx(const T &in) const;
 
-	// Single source
+    map<unsigned long, VertexType> getVTypes() const;
+
+    void setVTypes(const map<unsigned long, VertexType>);
+
+    // Single source
 	void dijkstraShortestPath(const T &s);
 	vector<T> getPath(const T &origin, const T &dest) const;
 	vector<T> getPathTo(const T &dest) const;
@@ -128,6 +133,17 @@ const Edge<T> & Graph<T>::getEdge(const T &sourc, const T &dest) const{
     }
     throw NullEdgeException();
 }
+
+template<class T>
+map<unsigned long, VertexType> Graph<T>::getVTypes() const{
+    return vTypes;
+}
+
+template<class T>
+void Graph<T>::setVTypes(const map<unsigned long, VertexType> vTypes) {
+    this->vTypes = vTypes;
+}
+
 
 
 /**************** Single Source Shortest Path algorithms ************/
@@ -298,5 +314,7 @@ void Graph<T>::setVertexSet(const vector<Vertex<T>*> vertexSet) {
 
     this->vertexSet.insert(this->vertexSet.begin(), vertexSet.begin(), vertexSet.end());
 }
+
+
 
 #endif /* GRAPH_H_ */
