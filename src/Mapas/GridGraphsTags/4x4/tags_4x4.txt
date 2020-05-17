@@ -1,4 +1,4 @@
-3
+4
 restaurant
 1
 5
@@ -8,3 +8,6 @@ fast_food
 pizza
 1
 2
+vegetarian
+1
+21

@@ -6,10 +6,9 @@
 #include <vector>
 #include <ctime>
 #include "app.h"
-#include "Employee.h"
 #include "Task.h"
-#include "utils.h"
 #include <algorithm>
+#include <iomanip>
 
 using namespace std;
 
@@ -17,22 +16,22 @@ vector<Employee*> employees;
 map<unsigned long, VertexType> restaurants;
 int id = 0;
 
-Request make_request(Graph<Coordinates> graph, Graph<Coordinates> reducedGraph) {
-    unsigned long int opt, client_vertex;
+Request make_request(Graph<Coordinates> graph) {
+    unsigned long int opt, client_vertex, rest_vertex;
     int cargo = 0;
     vector<unsigned long> restaurantIds;
     vector<Coordinates> checkpoints;
     Date date;
     Hour hour;
 
-    cout << "\tMake your request: " << endl
+    cout << endl << "\tMake your request: " << endl
         << "\t----------------------" << endl
         << "\tRestaurants: " << endl
         << endl;
 
     for(auto i : restaurants) {
         restaurantIds.push_back(i.first);
-        cout << "\tType: " << restaurantType(i.second) << "\tVertex id: " << i.first << endl;
+        cout << "\tType: " << restaurantType(i.second) << right << setw(20) << "Vertex id: " << i.first << endl;
     }
 
     cout << endl << "\t--------------------------------"<<endl;
@@ -43,28 +42,29 @@ Request make_request(Graph<Coordinates> graph, Graph<Coordinates> reducedGraph) 
         do{
             cout << "\tChoose a restaurant (Vertex number): ";
 
-            cin >> opt;
+            cin >> rest_vertex;
             cin.ignore(1000, '\n');
             cout << endl;
-        } while(find(restaurantIds.begin(), restaurantIds.end(),opt) == restaurantIds.end() || find(checkpoints.begin(), checkpoints.end(),Coordinates(opt)) != checkpoints.end());
+        } while(find(restaurantIds.begin(), restaurantIds.end(),rest_vertex) == restaurantIds.end() || find(checkpoints.begin(), checkpoints.end(),Coordinates(rest_vertex)) != checkpoints.end());
 
         do{
-            cout << "\tHow many meals do you desire from this restaurant (1 to 11) ?: ";
+            cout << "\tHow many meals do you desire from this restaurant (1 to 10) ? ";
 
             cin >> opt;
             cin.ignore(1000, '\n');
 
             cout << endl;
-            if(opt > 11 || opt < 1) cout << "Try again!" << endl;
-        } while(opt > 11 || opt < 1 || cargo + opt > 11);
-        checkpoints.push_back(Coordinates(opt));
+            if(opt >= 11 || opt < 1) cout << "Try again!" << endl;
+        } while(opt >= 11 || opt < 1 || cargo + opt > 10);
+        checkpoints.push_back(Coordinates(rest_vertex));
 
         cargo += opt;
-        if(cargo == 11) break;
+        if(cargo == 10) break;
 
-        cout << "\tDo you want to chose more restaurants? (Y / N) ";
+        cout << "\tDo you want to choose more restaurants? (Y / N) ";
         cin >> cont;
         cin.ignore(1000, '\n');
+        cout << endl;
 
     } while((cont == 'Y' || cont == 'y') && checkpoints.size() < restaurantIds.size());
 
@@ -101,7 +101,37 @@ string restaurantType(VertexType v){
     }
 }
 
-void grid4x4() {
+int deliveryRequests(Graph<Coordinates> graph, Graph<Coordinates> reducedGraph, Request r) {
+    system("CLS");
+
+    if(r.getCheckpoints().size() == 1){
+        min_priority_queue requests;
+        requests.push(r);
+        vector<Task*> t = distributeRequests(graph, reducedGraph,requests,employees);
+
+        for(Task * task : t){
+            cout << *task << endl;
+            viewSinglePath(graph,task->getPath(),task->getVehicleType());
+        }
+    }
+    else {
+        Task *t = multipleRestaurantsRequest(graph, reducedGraph, employees, r);
+
+        vector<Task *> tasks;
+        tasks.push_back(t);
+
+        for(Task * task : tasks) {
+            cout << *task << endl;
+            if (task->getVehicleType() == CAR || task->getVehicleType() == MOTORCYCLE)
+                viewEmployeePath(graph, tasks);
+            else if (task->getVehicleType() == BIKE || task->getVehicleType() == FOOT)
+                viewEmployeePath(graph, tasks);
+        }
+    }
+    return 0;
+}
+
+int grid4x4() {
 
     bool preview = previewCity();
 
@@ -112,20 +142,19 @@ void grid4x4() {
     employees.push_back(employee1);
     Employee * employee2 = new Employee(1,Coordinates(4),5,MOTORCYCLE,true);
     employees.push_back(employee2);
+    Employee * employee3 = new Employee(2, Coordinates(16), 10, CAR, true);
+    employees.push_back(employee3);
 
     restaurants = graph.getVTypes();
 
-    Request r = make_request(graph, graph);
-    if(r.getCheckpoints().size() == 1){
-        min_priority_queue requests;
-        requests.push(r);
-        vector<Task*> t = distributeRequests(graph, graph,requests,employees);
-    }
-    else
-        Task * t = multipleRestaurantsRequest(graph, graph, employees, r);
+    Request r = make_request(graph);
+
+    deliveryRequests(graph, graph, r);
+
+    return 0;
 }
 
-void grid8x8() {
+int grid8x8() {
     bool preview = previewCity();
 
     Graph<Coordinates> graph = loadGraph("GridGraphs", "8x8", true, preview);
@@ -140,19 +169,23 @@ void grid8x8() {
 
     restaurants = graph.getVTypes();
 
-    make_request(graph, graph);
+    Request r = make_request(graph);
+
+    deliveryRequests(graph, graph, r);
+
+    return 0;
 }
 
-void grid16x16() {
+int grid16x16() {
     bool preview = previewCity();
 
-    Graph<Coordinates> graph = loadGraph("GridGraphs", "16x16", true, preview);
+    Graph<Coordinates> graph = loadGraph("GridGraphs", "16x16Random", true, preview);
     Graph<Coordinates> reducedGraph = loadGraph("GridGraphs", "16x16Bike", true);
 
     graph.floydWarshallShortestPath();
     reducedGraph.floydWarshallShortestPath();
 
-    Employee * employee1 = new Employee(0,Coordinates(203),1,FOOT,true);
+    Employee * employee1 = new Employee(0,Coordinates(182),1,FOOT,true);
     employees.push_back(employee1);
     Employee * employee2 = new Employee(1,Coordinates(155),10,CAR,true);
     employees.push_back(employee2);
@@ -162,15 +195,21 @@ void grid16x16() {
     employees.push_back(employee4);
     Employee * employee5 = new Employee(4,Coordinates(45),10,CAR,true);
     employees.push_back(employee5);
-    Employee * employee6 = new Employee(5,Coordinates(288),5,MOTORCYCLE,true);
+    Employee * employee6 = new Employee(5,Coordinates(232),5,MOTORCYCLE,true);
     employees.push_back(employee6);
+    Employee * employee7 = new Employee(6,Coordinates(115),1,FOOT,true);
+    employees.push_back(employee7);
 
     restaurants = graph.getVTypes();
 
-    make_request(graph, reducedGraph);
+    Request r = make_request(graph);
+
+    deliveryRequests(graph, reducedGraph, r);
+
+    return 0;
 }
 
-void grid20x20() {
+int grid20x20() {
     bool preview = previewCity();
 
     Graph<Coordinates> graph = loadGraph("GridGraphs", "20x20", true, preview);
@@ -200,14 +239,18 @@ void grid20x20() {
 
     restaurants = graph.getVTypes();
 
-    make_request(graph, reducedGraph);
+    Request r = make_request(graph);
+
+    deliveryRequests(graph, reducedGraph, r);
+
+    return 0;
 }
 
-void grid30x30() {
+int grid30x30() {
     bool preview = previewCity();
 
-    Graph<Coordinates> graph = loadGraph("GridGraphs", "20x20", true, preview);
-    Graph<Coordinates> reducedGraph = loadGraph("GridGraphs", "20x20Bike", true);
+    Graph<Coordinates> graph = loadGraph("GridGraphs", "30x30", true, preview);
+    Graph<Coordinates> reducedGraph = loadGraph("GridGraphs", "30x30Bike", true);
 
     graph.floydWarshallShortestPath();
     reducedGraph.floydWarshallShortestPath();
@@ -243,7 +286,11 @@ void grid30x30() {
 
     restaurants = graph.getVTypes();
 
-    make_request(graph, reducedGraph);
+    Request r = make_request(graph);
+
+    deliveryRequests(graph, reducedGraph, r);
+
+    return 0;
 }
 
 
@@ -299,7 +346,7 @@ int chooseMap() {
 
 bool previewCity(){
     char opt;
-    cout << "\t Would you like to preview the city?";
+    cout << "\tWould you like to preview the city? (Y / N) ";
     cin >> opt;
     cin.ignore(1000, '\n');
 

@@ -81,18 +81,18 @@ std::ostream &operator<<(std::ostream &os, const Task &task) {
         return os;
     }
 
-    os << task.request;
+    os << "\t" << task.request;
 
-    os << *task.employee;
+    os << "\t" << *task.employee;
     if(!task.path.empty())
-        os << "Initial Employee's Position: " << task.path[0] << endl;
+        os << "\t" << "Initial Employee's Position: " << task.path[0] << endl;
 
-    os  <<  "PATH: ";
+    os << "\t" <<  "PATH: ";
     for(unsigned int i = 0; i < task.path.size(); i++)
         os << task.path[i] << " ";
     os << endl;
 
-    os << "Total distance: " << task.totalDistance << endl;
+    os << "\t" << "Total distance: " << task.totalDistance << endl;
 
     return os;
 }
