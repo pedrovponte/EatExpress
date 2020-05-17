@@ -11,10 +11,9 @@ int main(int argc, char* argv[]) {
 
     chooseMap();
 
-    //Graph<Coordinates> g = loadGraph("GridGraphs", "30x30",true, true);
-    //getchar();
+    cout << "Press enter to exit!";
+    getchar();
 
-    chooseMap();
     return 0;
     return RUN_ALL_TESTS();
 }
