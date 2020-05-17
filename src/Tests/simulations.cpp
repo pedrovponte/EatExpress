@@ -162,8 +162,8 @@ void simulateDijkstraPhase2(){
 // Phase 3
 
 void simulatePhase3(){
-    Graph<Coordinates> graph = loadGraph("GridGraphs", "20x20", true);
-    Graph<Coordinates> reducedGraph = loadGraph("GridGraphs", "20x20Bike", true);
+    Graph<Coordinates> graph = loadGraph("GridGraphs", "16x16", true);
+    Graph<Coordinates> reducedGraph = loadGraph("GridGraphs", "16x16Bike", true);
 
     // Pre-process Distances with Floyd Warshall
     graph.floydWarshallShortestPath();
@@ -171,22 +171,29 @@ void simulatePhase3(){
 
     // Add Employees
     vector<Employee*> employees;
-    Employee * employee1 = new Employee(0,Coordinates(4),40,MOTORCYCLE,true);
+    Employee * employee1 = new Employee(0,Coordinates(41),17,CAR,true);
     employees.push_back(employee1);
-    Employee * employee2 = new Employee(1,Coordinates(9),20,FOOT,true);
+    Employee * employee2 = new Employee(1,Coordinates(265),9,CAR,true);
     employees.push_back(employee2);
-    Employee * employee3 = new Employee(2,Coordinates(0),60,CAR,true);
+    Employee * employee3 = new Employee(2,Coordinates(95),13,CAR,true);
     employees.push_back(employee3);
+    Employee * employee4= new Employee(3,Coordinates(207),6,MOTORCYCLE,true);
+    employees.push_back(employee4);
+    Employee * employee5 = new Employee(4,Coordinates(85),8,BIKE,true);
+    employees.push_back(employee5);
+    Employee * employee6 = new Employee(5,Coordinates(112),6,FOOT,true);
+    employees.push_back(employee6);
 
     // Add Requests
     min_priority_queue requests;
-    requests.push(Request(0, Date(2020,07,10), Hour(21,0),Coordinates(3),Coordinates(64),40));
-    requests.push(Request(1, Date(2020,07,10), Hour(20,0),Coordinates(9),Coordinates(7),20));
-    requests.push(Request(2, Date(2020,07,10), Hour(18,0),Coordinates(25),Coordinates(10),12));
-    requests.push(Request(3, Date(2020,07,10), Hour(9,40),Coordinates(22),Coordinates(80),60));
-    requests.push(Request(4, Date(2020,07,10), Hour(18,30),Coordinates(9),Coordinates(200),10));
-    requests.push(Request(5, Date(2020,07,10), Hour(15,30),Coordinates(76),Coordinates(10),30));
-    requests.push(Request(6, Date(2020,07,10), Hour(12,10),Coordinates(3),Coordinates(6),5));
+    requests.push(Request(0, Date(2020,07,10), Hour(1,0),Coordinates(7),Coordinates(260),5));
+    requests.push(Request(1, Date(2020,07,10), Hour(7,0),Coordinates(0),Coordinates(95),5));
+    requests.push(Request(2, Date(2020,07,10), Hour(2,0),Coordinates(250),Coordinates(169),3));
+    requests.push(Request(3, Date(2020,07,10), Hour(8,40),Coordinates(99),Coordinates(214),6));
+    requests.push(Request(4, Date(2020,07,10), Hour(6,30),Coordinates(7),Coordinates(65),2));
+    requests.push(Request(5, Date(2020,07,10), Hour(4,30),Coordinates(7),Coordinates(105),3));
+    requests.push(Request(6, Date(2020,07,10), Hour(3,10),Coordinates(205),Coordinates(234),2));
+    requests.push(Request(7, Date(2020,07,10), Hour(5,10),Coordinates(205),Coordinates(145),4));
 
     vector<Task*> tasks = distributeRequests(graph,reducedGraph,requests,employees);
 

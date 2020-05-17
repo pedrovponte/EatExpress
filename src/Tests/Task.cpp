@@ -2,6 +2,7 @@
 // Created by diana on 09/05/20.
 //
 
+#include <sstream>
 #include "Task.h"
 
 // Task class
@@ -83,7 +84,7 @@ std::ostream &operator<<(std::ostream &os, const Task &task) {
 
     os << task.request;
 
-    os << *task.employee;
+    os << *task.employee << endl;
     if(!task.path.empty())
         os << "Initial Employee's Position: " << task.path[0] << endl;
 
@@ -114,6 +115,31 @@ const Request & Task::getRequest() const {
 
 Employee *Task::getEmployee() const {
     return employee;
+}
+
+string Task::toString(){
+    ostringstream os;
+
+    if(employee == nullptr){
+        os << "\t " << request;
+        os << "\t " << "Request couldn't be completed!"<< endl;
+        return os.str();
+    }
+
+    os << "\t " << request;
+
+    os << "\t " << *employee << endl;
+    if(!path.empty())
+        os << "\t " << "Initial Employee's Position: " << path[0] << endl;
+
+    os  << "\t " <<  "PATH: ";
+    for(unsigned int i = 0; i < path.size(); i++)
+        os << path[i] << " ";
+    os << endl;
+
+    os << "\t " << "Total distance: " << totalDistance << endl;
+
+    return os.str();
 }
 
 bool compareTasks(Task * t1, Task * t2){
@@ -231,9 +257,13 @@ min_priority_queue setRequestsDeliverability(const Graph<Coordinates> & graph, c
 
         if(origIdx1 != -1 && destIdx1 != -1 && graph.getDist(origIdx1,destIdx1) != INF)
             request.setDeliverableByCar(true);
+        else
+            request.setDeliverableByCar(false);
 
         if(origIdx2 != -1 && destIdx2 != -1 && reducedGraph.getDist(origIdx2,destIdx2) != INF)
             request.setDeliverableByFoot(true);
+        else
+            request.setDeliverableByFoot(false);
 
         requestsQueue.push(request);
     }
@@ -247,7 +277,6 @@ void setDistancesToCheckpoint(Graph<Coordinates> & graph, Graph<Coordinates> & r
     int checkpointIdx2 = reducedGraph.findVertexIdx(request.getCheckpoints()[0]);
 
     for(Employee * e : employees){
-
         if(e->getType() == CAR || e->getType() == MOTORCYCLE){
             origIdx =  graph.findVertexIdx(e->getCoordinates());
             if(origIdx != -1 && checkpointIdx1 != -1)
@@ -260,8 +289,9 @@ void setDistancesToCheckpoint(Graph<Coordinates> & graph, Graph<Coordinates> & r
             origIdx =  reducedGraph.findVertexIdx(e->getCoordinates());
             if(origIdx != -1 && checkpointIdx2 != -1)
                 e->setDist(reducedGraph.getDist(origIdx, checkpointIdx2));
-            else
+            else{
                 request.setDeliverableByFoot(false);
+            }
         }
     }
 }
@@ -276,6 +306,7 @@ vector<Employee*> getEligibleEmployees(vector<Employee*> & employees, const Requ
             }
         }
     }
+
     return eligibleEmployees;
 }
 
@@ -303,25 +334,26 @@ vector<Task*> distributeRequests(Graph<Coordinates> & graph, Graph<Coordinates> 
 
     while(!requests.empty()){
         Request r = requests.top();
+        requests.pop();
+
         setDistancesToCheckpoint(graph, reducedGraph, employees,r);
 
-        vector<Employee*> eligibleEmployees = getEligibleEmployees(employees, requests.top());
+        vector<Employee*> eligibleEmployees = getEligibleEmployees(employees, r);
 
         if(eligibleEmployees.empty()){
-            pendingRequests.push(requests.top());
+            pendingRequests.push(r);
         }
         else{
             sort(eligibleEmployees.begin(), eligibleEmployees.end(),compareEmployees);
             eligibleEmployees[0]->setReady(false);
 
-            Task * task = new Task(eligibleEmployees[0], requests.top());
+            Task * task = new Task(eligibleEmployees[0], r);
             availableEmployees--;
             roundTasks.push_back(task);
         }
-        requests.pop();
+
 
         if(requests.empty()){
-
             if(!pendingRequests.empty() && availableEmployees == employees.size()){
                 while(!pendingRequests.empty()){
                     roundTasks.push_back(new Task(nullptr,pendingRequests.top()));
@@ -341,6 +373,7 @@ vector<Task*> distributeRequests(Graph<Coordinates> & graph, Graph<Coordinates> 
                 else if(task->getVehicleType() == CAR || task->getVehicleType() == MOTORCYCLE)
                     task->setFloydWarshallPath(graph);
             }
+
             tasks.insert(tasks.end(),roundTasks.begin(), roundTasks.end());
             roundTasks.clear();
         }

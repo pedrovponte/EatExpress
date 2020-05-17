@@ -11,6 +11,7 @@ int main(int argc, char* argv[]) {
 
     chooseMap();
 
+    //Graph<Coordinates> g = loadGraph("GridGraphs", "16x16Bike",true, true);
     cout << "Press enter to exit!";
     getchar();
 

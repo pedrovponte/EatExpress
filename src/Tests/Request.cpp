@@ -101,7 +101,8 @@ std::ostream &operator<<(std::ostream &os, const Request & request) {
         os << request.getCheckpoints()[i] << " ";
     }
 
-    os << "; Delivery address = " << request.getDeliveryAddr() << "; Cargo = " << request.getCargo() << endl;
+    os << "; Delivery address = " << request.getDeliveryAddr() << "; Cargo = " << request.getCargo() << "; Date: " << request.request_date
+    << "; Hour: " <<request.request_hour << endl;
 
     return os;
 }
@@ -110,16 +111,16 @@ bool Request::isDeliverableByFoot() const {
     return deliverableByFoot;
 }
 
-void Request::setDeliverableByFoot(bool deliverableByFoot) {
-    Request::deliverableByFoot = deliverableByFoot;
+void Request::setDeliverableByFoot(bool deliverable) {
+    Request::deliverableByFoot = deliverable;
 }
 
 bool Request::isDeliverableByCar() const {
     return deliverableByCar;
 }
 
-void Request::setDeliverableByCar(bool deliverableByCar) {
-    Request::deliverableByCar = deliverableByCar;
+void Request::setDeliverableByCar(bool deliverable) {
+    Request::deliverableByCar = deliverable;
 }
 
 void Request::setCheckpoints(const vector<Coordinates> &checkpoints) {

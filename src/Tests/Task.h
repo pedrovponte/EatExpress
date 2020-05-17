@@ -27,6 +27,7 @@ public:
     Employee *getEmployee() const;
     bool operator <(const Task & task);
     friend std::ostream &operator<<(std::ostream &os, const Task &task);
+    string toString();
 };
 
 bool compareTasks(Task * t1, Task * t2);

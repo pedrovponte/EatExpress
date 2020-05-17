@@ -41,9 +41,9 @@ public:
     void setCargo(int cargo);
     bool operator<(const Request & request) const;
     bool isDeliverableByFoot() const;
-    void setDeliverableByFoot(bool deliverableByFoot);
+    void setDeliverableByFoot(bool deliverable);
     bool isDeliverableByCar() const;
-    void setDeliverableByCar(bool deliverableByCar);
+    void setDeliverableByCar(bool deliverable);
 
 
     friend std::ostream &operator<<(std::ostream &os, const Request &request);
