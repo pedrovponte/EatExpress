@@ -11,10 +11,12 @@ Task::Task(Employee * employee, Request request) : employee(employee), request(r
 void Task::setFloydWarshallPath(Graph<Coordinates> & graph){
     Coordinates orig = employee->getCoordinates();
     vector<Coordinates> tempPath;
+    totalDistance = 0;
 
     int i = 0;
     for(Coordinates checkpoint: request.getCheckpoints()){
         tempPath = graph.getfloydWarshallPath(orig, checkpoint);
+        totalDistance += graph.getDist(graph.findVertexIdx(orig), graph.findVertexIdx(checkpoint));
 
         if(i == 0) path = tempPath;
         else path.insert(path.end(),tempPath.begin()+1, tempPath.end());
@@ -26,6 +28,8 @@ void Task::setFloydWarshallPath(Graph<Coordinates> & graph){
     Coordinates dest = request.getDeliveryAddr();
 
     tempPath = graph.getfloydWarshallPath(orig, dest);
+    totalDistance += graph.getDist(graph.findVertexIdx(orig), graph.findVertexIdx(dest));
+
     path.insert(path.end(),tempPath.begin()+1, tempPath.end());
     employee->setCoordinates(path.at(path.size()-1));
     employee->setReady(true);
@@ -87,6 +91,8 @@ std::ostream &operator<<(std::ostream &os, const Task &task) {
     for(unsigned int i = 0; i < task.path.size(); i++)
         os << task.path[i] << " ";
     os << endl;
+
+    os << "Total distance: " << task.totalDistance << endl;
 
     return os;
 }

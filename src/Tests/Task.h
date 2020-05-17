@@ -14,6 +14,7 @@ class Task {
     Employee * employee;
     Request request;
     vector<Coordinates> path;
+    double totalDistance;
 public:
     Task(Employee *employee, Request request);
     void setFloydWarshallPath(Graph<Coordinates> & graph);
