@@ -69,7 +69,8 @@ Os dados a recolher, antes da execução de qualquer dos algoritmos, para os per
     * A sua posição inicial/no momento, $s$, $s \in V$;
     * A sua capacidade máxima de transporte, $maxCargo$;
     * O seu meio de transporte, $type$;
-    * A sua disponibilidade, $ready$, para iniciar uma nova tarefa.
+    * A sua disponibilidade, $ready$, para iniciar uma nova tarefa;
+    * A sua velocidade média, $avgSpeed$, para permitir a apresentação do tempo estimado de entrega.
 <!---->
 * Lista ordenada de Pedidos $P$:
   * Pedido $p \in P$ com a informação detalhada sobre:
@@ -89,6 +90,8 @@ O importante, realmente, aqui, é a entrega das tarefas aos estafetas, o que res
     * A lista completa e ordenada dos vértices consecutivos, $path$, por onde passará o estafeta;
     * O pedido $P$, que faz parte da tarefa;
     * O estafeta $employee$, encarregue da sua realização;
+    * A distância total, $totalDistance$, a percorrer pelo estafeta;
+    * o tempo estimado $estimatedTime$ para a entrega, com base na velocidade média do $employee$ e na distância a percorrer.
 
 O que se segue, nomeadamente, o ato de percorrer o caminho, com a identificação dos pontos já visitados, da entrega dos pedidos, do cálculo da distância percorrida, é um tanto independente desta análise algorítmica inicial, mas poderá ser, eventualmente, alvo de estudo e reflexão, para interpretação de resultados.
 <br><br><br>
@@ -115,6 +118,8 @@ As outras restrições são como se seguem:
 
 * $ \forall \ task_1,task_2 \in Tasks, \ task_1 \not = task_2 $ ;
 * $ \forall \ task \in Tasks, \ task.path \not = null, task.P \not = null, \ task.employee \not = null \ , |task.path| \gt 1$ ;
+* $\forall \ task_1,task_2 \in Tasks, \ task_1.P \not = task_2.P$, no sentido em que nenhum pedido pode pertencer a mais do que uma $Task$;
+* $\forall \ task_1,task_2 \in Tasks, \ task_1.employee \not = task_2.employee$, no sentido em que nenhum estafeta pode estar associado a mais do que uma $Task$ a ocorrer em simultâneo;
 * $ \forall \ task \in Tasks, \text{em} \ task.path,$ os restaurantes terão de ser visitados antes da localização do cliente, em relação ao pedido associado a ambos;
 
 ## 2.6 Função Objetivo
@@ -128,4 +133,4 @@ Adicionalmente, para múltiplas tarefas a realizar em simultâneo, num dado inte
 $$ g = \sum_{task} f(task) \ , \ task \in Tasks
 \\ h = |Tasks| $$
 
-Para a função $g$, o mínimo poderá, eventualmente, ser atingido pela simples minimização de $f$, em todas as instâncias, sendo, por isso, a função $f$ de maior prioridade, entre todas.
+Para a função $g$, representando a distância total percorrida por todos os estafetas, relacionados com um dado conjunto de $Tasks$, o mínimo poderá, eventualmente, ser atingido pela simples minimização de $f$, em todas as instâncias, sendo, por isso, a função $f$ de maior prioridade, entre todas. A função $h$ terá mais interesse quando implementada a funcionalidade extra de um cliente poder englobar no seu pedido vários pratos de vários restaurantes, compactando o que seriam diferentes pedidos num pedido e numa tarefa apenas.
