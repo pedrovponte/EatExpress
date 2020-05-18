@@ -36,7 +36,7 @@ TEST(CAL_T3G4, test_dijkstra_time_ph1){
         auto start = std::chrono::high_resolution_clock::now();
 
         for (int i = 0; i < 100; ++i) {
-            Task task = Task(&employee, requests.at(i));
+            Task task = Task(&employee, requests.at(i),i);
             task.setDijkstraPath(graph); // Executes Dijkstra algorithm from the employee to the restaurant and then from that to the client's house
             auto checkpoint = std::chrono::high_resolution_clock::now();
 
@@ -90,7 +90,7 @@ TEST(CAL_T3G4, test_floyd_wharshall_time_ph1){
         }
 
         for (int i = 0; i < 100; ++i) {
-            Task task = Task(&employee, requests.at(i));
+            Task task = Task(&employee, requests.at(i),i);
             task.setFloydWarshallPath(graph); // Executes Floyd-Wharshall algorithm from the employee to the restaurant and then from that to the client's house
 
             auto checkpoint = std::chrono::high_resolution_clock::now();

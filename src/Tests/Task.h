@@ -15,8 +15,9 @@ class Task {
     Request request;
     vector<Coordinates> path;
     double totalDistance;
+    int id;
 public:
-    Task(Employee *employee, Request request);
+    Task(Employee *employee, Request request, int id);
     void setFloydWarshallPath(Graph<Coordinates> & graph);
     void setDijkstraPath(Graph<Coordinates> & graph);
     const vector<Coordinates> getPath() const;
@@ -28,6 +29,7 @@ public:
     bool operator <(const Task & task);
     friend std::ostream &operator<<(std::ostream &os, const Task &task);
     string toString();
+    int getId() const;
 };
 
 bool compareTasks(Task * t1, Task * t2);

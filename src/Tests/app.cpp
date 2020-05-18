@@ -225,6 +225,10 @@ int grid16x16() {
 }
 
 int grid20x20() {
+    char c;
+    if((c = singleRequest()) != 'A' && c != 'B')
+        return 0;
+
     bool preview = previewCity();
 
     Graph<Coordinates> graph = loadGraph("GridGraphs", "20x20", true, preview);
@@ -232,6 +236,12 @@ int grid20x20() {
 
     graph.floydWarshallShortestPath();
     reducedGraph.floydWarshallShortestPath();
+
+    restaurants = graph.getVTypes();
+
+    if(c == 'B'){
+        return simulate(graph,reducedGraph);
+    }
 
     Employee * employee1 = new Employee(0, Coordinates(90), 4, FOOT, true);
     employees.push_back(employee1);
@@ -252,8 +262,6 @@ int grid20x20() {
     Employee * employee9 = new Employee(8, Coordinates(271), 10, CAR, true);
     employees.push_back(employee9);
 
-    restaurants = graph.getVTypes();
-
     Request r = make_request(graph);
 
     deliveryRequests(graph, reducedGraph, r);
@@ -262,6 +270,10 @@ int grid20x20() {
 }
 
 int grid30x30() {
+    char c;
+    if((c = singleRequest()) != 'A' && c != 'B')
+        return 0;
+
     bool preview = previewCity();
 
     Graph<Coordinates> graph = loadGraph("GridGraphs", "30x30", true, preview);
@@ -269,6 +281,12 @@ int grid30x30() {
 
     graph.floydWarshallShortestPath();
     reducedGraph.floydWarshallShortestPath();
+
+    restaurants = graph.getVTypes();
+
+    if(c == 'B'){
+        return simulate(graph,reducedGraph);
+    }
 
     Employee * employee1 = new Employee(0, Coordinates(50), 1, FOOT, true);
     employees.push_back(employee1);
@@ -298,8 +316,6 @@ int grid30x30() {
     employees.push_back(employee13);
     Employee * employee14 = new Employee(13, Coordinates(749), 10, CAR, true);
     employees.push_back(employee14);
-
-    restaurants = graph.getVTypes();
 
     Request r = make_request(graph);
 
@@ -368,12 +384,14 @@ int simulate(Graph<Coordinates> & graph, Graph<Coordinates> & reducedGraph) {
 
             for(Task * t: tasks){
                 if(t->getRequest().getId() == n){
+
+                    if(t->getEmployee() == nullptr)
+                        cout << "The request nr " << n << " could not be completed by any of the employees!" << endl;
+
                     if(t->getVehicleType() == CAR || t->getVehicleType() == MOTORCYCLE)
                         viewSinglePath(graph,t->getPath(),t->getVehicleType());
                     else if(t->getVehicleType() == BIKE || t->getVehicleType() == FOOT)
                         viewSinglePath(reducedGraph,t->getPath(),t->getVehicleType());
-                    else
-                        cout << "The request you choose could not be completed by any of the employees!" << endl;
                 }
             }
 
@@ -391,6 +409,9 @@ int simulate(Graph<Coordinates> & graph, Graph<Coordinates> & reducedGraph) {
                 if(t->getEmployee()->getId() == n)
                     employeeTasks.push_back(t);
             }
+
+            if(employeeTasks.empty())
+                cout << "The employee nr " << n << " was not assigned to any request!" << endl;
 
             if(type == CAR || type == MOTORCYCLE)
                 viewEmployeePath(graph,employeeTasks);
@@ -418,14 +439,15 @@ min_priority_queue randomRequests(unsigned number, unsigned vertices){
     Date date;
     Hour hour;
     srand (1);
-    time_t t = time(0);
+    time_t now = time(0);
 
     for(int i = 0 ; i < number; i++){
         int restaurant =  rand() % restaurantIds.size();
         int delivery_address = rand() % vertices;
         int cargo = rand() % 10 + 1;
 
-        tm* now = localtime(&t);
+        time_t newTime = now + 60*i;
+        tm* now = localtime(&newTime);
 
         date = Date(now->tm_year + 1900, 1 + now->tm_mon, now->tm_mday);
         hour = Hour(now->tm_hour + 1, now->tm_min);

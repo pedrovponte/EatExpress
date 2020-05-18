@@ -7,7 +7,7 @@
 
 // Task class
 
-Task::Task(Employee * employee, Request request) : employee(employee), request(request) {}
+Task::Task(Employee * employee, Request request, int id) : employee(employee), request(request), id(id) {}
 
 void Task::setFloydWarshallPath(Graph<Coordinates> & graph){
     Coordinates orig = employee->getCoordinates();
@@ -101,7 +101,7 @@ std::ostream &operator<<(std::ostream &os, const Task &task){
 bool  Task::operator <(const Task & task){
     if(this->getVehicleType() != INVALID && task.getVehicleType() != INVALID){
         if(employee->getId() == task.employee->getId()){
-            return request < task.getRequest();
+            return id < task.getId();
         }
         return employee->getId() < task.employee->getId();
     }
@@ -142,6 +142,10 @@ string Task::toString(){
     return os.str();
 }
 
+int Task::getId() const {
+    return id;
+}
+
 bool compareTasks(Task * t1, Task * t2){
     return *t1 < *t2;
 }
@@ -152,6 +156,7 @@ vector<Task*> distributeRequestsByCloseness_FloydWarshall(Graph<Coordinates> & g
     int origIdx, destIdx;
     double dist;
     vector<Task*> tasks;
+    int taskId = 0;
     int employeeIdx;
 
     // While there are still requests to distribute
@@ -186,8 +191,8 @@ vector<Task*> distributeRequestsByCloseness_FloydWarshall(Graph<Coordinates> & g
 
         // An employee was found to fulfill the request
         employees[employeeIdx].setReady(false); // Make employee unavailable for other requests
-        tasks.push_back(new Task(&employees[employeeIdx],requests.front())); // Create new task for the request
-
+        tasks.push_back(new Task(&employees[employeeIdx],requests.front(),taskId)); // Create new task for the request
+        taskId++;
         requests.pop();
     }
     return tasks;
@@ -195,6 +200,7 @@ vector<Task*> distributeRequestsByCloseness_FloydWarshall(Graph<Coordinates> & g
 
 vector<Task*> distributeRequestsByCloseness_Dijkstra(Graph<Coordinates> & graph, queue<Request> & requests, vector<Employee> & employees){
     vector<Task*> tasks;
+    int taskId = 0;
     int employeeIdx;
     double dist;
 
@@ -230,8 +236,8 @@ vector<Task*> distributeRequestsByCloseness_Dijkstra(Graph<Coordinates> & graph,
 
         // An employee was found to fulfill the request
         employees[employeeIdx].setReady(false); // Make employee unavailable for other requests
-        tasks.push_back(new Task(&employees[employeeIdx],requests.front())); // Create new task for the request
-
+        tasks.push_back(new Task(&employees[employeeIdx],requests.front(), taskId)); // Create new task for the request
+        taskId++;
         requests.pop();
     }
     return tasks;
@@ -324,6 +330,7 @@ bool compareEmployees(Employee * e1, Employee * e2){
 
 vector<Task*> distributeRequests(Graph<Coordinates> & graph, Graph<Coordinates> & reducedGraph, min_priority_queue & requests, vector<Employee*> & employees){
     vector<Task*> tasks;
+    int taskId = 0;
     vector<Task*> roundTasks;
     min_priority_queue pendingRequests;
     int availableEmployees = employees.size();
@@ -347,7 +354,8 @@ vector<Task*> distributeRequests(Graph<Coordinates> & graph, Graph<Coordinates> 
             sort(eligibleEmployees.begin(), eligibleEmployees.end(),compareEmployees);
             eligibleEmployees[0]->setReady(false);
 
-            Task * task = new Task(eligibleEmployees[0], r);
+            Task * task = new Task(eligibleEmployees[0], r,taskId);
+            taskId++;
             availableEmployees--;
             roundTasks.push_back(task);
         }
@@ -356,8 +364,9 @@ vector<Task*> distributeRequests(Graph<Coordinates> & graph, Graph<Coordinates> 
         if(requests.empty()){
             if(!pendingRequests.empty() && availableEmployees == employees.size()){
                 while(!pendingRequests.empty()){
-                    roundTasks.push_back(new Task(nullptr,pendingRequests.top()));
+                    roundTasks.push_back(new Task(nullptr,pendingRequests.top(),taskId));
                     pendingRequests.pop();
+                    taskId++;
                 }
             }
 
@@ -419,6 +428,7 @@ int getNearestRestaurant(Graph<Coordinates> & graph, const Coordinates & origin,
 
 Task * multipleRestaurantsRequest(Graph<Coordinates> & graph, Graph<Coordinates> & reducedGraph, vector<Employee*> & employees, Request & request){
     vector<Coordinates> restaurants;
+    int taskId = 0;
 
     int nearestRestaurantPos, nearestEmployeePos;
     double nearestEmployeeDist = INF;
@@ -437,7 +447,7 @@ Task * multipleRestaurantsRequest(Graph<Coordinates> & graph, Graph<Coordinates>
                 nearestRestaurantPos = getNearestRestaurant(graph,origin, requestRestaurants);
                 // One of the restaurants does not exist
                 if(nearestRestaurantPos == -1)
-                    return new Task(nullptr,request);
+                    return new Task(nullptr,request,taskId);
 
                 dist = graph.getDist(graph.findVertexIdx(origin),graph.findVertexIdx(requestRestaurants[nearestRestaurantPos]));
 
@@ -501,11 +511,11 @@ Task * multipleRestaurantsRequest(Graph<Coordinates> & graph, Graph<Coordinates>
         }
     }
 
-    if(nearestEmployeeDist == INF) return new Task(nullptr, request);
+    if(nearestEmployeeDist == INF) return new Task(nullptr, request,taskId);
 
     request.setCheckpoints(restaurants);
 
-    Task * task =  new Task(employees[nearestEmployeePos], request);
+    Task * task =  new Task(employees[nearestEmployeePos], request,taskId);
 
     if(task->getVehicleType() == CAR || task->getVehicleType() == MOTORCYCLE)
         task->setFloydWarshallPath(graph);

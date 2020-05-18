@@ -32,7 +32,7 @@ void simulateFloydWarshallPhase1(){
     // Give the request to an employee
     Employee employee(0,Coordinates(10),40,CAR,true);
 
-    Task task(&employee,request);
+    Task task(&employee,request,0);
 
     // Calculate shortest path using FloydWarshall
     task.setFloydWarshallPath(graph);
@@ -61,7 +61,7 @@ void simulateDijkstraPhase1(){
     // Give the request to an employee
     Employee employee(0,Coordinates(10),40,CAR,true);
 
-    Task task(&employee,request);
+    Task task(&employee,request,0);
 
     // Calculate shortest path using Dijkstra
     task.setDijkstraPath(graph);
@@ -209,8 +209,8 @@ void simulatePhase3(){
 // Multiple restaurants request
 
 void simulateMultipleRestaurantsRequest(){
-    Graph<Coordinates> graph = loadGraph("GridGraphs", "16x16", true);
-    Graph<Coordinates> reducedGraph = loadGraph("GridGraphs", "16x16Bike", true);
+    Graph<Coordinates> graph = loadGraph("GridGraphs", "30x30", true);
+    Graph<Coordinates> reducedGraph = loadGraph("GridGraphs", "30x30Bike", true);
 
     // Pre-process Distances with Floyd Warshall
     graph.floydWarshallShortestPath();
@@ -218,26 +218,41 @@ void simulateMultipleRestaurantsRequest(){
 
     // Add Employees
     vector<Employee*> employees;
-    Employee * employee1 = new Employee(0,Coordinates(182),3,FOOT,true);
+    Employee * employee1 = new Employee(0, Coordinates(50), 1, FOOT, true);
     employees.push_back(employee1);
-    Employee * employee2 = new Employee(1,Coordinates(155),10,CAR,true);
+    Employee * employee2 = new Employee(1, Coordinates(229), 2, BIKE, true);
     employees.push_back(employee2);
-    Employee * employee3 = new Employee(2,Coordinates(37),5,MOTORCYCLE,true);
+    Employee * employee3 = new Employee(2, Coordinates(69), 2, BIKE, true);
     employees.push_back(employee3);
-    Employee * employee4 = new Employee(3,Coordinates(193),5,BIKE,true);
+    Employee * employee4 = new Employee(3, Coordinates(452), 1, FOOT, true);
     employees.push_back(employee4);
-    Employee * employee5 = new Employee(4,Coordinates(45),10,CAR,true);
+    Employee * employee5 = new Employee(4, Coordinates(362), 2, BIKE, true);
     employees.push_back(employee5);
-    Employee * employee6 = new Employee(5,Coordinates(232),5,MOTORCYCLE,true);
+    Employee * employee6 = new Employee(5, Coordinates(146), 2, BIKE, true);
     employees.push_back(employee6);
-    Employee * employee7 = new Employee(6,Coordinates(115),4,FOOT,true);
+    Employee * employee7 = new Employee(6, Coordinates(165), 10, CAR, true);
     employees.push_back(employee7);
+    Employee * employee8 = new Employee(7, Coordinates(94), 5, MOTORCYCLE, true);
+    employees.push_back(employee8);
+    Employee * employee9 = new Employee(8, Coordinates(304), 5, MOTORCYCLE, true);
+    employees.push_back(employee9);
+    Employee * employee10 = new Employee(9, Coordinates(546), 10, CAR, true);
+    employees.push_back(employee10);
+    Employee * employee11 = new Employee(10, Coordinates(636), 10, CAR, true);
+    employees.push_back(employee11);
+    Employee * employee12 = new Employee(11, Coordinates(761), 5, MOTORCYCLE, true);
+    employees.push_back(employee12);
+    Employee * employee13 = new Employee(12, Coordinates(620), 10, CAR, true);
+    employees.push_back(employee13);
+    Employee * employee14 = new Employee(13, Coordinates(749), 10, CAR, true);
+    employees.push_back(employee14);
 
     vector<Coordinates> checkpoints;
-    checkpoints.push_back(Coordinates(99));
-    checkpoints.push_back(Coordinates(183));
+    checkpoints.push_back(Coordinates(673));
+    checkpoints.push_back(Coordinates(899));
+    checkpoints.push_back(Coordinates(39));
 
-    Request r(0, Date(2020,07,10), Hour(21,0),checkpoints,Coordinates(131),2);
+    Request r(0, Date(2020,07,10), Hour(21,0),checkpoints,Coordinates(76),3);
 
     Task * task = multipleRestaurantsRequest(graph, reducedGraph, employees,r);
 

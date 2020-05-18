@@ -10,7 +10,7 @@ restaurant
 782
 826
 854
-900
+899
 fast_food
 6
 39

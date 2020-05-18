@@ -322,7 +322,7 @@ void viewEmployeesPaths(const Graph<Coordinates> & graph,const Graph<Coordinates
     for(Task * task: tasks){
         // No employee assigned to the task
         if(task->getEmployee() == nullptr)
-            continue;
+            cout << "The request nr " << task->getId() << " could not be completed by any of the employees!" << endl;
 
         // First task
         if(id == -1){
@@ -353,6 +353,7 @@ void viewEmployeesPaths(const Graph<Coordinates> & graph,const Graph<Coordinates
 }
 
 void graphViewerProperties(GraphViewer * gv){
+    gv->defineVertexSize(15);
     gv->createWindow(700, 700);
     gv->defineVertexColor("gray");
     gv->defineEdgeColor("gray");
