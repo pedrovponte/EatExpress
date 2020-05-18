@@ -75,25 +75,25 @@ VehicleType Task::getVehicleType() const{
     return employee->getType();
 }
 
-std::ostream &operator<<(std::ostream &os, const Task &task) {
+std::ostream &operator<<(std::ostream &os, const Task &task){
     if(task.employee == nullptr){
-        os << task.request;
-        os << "Request couldn't be completed!"<< endl;
+        os << "\t " << task.request;
+        os << "\t " << "Request couldn't be completed!"<< endl;
         return os;
     }
 
-    os << task.request;
+    os << "\t" << task.request;
+    os << "\t" << *task.employee;
 
-    os << *task.employee << endl;
     if(!task.path.empty())
-        os << "Initial Employee's Position: " << task.path[0] << endl;
+        os << "\t" << "Initial Employee's Position: " << task.path[0] << endl;
 
-    os  <<  "PATH: ";
+    os << "\t" <<  "PATH: ";
     for(unsigned int i = 0; i < task.path.size(); i++)
         os << task.path[i] << " ";
     os << endl;
 
-    os << "Total distance: " << task.totalDistance << endl;
+    os << "\t" << "Total distance: " << task.totalDistance << endl;
 
     return os;
 }
@@ -397,7 +397,7 @@ vector<Employee*> getEligibleEmployeesMultipleRestaurants(vector<Employee*> & em
 
 int getNearestRestaurant(Graph<Coordinates> & graph, const Coordinates & origin, vector<Coordinates> & restaurants){
     int origIdx = graph.findVertexIdx(origin);
-    int destIdx, nearestRestaurantPos;
+    int destIdx, nearestRestaurantPos=-1;
     double nearestRestaurantDist = INF;
 
     int i = 0;
@@ -424,16 +424,16 @@ Task * multipleRestaurantsRequest(Graph<Coordinates> & graph, Graph<Coordinates>
     double nearestEmployeeDist = INF;
 
     employees = getEligibleEmployeesMultipleRestaurants(employees, request);
-    int i = 0;
-    for(Employee * e: employees){
+
+    for(int i = 0; i< employees.size(); i++){
         double totalDist = 0;
-        Coordinates origin = e->getCoordinates();
+        Coordinates origin = employees[i]->getCoordinates();
         vector<Coordinates> requestRestaurants = request.getCheckpoints();
         vector<Coordinates> restaurantsPath;
 
         for(int j = 0; j < request.getCheckpoints().size(); j++){
             double dist = 0;
-            if(e->getType() == CAR || e->getType() == MOTORCYCLE){
+            if(employees[i]->getType() == CAR ||employees[i]->getType() == MOTORCYCLE){
                 nearestRestaurantPos = getNearestRestaurant(graph,origin, requestRestaurants);
                 // One of the restaurants does not exist
                 if(nearestRestaurantPos == -1)
@@ -447,9 +447,8 @@ Task * multipleRestaurantsRequest(Graph<Coordinates> & graph, Graph<Coordinates>
                     break;
                 }
             }
-            else if (e->getType() == BIKE || e->getType() == FOOT){
+            else if (employees[i]->getType() == BIKE || employees[i]->getType() == FOOT){
                 nearestRestaurantPos = getNearestRestaurant(reducedGraph,origin, requestRestaurants);
-
                 // One of the restaurants does not exist
                 if(nearestRestaurantPos == -1){
                     totalDist = INF;
@@ -472,12 +471,11 @@ Task * multipleRestaurantsRequest(Graph<Coordinates> & graph, Graph<Coordinates>
         }
 
         if(totalDist == INF){
-            i++;
-            break;
+            continue;
         }
 
         // Check if path from last restaurant to delivery address exists
-        if(e->getType() == CAR || e->getType() == MOTORCYCLE){
+        if(employees[i]->getType() == CAR || employees[i]->getType() == MOTORCYCLE){
             double dist = INF;
             int deliveryIdx = graph.findVertexIdx(request.getDeliveryAddr());
                 if(deliveryIdx != -1){
@@ -486,7 +484,7 @@ Task * multipleRestaurantsRequest(Graph<Coordinates> & graph, Graph<Coordinates>
                     totalDist += dist;
             } else break;
         }
-        else if (e->getType() == BIKE || e->getType() == FOOT){
+        else if (employees[i]->getType() == BIKE || employees[i]->getType() == FOOT){
             double dist = INF;
             int deliveryIdx = reducedGraph.findVertexIdx(request.getDeliveryAddr());
             if(deliveryIdx != -1){
@@ -501,8 +499,6 @@ Task * multipleRestaurantsRequest(Graph<Coordinates> & graph, Graph<Coordinates>
             nearestEmployeeDist = totalDist;
             restaurants = restaurantsPath;
         }
-
-        i++;
     }
 
     if(nearestEmployeeDist == INF) return new Task(nullptr, request);

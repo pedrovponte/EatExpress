@@ -209,8 +209,8 @@ void simulatePhase3(){
 // Multiple restaurants request
 
 void simulateMultipleRestaurantsRequest(){
-    Graph<Coordinates> graph = loadGraph("GridGraphs", "20x20", true);
-    Graph<Coordinates> reducedGraph = loadGraph("GridGraphs", "20x20Bike", true);
+    Graph<Coordinates> graph = loadGraph("GridGraphs", "16x16", true);
+    Graph<Coordinates> reducedGraph = loadGraph("GridGraphs", "16x16Bike", true);
 
     // Pre-process Distances with Floyd Warshall
     graph.floydWarshallShortestPath();
@@ -218,27 +218,39 @@ void simulateMultipleRestaurantsRequest(){
 
     // Add Employees
     vector<Employee*> employees;
-    Employee * employee1 = new Employee(0,Coordinates(150),20,CAR,true);
+    Employee * employee1 = new Employee(0,Coordinates(182),3,FOOT,true);
     employees.push_back(employee1);
-    Employee * employee2 = new Employee(1,Coordinates(17),6,FOOT,true);
+    Employee * employee2 = new Employee(1,Coordinates(155),10,CAR,true);
     employees.push_back(employee2);
-    Employee * employee3 = new Employee(2,Coordinates(290),10,MOTORCYCLE,true);
+    Employee * employee3 = new Employee(2,Coordinates(37),5,MOTORCYCLE,true);
     employees.push_back(employee3);
+    Employee * employee4 = new Employee(3,Coordinates(193),5,BIKE,true);
+    employees.push_back(employee4);
+    Employee * employee5 = new Employee(4,Coordinates(45),10,CAR,true);
+    employees.push_back(employee5);
+    Employee * employee6 = new Employee(5,Coordinates(232),5,MOTORCYCLE,true);
+    employees.push_back(employee6);
+    Employee * employee7 = new Employee(6,Coordinates(115),4,FOOT,true);
+    employees.push_back(employee7);
 
     vector<Coordinates> checkpoints;
-    checkpoints.push_back(Coordinates(280));
-    checkpoints.push_back(Coordinates(4));
+    checkpoints.push_back(Coordinates(99));
+    checkpoints.push_back(Coordinates(183));
 
-    Request r(0, Date(2020,07,10), Hour(21,0),checkpoints,Coordinates(64),6);
+    Request r(0, Date(2020,07,10), Hour(21,0),checkpoints,Coordinates(131),2);
 
     Task * task = multipleRestaurantsRequest(graph, reducedGraph, employees,r);
 
     vector<Task*> tasks;
     tasks.push_back(task);
-    if (task->getVehicleType() == CAR || task->getVehicleType() == MOTORCYCLE)
-        viewEmployeePath(graph,tasks);
-    else if(task->getVehicleType() == BIKE || task->getVehicleType() == FOOT)
-        viewEmployeePath(reducedGraph,tasks);
+    if(task->getEmployee() != nullptr){
+        cout << *task<< endl;
+        if (task->getVehicleType() == CAR || task->getVehicleType() == MOTORCYCLE)
+            viewEmployeePath(graph,tasks);
+        else if(task->getVehicleType() == BIKE || task->getVehicleType() == FOOT)
+            viewEmployeePath(reducedGraph,tasks);
+    }
+    else cout << *task<< endl;
 
 }
 

@@ -9,16 +9,18 @@
 #include "Graph.h"
 #include "Request.h"
 
-Request make_request(Graph<Coordinates> & graph, Graph<Coordinates> & reducedGraph);
+Request make_request(Graph<Coordinates> & graph);
+int deliveryRequests(Graph<Coordinates> & graph, Graph<Coordinates> & reducedGraph, Request & r);
 
-void grid4x4();
-void grid8x8();
-void grid16x16();
-void grid20x20();
-void grid30x30();
+int grid4x4();
+int grid8x8();
+int grid16x16();
+int grid20x20();
+int grid30x30();
+
 int chooseMap();
 
-void simulate(Graph<Coordinates> & graph, Graph<Coordinates> & reducedGraph);
+int simulate(Graph<Coordinates> & graph, Graph<Coordinates> & reducedGraph);
 min_priority_queue randomRequests(unsigned number, unsigned vertices);
 vector<Employee*> randomEmployees(unsigned number, unsigned vertices);
 

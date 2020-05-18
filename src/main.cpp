@@ -12,9 +12,10 @@ int main(int argc, char* argv[]) {
     chooseMap();
 
     //Graph<Coordinates> g = loadGraph("GridGraphs", "16x16Bike",true, true);
-    cout << "Press enter to exit!";
-    getchar();
 
+    //simulateMultipleRestaurantsRequest();
+    cout << "Enter to exit!";
+    getchar();
     return 0;
     return RUN_ALL_TESTS();
 }
