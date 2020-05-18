@@ -77,8 +77,8 @@ VehicleType Task::getVehicleType() const{
 
 std::ostream &operator<<(std::ostream &os, const Task &task){
     if(task.employee == nullptr){
-        os << "\t " << task.request;
-        os << "\t " << "Request couldn't be completed!"<< endl;
+        os << "\t" << task.request;
+        os << "\tRequest couldn't be completed!"<< endl;
         return os;
     }
 
@@ -86,14 +86,15 @@ std::ostream &operator<<(std::ostream &os, const Task &task){
     os << "\t" << *task.employee;
 
     if(!task.path.empty())
-        os << "\t" << "Initial Employee's Position: " << task.path[0] << endl;
+        os << "\tInitial Employee's Position: " << task.path[0] << endl;
 
-    os << "\t" <<  "PATH: ";
+    os << "\tPATH: ";
     for(unsigned int i = 0; i < task.path.size(); i++)
         os << task.path[i] << " ";
     os << endl;
 
-    os << "\t" << "Total distance: " << task.totalDistance << endl;
+    os << "\tTotal distance: " << task.totalDistance << endl;
+    os << "\tEstimated time: " << task.totalDistance / task.employee->getAvgVelocity() << endl;
 
     return os;
 }

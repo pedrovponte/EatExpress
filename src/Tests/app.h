@@ -9,7 +9,7 @@
 #include "Graph.h"
 #include "Request.h"
 
-Request make_request(Graph<Coordinates> & graph);
+Request makeRequest(Graph<Coordinates> & graph);
 int deliveryRequests(Graph<Coordinates> & graph, Graph<Coordinates> & reducedGraph, Request & r);
 
 int grid4x4();

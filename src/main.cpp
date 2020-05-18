@@ -14,7 +14,7 @@ int main(int argc, char* argv[]) {
     //Graph<Coordinates> g = loadGraph("GridGraphs", "30x30Grid",true, true);
     //simulateMultipleRestaurantsRequest();
 
-    cout << "Enter to exit!";
+    cout << "\tEnter to exit!";
     getchar();
     return 0;
     return RUN_ALL_TESTS();

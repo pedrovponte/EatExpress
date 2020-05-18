@@ -81,7 +81,7 @@ std::ostream &operator<<(std::ostream &os, const Employee & employee) {
             break;
     }
 
-    os << "; MaxCargo = " << employee.getMaxCargo();
+    os << "; MaxCargo = " << employee.getMaxCargo() << "; Avg Velocity = " << employee.getAvgVelocity() << endl;
 
     return os;
 }
