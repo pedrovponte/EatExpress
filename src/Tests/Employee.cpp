@@ -18,12 +18,12 @@ Employee::Employee(int id, const Coordinates &coordinates, int maxCargo, Vehicle
     else if(type == FOOT){
         avgVelocity = 8;
     }
-    avgVelocity = 0;
+    else avgVelocity = 0;
 }
 
 Employee::Employee(): id(-1), coordinates(0), maxCargo(-1),type(INVALID),ready(false) {}
 
-Employee::Employee(const Employee &e): id(e.getId()), coordinates(e.getCoordinates()), maxCargo(e.getMaxCargo()),type(getType()),ready(e.isReady()) {
+Employee::Employee(const Employee &e): id(e.getId()), coordinates(e.getCoordinates()), maxCargo(e.getMaxCargo()),type(getType()),ready(e.isReady()), avgVelocity(e.avgVelocity) {
 }
 
 int Employee::getId() const {
@@ -81,7 +81,7 @@ std::ostream &operator<<(std::ostream &os, const Employee & employee) {
             break;
     }
 
-    os << "; MaxCargo = " << employee.getMaxCargo() << "; Avg Velocity = " << employee.getAvgVelocity() << endl;
+    os << "; MaxCargo = " << employee.getMaxCargo() << "; Avg Velocity = " << employee.getAvgVelocity();
 
     return os;
 }

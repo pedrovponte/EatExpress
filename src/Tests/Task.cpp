@@ -83,7 +83,7 @@ std::ostream &operator<<(std::ostream &os, const Task &task){
     }
 
     os << "\t" << task.request;
-    os << "\t" << *task.employee;
+    os << "\t" << *task.employee<< endl;
 
     if(!task.path.empty())
         os << "\tInitial Employee's Position: " << task.path[0] << endl;
@@ -116,31 +116,6 @@ const Request & Task::getRequest() const {
 
 Employee *Task::getEmployee() const {
     return employee;
-}
-
-string Task::toString(){
-    ostringstream os;
-
-    if(employee == nullptr){
-        os << "\t " << request;
-        os << "\t " << "Request couldn't be completed!"<< endl;
-        return os.str();
-    }
-
-    os << "\t " << request;
-
-    os << "\t " << *employee << endl;
-    if(!path.empty())
-        os << "\t " << "Initial Employee's Position: " << path[0] << endl;
-
-    os  << "\t " <<  "PATH: ";
-    for(unsigned int i = 0; i < path.size(); i++)
-        os << path[i] << " ";
-    os << endl;
-
-    os << "\t " << "Total distance: " << totalDistance << endl;
-
-    return os.str();
 }
 
 int Task::getId() const {

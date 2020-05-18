@@ -144,11 +144,11 @@ int grid4x4() {
     Graph<Coordinates> graph = loadGraph("GridGraphs", "4x4", true, preview);
     graph.floydWarshallShortestPath();
 
-    Employee * employee1 = new Employee(0,Coordinates(13),1,FOOT,true);
+    Employee * employee1 = new Employee(0,Coordinates(13),4,FOOT,true);
     employees.push_back(employee1);
-    Employee * employee2 = new Employee(1,Coordinates(4),5,MOTORCYCLE,true);
+    Employee * employee2 = new Employee(1,Coordinates(4),10,MOTORCYCLE,true);
     employees.push_back(employee2);
-    Employee * employee3 = new Employee(2, Coordinates(16), 10, CAR, true);
+    Employee * employee3 = new Employee(2, Coordinates(16), 15, CAR, true);
     employees.push_back(employee3);
 
     restaurants = graph.getVTypes();
@@ -168,11 +168,11 @@ int grid8x8() {
     Graph<Coordinates> graph = loadGraph("GridGraphs", "8x8", true, preview);
     graph.floydWarshallShortestPath();
 
-    Employee * employee1 = new Employee(0,Coordinates(69),1,FOOT,true);
+    Employee * employee1 = new Employee(0,Coordinates(69),3,FOOT,true);
     employees.push_back(employee1);
-    Employee * employee2 = new Employee(1,Coordinates(38),10,CAR,true);
+    Employee * employee2 = new Employee(1,Coordinates(38),15,CAR,true);
     employees.push_back(employee2);
-    Employee * employee3 = new Employee(2,Coordinates(3),2,BIKE,true);
+    Employee * employee3 = new Employee(2,Coordinates(3),6,BIKE,true);
     employees.push_back(employee3);
 
     restaurants = graph.getVTypes();
@@ -388,7 +388,7 @@ int simulate(Graph<Coordinates> & graph, Graph<Coordinates> & reducedGraph) {
     cout << endl << "\t Request distribution: " << endl;
 
     for(Task * task : tasks){
-        cout << task->toString() << endl;
+        cout << *task << endl;
     }
 
     char opt = ' ';

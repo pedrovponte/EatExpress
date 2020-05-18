@@ -28,7 +28,6 @@ public:
     Employee *getEmployee() const;
     bool operator <(const Task & task);
     friend std::ostream &operator<<(std::ostream &os, const Task &task);
-    string toString();
     int getId() const;
 };
 
