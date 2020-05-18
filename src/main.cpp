@@ -9,16 +9,13 @@ using namespace std;
 int main(int argc, char* argv[]) {
     testing::InitGoogleTest(&argc, argv);
 
-    //Graph<Coordinates> g = loadGraph("GridGraphs", "4x4",true, true);
-    //getchar();
-
     chooseMap();
 
-    cout << "Press enter to exit!";
-    getchar();
+    //Graph<Coordinates> g = loadGraph("GridGraphs", "16x16Bike",true, true);
 
-    /*simulateMultipleRestaurantsRequest();
-    getchar();*/
+    //simulateMultipleRestaurantsRequest();
+    cout << "Enter to exit!";
+    getchar();
     return 0;
     return RUN_ALL_TESTS();
 }

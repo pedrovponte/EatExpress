@@ -14,12 +14,13 @@ using namespace std;
 
 vector<Employee*> employees;
 map<unsigned long, VertexType> restaurants;
+vector<unsigned long> restaurantIds;
 int id = 0;
 
-Request make_request(Graph<Coordinates> graph) {
+Request make_request(Graph<Coordinates> & graph) {
     unsigned long int opt, client_vertex, rest_vertex;
+
     int cargo = 0;
-    vector<unsigned long> restaurantIds;
     vector<Coordinates> checkpoints;
     Date date;
     Hour hour;
@@ -82,6 +83,7 @@ Request make_request(Graph<Coordinates> graph) {
     hour = Hour(now->tm_hour + 1, now->tm_min);
 
     Request request = Request(id, date, hour, checkpoints, Coordinates(client_vertex),cargo);
+    id++;
 
     return request;
 }
@@ -101,7 +103,7 @@ string restaurantType(VertexType v){
     }
 }
 
-int deliveryRequests(Graph<Coordinates> graph, Graph<Coordinates> reducedGraph, Request r) {
+int deliveryRequests(Graph<Coordinates> & graph, Graph<Coordinates> & reducedGraph, Request & r) {
     system("CLS");
 
     if(r.getCheckpoints().size() == 1){
@@ -111,7 +113,8 @@ int deliveryRequests(Graph<Coordinates> graph, Graph<Coordinates> reducedGraph, 
 
         for(Task * task : t){
             cout << *task << endl;
-            viewSinglePath(graph,task->getPath(),task->getVehicleType());
+            if(task->getEmployee() != nullptr)
+                viewSinglePath(graph,task->getPath(),task->getVehicleType());
         }
     }
     else {
@@ -122,10 +125,13 @@ int deliveryRequests(Graph<Coordinates> graph, Graph<Coordinates> reducedGraph, 
 
         for(Task * task : tasks) {
             cout << *task << endl;
-            if (task->getVehicleType() == CAR || task->getVehicleType() == MOTORCYCLE)
-                viewEmployeePath(graph, tasks);
-            else if (task->getVehicleType() == BIKE || task->getVehicleType() == FOOT)
-                viewEmployeePath(graph, tasks);
+
+            if(task->getEmployee() != nullptr){
+                if (task->getVehicleType() == CAR || task->getVehicleType() == MOTORCYCLE)
+                    viewEmployeePath(graph, tasks);
+                else if (task->getVehicleType() == BIKE || task->getVehicleType() == FOOT)
+                    viewEmployeePath(graph, tasks);
+            }
         }
     }
     return 0;
@@ -177,6 +183,11 @@ int grid8x8() {
 }
 
 int grid16x16() {
+
+    char c;
+    if((c = singleRequest()) != 'A' && c != 'B')
+        return 0;
+
     bool preview = previewCity();
 
     Graph<Coordinates> graph = loadGraph("GridGraphs", "16x16Random", true, preview);
@@ -185,22 +196,26 @@ int grid16x16() {
     graph.floydWarshallShortestPath();
     reducedGraph.floydWarshallShortestPath();
 
-    Employee * employee1 = new Employee(0,Coordinates(182),1,FOOT,true);
+    restaurants = graph.getVTypes();
+
+    if(c == 'B'){
+        return simulate(graph,reducedGraph);
+    }
+
+    Employee * employee1 = new Employee(0,Coordinates(182),3,FOOT,true);
     employees.push_back(employee1);
     Employee * employee2 = new Employee(1,Coordinates(155),10,CAR,true);
     employees.push_back(employee2);
     Employee * employee3 = new Employee(2,Coordinates(37),5,MOTORCYCLE,true);
     employees.push_back(employee3);
-    Employee * employee4 = new Employee(3,Coordinates(193),2,BIKE,true);
+    Employee * employee4 = new Employee(3,Coordinates(193),5,BIKE,true);
     employees.push_back(employee4);
     Employee * employee5 = new Employee(4,Coordinates(45),10,CAR,true);
     employees.push_back(employee5);
     Employee * employee6 = new Employee(5,Coordinates(232),5,MOTORCYCLE,true);
     employees.push_back(employee6);
-    Employee * employee7 = new Employee(6,Coordinates(115),1,FOOT,true);
+    Employee * employee7 = new Employee(6,Coordinates(115),4,FOOT,true);
     employees.push_back(employee7);
-
-    restaurants = graph.getVTypes();
 
     Request r = make_request(graph);
 
@@ -218,13 +233,13 @@ int grid20x20() {
     graph.floydWarshallShortestPath();
     reducedGraph.floydWarshallShortestPath();
 
-    Employee * employee1 = new Employee(0, Coordinates(90), 1, FOOT, true);
+    Employee * employee1 = new Employee(0, Coordinates(90), 4, FOOT, true);
     employees.push_back(employee1);
-    Employee * employee2 = new Employee(1, Coordinates(263), 2, BIKE, true);
+    Employee * employee2 = new Employee(1, Coordinates(263), 3, BIKE, true);
     employees.push_back(employee2);
-    Employee * employee3 = new Employee(2, Coordinates(333), 2, BIKE, true);
+    Employee * employee3 = new Employee(2, Coordinates(333), 4, BIKE, true);
     employees.push_back(employee3);
-    Employee * employee4 = new Employee(3, Coordinates(45), 1, FOOT, true);
+    Employee * employee4 = new Employee(3, Coordinates(45), 3, FOOT, true);
     employees.push_back(employee4);
     Employee * employee5 = new Employee(4, Coordinates(353), 10, CAR, true);
     employees.push_back(employee5);
@@ -293,6 +308,187 @@ int grid30x30() {
     return 0;
 }
 
+// Multiple Requests Simulations
+
+int simulate(Graph<Coordinates> & graph, Graph<Coordinates> & reducedGraph) {
+    unsigned requestsNum, employeesNum;
+    int maxRequests = 15;
+
+    for(auto i : restaurants)
+        restaurantIds.push_back(i.first);
+
+    do{
+        cout << "\t Number of employees (1 to 10) ?: ";
+        cin >> employeesNum;
+        cin.ignore(1000, '\n');
+        cout << endl;
+        if(employeesNum > 10 || employeesNum < 1) cout << "Try again!" << endl;
+    } while(employeesNum > 10 || employeesNum < 1);
+
+    if(employeesNum < 3) maxRequests = min(employeesNum, 3*employeesNum);
+    do{
+        cout << "\t Number of requests (1 to " << maxRequests << ") ?: ";
+        cin >> requestsNum;
+        cin.ignore(1000, '\n');
+        cout << endl;
+        if(requestsNum > maxRequests || requestsNum < 1) cout << "Try again!" << endl;
+    } while(requestsNum > maxRequests || requestsNum < 1);
+
+    min_priority_queue requests = randomRequests(requestsNum,graph.getNumVertex());
+    min_priority_queue temp = requests;
+
+    cout << "\t Requests: " << endl;
+    while(!temp.empty()){
+        cout << "\t " << temp.top();
+        temp.pop();
+    }
+
+    cout << endl << "\t Employees: " << endl;
+    vector<Employee*> employeesList = randomEmployees(employeesNum,graph.getNumVertex());
+
+    for(Employee * e: employeesList)
+        cout << "\t " << *e << "; Initial Position: " << e->getCoordinates() << endl;
+
+    vector<Task*> tasks = distributeRequests(graph, reducedGraph, requests, employeesList);
+
+    cout << endl << "\t Request distribution: " << endl;
+
+    for(Task * task : tasks){
+        cout << task->toString() << endl;
+    }
+
+    char opt = ' ';
+    do{
+        int n = 0;
+        if(opt == 'A'){
+            do{
+                cout << "\t Request's id: "<<endl;
+                cin >> n;
+            } while(n < 0 || n > requests.size()-1);
+
+            for(Task * t: tasks){
+                if(t->getRequest().getId() == n){
+                    if(t->getVehicleType() == CAR || t->getVehicleType() == MOTORCYCLE)
+                        viewSinglePath(graph,t->getPath(),t->getVehicleType());
+                    else if(t->getVehicleType() == BIKE || t->getVehicleType() == FOOT)
+                        viewSinglePath(reducedGraph,t->getPath(),t->getVehicleType());
+                    else
+                        cout << "The request you choose could not be completed by any of the employees!" << endl;
+                }
+            }
+
+        }
+        else if(opt == 'B'){
+            do{
+                cout << "\t Employee's id: "<<endl;
+                cin >> n;
+            } while(n < 0 || n > employeesList.size()-1);
+
+            vector<Task*> employeeTasks;
+            VehicleType type = employeesList[n]->getType();
+
+            for(Task * t: tasks ){
+                if(t->getEmployee()->getId() == n)
+                    employeeTasks.push_back(t);
+            }
+
+            if(type == CAR || type == MOTORCYCLE)
+                viewEmployeePath(graph,employeeTasks);
+            else
+                viewEmployeePath(reducedGraph,employeeTasks);
+        }
+        else if(opt == 'C'){
+            viewEmployeesPaths(graph,reducedGraph,tasks);
+        }
+
+        cout << "\t (A) View a Request in city map."<<endl;
+        cout << "\t (B) View an Employee's complete route in city map. "<<endl;
+        cout << "\t (C) View all Employees complete routes in city map."<<endl;
+        cout << "\t (X) Exit"<<endl;
+        cin >> opt;
+        cin.ignore(1000, '\n');
+        cout << endl;
+    } while(opt == 'A' || opt == 'B' || opt == 'C');
+
+    return 0;
+}
+
+min_priority_queue randomRequests(unsigned number, unsigned vertices){
+    min_priority_queue requests;
+    Date date;
+    Hour hour;
+    srand (1);
+    time_t t = time(0);
+
+    for(int i = 0 ; i < number; i++){
+        int restaurant =  rand() % restaurantIds.size();
+        int delivery_address = rand() % vertices;
+        int cargo = rand() % 10 + 1;
+
+        tm* now = localtime(&t);
+
+        date = Date(now->tm_year + 1900, 1 + now->tm_mon, now->tm_mday);
+        hour = Hour(now->tm_hour + 1, now->tm_min);
+
+        Request r(i, date, hour, Coordinates(restaurantIds[restaurant]),Coordinates(delivery_address),cargo);
+        requests.push(r);
+    }
+
+    return requests;
+}
+
+vector<Employee*> randomEmployees(unsigned number, unsigned vertices){
+   vector<Employee*> employees;
+   int id = 0;
+   srand (1);
+
+    if(number == 1){
+        int randV = rand() % vertices;
+        Employee * e = new Employee(id, Coordinates(randV), 11, CAR, true);
+        employees.push_back(e);
+    }
+    else if(number == 2){
+        int randV = rand() % vertices;
+        Employee * e1 = new Employee(id, Coordinates(randV), 11, MOTORCYCLE, true);
+        employees.push_back(e1);
+        id++;
+        randV = rand() % vertices;
+        Employee * e2 = new Employee(id, Coordinates(randV), 11, CAR, true);
+        employees.push_back(e2);
+    }
+    else{
+        int byCar = number/2;
+        for (int i = 0; i < byCar; i++) {
+            int randV = rand() % vertices;
+            int cargo = rand() % 11 + 8;
+            Employee * e = new Employee(id, Coordinates(randV), cargo, CAR, true);
+            employees.push_back(e);
+            id++;
+        }
+
+        int byMotorcycle = number/4;
+        for (int i = 0; i < byMotorcycle; i++) {
+            int randV = rand() % vertices;
+            int cargo = rand() % 9 + 6;
+            Employee * e = new Employee(id, Coordinates(randV), cargo, MOTORCYCLE, true);
+            employees.push_back(e);
+            id++;
+        }
+
+        int rest = number-byCar-byMotorcycle;
+        for (int i = 0; i < rest; i++) {
+            int randV = rand() % vertices;
+            int randVehicle = rand() % 2;
+            VehicleType v = randVehicle == 0 ? BIKE : FOOT;
+            int cargo = 3 + rand() % (7-3+1);
+            Employee * e = new Employee(id, Coordinates(randV), cargo, v, true);
+            employees.push_back(e);
+            id++;
+        }
+    }
+
+    return employees;
+}
 
 int chooseMap() {
     char opt;
@@ -340,8 +536,18 @@ int chooseMap() {
             system("CLS");
             break;
     }
-
     return 0;
+}
+
+char singleRequest() {
+    char opt;
+    cout << "\t (A) Make your request"<<endl;
+    cout << "\t (B) Multiple requests simulation"<<endl;
+    cout << "\t (X) Exit"<<endl;
+    cin >> opt;
+    cin.ignore(1000, '\n');
+
+    return opt;
 }
 
 bool previewCity(){
@@ -352,3 +558,5 @@ bool previewCity(){
 
     return opt == 'Y' || opt == 'y';
 }
+
+

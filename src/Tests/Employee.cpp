@@ -58,7 +58,6 @@ bool Employee::operator==(const Employee &rhs) const {
     return id == rhs.id && type == rhs.type;
 }
 
-
 std::ostream &operator<<(std::ostream &os, const Employee & employee) {
     os << "EMPLOYEE: Id = " << employee.getId() << " Vehicle = ";
 
@@ -82,7 +81,7 @@ std::ostream &operator<<(std::ostream &os, const Employee & employee) {
             break;
     }
 
-    os << "; MaxCargo = " << employee.getMaxCargo() << endl;
+    os << "; MaxCargo = " << employee.getMaxCargo();
 
     return os;
 }

@@ -2,6 +2,7 @@
 // Created by diana on 09/05/20.
 //
 
+#include <sstream>
 #include "Task.h"
 
 // Task class
@@ -74,16 +75,16 @@ VehicleType Task::getVehicleType() const{
     return employee->getType();
 }
 
-std::ostream &operator<<(std::ostream &os, const Task &task) {
+std::ostream &operator<<(std::ostream &os, const Task &task){
     if(task.employee == nullptr){
-        os << task.request;
-        os << "Request couldn't be completed!"<< endl;
+        os << "\t " << task.request;
+        os << "\t " << "Request couldn't be completed!"<< endl;
         return os;
     }
 
     os << "\t" << task.request;
-
     os << "\t" << *task.employee;
+
     if(!task.path.empty())
         os << "\t" << "Initial Employee's Position: " << task.path[0] << endl;
 
@@ -114,6 +115,31 @@ const Request & Task::getRequest() const {
 
 Employee *Task::getEmployee() const {
     return employee;
+}
+
+string Task::toString(){
+    ostringstream os;
+
+    if(employee == nullptr){
+        os << "\t " << request;
+        os << "\t " << "Request couldn't be completed!"<< endl;
+        return os.str();
+    }
+
+    os << "\t " << request;
+
+    os << "\t " << *employee << endl;
+    if(!path.empty())
+        os << "\t " << "Initial Employee's Position: " << path[0] << endl;
+
+    os  << "\t " <<  "PATH: ";
+    for(unsigned int i = 0; i < path.size(); i++)
+        os << path[i] << " ";
+    os << endl;
+
+    os << "\t " << "Total distance: " << totalDistance << endl;
+
+    return os.str();
 }
 
 bool compareTasks(Task * t1, Task * t2){
@@ -231,9 +257,13 @@ min_priority_queue setRequestsDeliverability(const Graph<Coordinates> & graph, c
 
         if(origIdx1 != -1 && destIdx1 != -1 && graph.getDist(origIdx1,destIdx1) != INF)
             request.setDeliverableByCar(true);
+        else
+            request.setDeliverableByCar(false);
 
         if(origIdx2 != -1 && destIdx2 != -1 && reducedGraph.getDist(origIdx2,destIdx2) != INF)
             request.setDeliverableByFoot(true);
+        else
+            request.setDeliverableByFoot(false);
 
         requestsQueue.push(request);
     }
@@ -247,7 +277,6 @@ void setDistancesToCheckpoint(Graph<Coordinates> & graph, Graph<Coordinates> & r
     int checkpointIdx2 = reducedGraph.findVertexIdx(request.getCheckpoints()[0]);
 
     for(Employee * e : employees){
-
         if(e->getType() == CAR || e->getType() == MOTORCYCLE){
             origIdx =  graph.findVertexIdx(e->getCoordinates());
             if(origIdx != -1 && checkpointIdx1 != -1)
@@ -260,8 +289,9 @@ void setDistancesToCheckpoint(Graph<Coordinates> & graph, Graph<Coordinates> & r
             origIdx =  reducedGraph.findVertexIdx(e->getCoordinates());
             if(origIdx != -1 && checkpointIdx2 != -1)
                 e->setDist(reducedGraph.getDist(origIdx, checkpointIdx2));
-            else
+            else{
                 request.setDeliverableByFoot(false);
+            }
         }
     }
 }
@@ -276,6 +306,7 @@ vector<Employee*> getEligibleEmployees(vector<Employee*> & employees, const Requ
             }
         }
     }
+
     return eligibleEmployees;
 }
 
@@ -303,25 +334,26 @@ vector<Task*> distributeRequests(Graph<Coordinates> & graph, Graph<Coordinates> 
 
     while(!requests.empty()){
         Request r = requests.top();
+        requests.pop();
+
         setDistancesToCheckpoint(graph, reducedGraph, employees,r);
 
-        vector<Employee*> eligibleEmployees = getEligibleEmployees(employees, requests.top());
+        vector<Employee*> eligibleEmployees = getEligibleEmployees(employees, r);
 
         if(eligibleEmployees.empty()){
-            pendingRequests.push(requests.top());
+            pendingRequests.push(r);
         }
         else{
             sort(eligibleEmployees.begin(), eligibleEmployees.end(),compareEmployees);
             eligibleEmployees[0]->setReady(false);
 
-            Task * task = new Task(eligibleEmployees[0], requests.top());
+            Task * task = new Task(eligibleEmployees[0], r);
             availableEmployees--;
             roundTasks.push_back(task);
         }
-        requests.pop();
+
 
         if(requests.empty()){
-
             if(!pendingRequests.empty() && availableEmployees == employees.size()){
                 while(!pendingRequests.empty()){
                     roundTasks.push_back(new Task(nullptr,pendingRequests.top()));
@@ -341,6 +373,7 @@ vector<Task*> distributeRequests(Graph<Coordinates> & graph, Graph<Coordinates> 
                 else if(task->getVehicleType() == CAR || task->getVehicleType() == MOTORCYCLE)
                     task->setFloydWarshallPath(graph);
             }
+
             tasks.insert(tasks.end(),roundTasks.begin(), roundTasks.end());
             roundTasks.clear();
         }
@@ -364,7 +397,7 @@ vector<Employee*> getEligibleEmployeesMultipleRestaurants(vector<Employee*> & em
 
 int getNearestRestaurant(Graph<Coordinates> & graph, const Coordinates & origin, vector<Coordinates> & restaurants){
     int origIdx = graph.findVertexIdx(origin);
-    int destIdx, nearestRestaurantPos;
+    int destIdx, nearestRestaurantPos=-1;
     double nearestRestaurantDist = INF;
 
     int i = 0;
@@ -391,16 +424,16 @@ Task * multipleRestaurantsRequest(Graph<Coordinates> & graph, Graph<Coordinates>
     double nearestEmployeeDist = INF;
 
     employees = getEligibleEmployeesMultipleRestaurants(employees, request);
-    int i = 0;
-    for(Employee * e: employees){
+
+    for(int i = 0; i< employees.size(); i++){
         double totalDist = 0;
-        Coordinates origin = e->getCoordinates();
+        Coordinates origin = employees[i]->getCoordinates();
         vector<Coordinates> requestRestaurants = request.getCheckpoints();
         vector<Coordinates> restaurantsPath;
 
         for(int j = 0; j < request.getCheckpoints().size(); j++){
             double dist = 0;
-            if(e->getType() == CAR || e->getType() == MOTORCYCLE){
+            if(employees[i]->getType() == CAR ||employees[i]->getType() == MOTORCYCLE){
                 nearestRestaurantPos = getNearestRestaurant(graph,origin, requestRestaurants);
                 // One of the restaurants does not exist
                 if(nearestRestaurantPos == -1)
@@ -414,9 +447,8 @@ Task * multipleRestaurantsRequest(Graph<Coordinates> & graph, Graph<Coordinates>
                     break;
                 }
             }
-            else if (e->getType() == BIKE || e->getType() == FOOT){
+            else if (employees[i]->getType() == BIKE || employees[i]->getType() == FOOT){
                 nearestRestaurantPos = getNearestRestaurant(reducedGraph,origin, requestRestaurants);
-
                 // One of the restaurants does not exist
                 if(nearestRestaurantPos == -1){
                     totalDist = INF;
@@ -439,12 +471,11 @@ Task * multipleRestaurantsRequest(Graph<Coordinates> & graph, Graph<Coordinates>
         }
 
         if(totalDist == INF){
-            i++;
-            break;
+            continue;
         }
 
         // Check if path from last restaurant to delivery address exists
-        if(e->getType() == CAR || e->getType() == MOTORCYCLE){
+        if(employees[i]->getType() == CAR || employees[i]->getType() == MOTORCYCLE){
             double dist = INF;
             int deliveryIdx = graph.findVertexIdx(request.getDeliveryAddr());
                 if(deliveryIdx != -1){
@@ -453,7 +484,7 @@ Task * multipleRestaurantsRequest(Graph<Coordinates> & graph, Graph<Coordinates>
                     totalDist += dist;
             } else break;
         }
-        else if (e->getType() == BIKE || e->getType() == FOOT){
+        else if (employees[i]->getType() == BIKE || employees[i]->getType() == FOOT){
             double dist = INF;
             int deliveryIdx = reducedGraph.findVertexIdx(request.getDeliveryAddr());
             if(deliveryIdx != -1){
@@ -468,8 +499,6 @@ Task * multipleRestaurantsRequest(Graph<Coordinates> & graph, Graph<Coordinates>
             nearestEmployeeDist = totalDist;
             restaurants = restaurantsPath;
         }
-
-        i++;
     }
 
     if(nearestEmployeeDist == INF) return new Task(nullptr, request);

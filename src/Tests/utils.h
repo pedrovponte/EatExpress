@@ -51,6 +51,8 @@ public:
         if(hour == h.getHour()) return this->minute < h.getMinute();
         else return hour < h.getHour();
     }
+
+    friend std::ostream &operator<<(std::ostream &os, const Hour &hour);
 };
 
 class Date {
@@ -95,6 +97,8 @@ public:
         }
         return year<d.getYear();
     }
+
+    friend std::ostream &operator<<(std::ostream &os, const Date &date);
 };
 
 // Distances
@@ -115,7 +119,7 @@ void cleanGraph(Graph<Coordinates> &graph);
 
 void viewSinglePath(const Graph<Coordinates> & graph, const vector<Coordinates> & path, VehicleType type = CAR);
 
-void viewEmployeePath(const Graph<Coordinates> & graph, const vector<Task*> & tasks);
+void viewEmployeePath(const Graph<Coordinates> & graph, vector<Task*> tasks);
 
 void viewEmployeesPaths(const Graph<Coordinates> & graph,const Graph<Coordinates> & reducedGraph, vector<Task*> tasks);
 

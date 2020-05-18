@@ -273,7 +273,7 @@ void viewSinglePath(const Graph<Coordinates> & graph, const vector<Coordinates> 
     gv->rearrange();
 }
 
-void viewEmployeePath(const Graph<Coordinates> & graph, const vector<Task*> & tasks){
+void viewEmployeePath(const Graph<Coordinates> & graph, vector<Task*> tasks){
 
     GraphViewer *gv = new GraphViewer(700, 700, false);
     graphViewerProperties(gv);
@@ -281,6 +281,7 @@ void viewEmployeePath(const Graph<Coordinates> & graph, const vector<Task*> & ta
     drawGraph(gv,graph);
 
     int i = 0;
+    sort(tasks.begin(), tasks.end(), compareTasks);
     for(Task * task: tasks){
         vector<Coordinates> path = task->getPath();
         for(int j = 0; j< path.size();j++){
@@ -512,4 +513,14 @@ void generateRandomGrid(int n, bool random, ostream &nodes, ostream &edges, bool
             edges << "(" << k << ", " << k + n << ")" << endl;
         }
     }
+}
+
+std::ostream &operator<<(std::ostream &os, const Date &date) {
+    os << date.day << "/" << date.month << "/" << date.year;
+    return os;
+}
+
+std::ostream &operator<<(std::ostream &os, const Hour &hour) {
+    os << hour.hour << ":" << hour.minute;
+    return os;
 }
