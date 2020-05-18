@@ -95,7 +95,7 @@ bool Request::operator<(const Request & request) const {
 }
 
 std::ostream &operator<<(std::ostream &os, const Request & request) {
-    os << "REQUEST: Id = " << request.getId() << "; Restaurants = ";
+    os << "Request: Id = " << request.getId() << "; Restaurants = ";
 
     for(int i = 0; i < request.getCheckpoints().size();i++){
         os << request.getCheckpoints()[i] << " ";

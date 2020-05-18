@@ -8,7 +8,7 @@ using namespace std;
 
 Employee::Employee(int id, const Coordinates &coordinates, int maxCargo, VehicleType type, bool ready)
     : id(id), coordinates(coordinates), maxCargo(maxCargo),type(type),ready(ready) {
-
+    totalTime = 0;
     if(type == CAR || type == MOTORCYCLE){
         avgVelocity = 40;
     }
@@ -23,7 +23,8 @@ Employee::Employee(int id, const Coordinates &coordinates, int maxCargo, Vehicle
 
 Employee::Employee(): id(-1), coordinates(0), maxCargo(-1),type(INVALID),ready(false) {}
 
-Employee::Employee(const Employee &e): id(e.getId()), coordinates(e.getCoordinates()), maxCargo(e.getMaxCargo()),type(getType()),ready(e.isReady()), avgVelocity(e.avgVelocity) {
+Employee::Employee(const Employee &e): id(e.getId()), coordinates(e.getCoordinates()), maxCargo(e.getMaxCargo()),type(getType()),
+ready(e.isReady()), avgVelocity(e.getAvgVelocity()), totalTime(e.getTotalTime()){
 }
 
 int Employee::getId() const {
@@ -59,7 +60,7 @@ bool Employee::operator==(const Employee &rhs) const {
 }
 
 std::ostream &operator<<(std::ostream &os, const Employee & employee) {
-    os << "EMPLOYEE: Id = " << employee.getId() << " Vehicle = ";
+    os << "Employee: Id = " << employee.getId() << " Vehicle = ";
 
     string VehicleType;
 
@@ -100,4 +101,16 @@ void Employee::setDist(double dist) {
 
 int Employee::getAvgVelocity() const {
     return avgVelocity;
+}
+
+int Employee::getTotalTime() const {
+    return totalTime;
+}
+
+void Employee::addTime(int time) {
+    this->totalTime += time;
+}
+
+void Employee::resetTime() {
+    Employee::totalTime = 0;
 }

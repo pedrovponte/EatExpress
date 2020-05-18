@@ -18,6 +18,7 @@ class Employee {
     int avgVelocity;
     bool ready;
     double dist;
+    int totalTime;
 public:
     Employee();
     Employee(const Employee & e);
@@ -35,6 +36,9 @@ public:
     double getDist() const;
     void setDist(double dist);
     int getAvgVelocity() const;
+    int getTotalTime() const;
+    void addTime(int time);
+    void resetTime();
 
     friend std::ostream &operator<<(std::ostream &os, const Employee & employee);
 

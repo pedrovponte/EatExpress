@@ -15,6 +15,7 @@ class Task {
     Request request;
     vector<Coordinates> path;
     double totalDistance;
+    int time;
     int id;
 public:
     Task(Employee *employee, Request request, int id);

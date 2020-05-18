@@ -142,6 +142,7 @@ int grid4x4() {
     system("CLS");
 
     Graph<Coordinates> graph = loadGraph("GridGraphs", "4x4", true, preview);
+    cout << "\t....processing city map..."<< endl;
     graph.floydWarshallShortestPath();
 
     Employee * employee1 = new Employee(0,Coordinates(13),4,FOOT,true);
@@ -166,6 +167,7 @@ int grid8x8() {
     system("CLS");
 
     Graph<Coordinates> graph = loadGraph("GridGraphs", "8x8", true, preview);
+    cout << "\t....processing city map..."<< endl;
     graph.floydWarshallShortestPath();
 
     Employee * employee1 = new Employee(0,Coordinates(69),3,FOOT,true);
@@ -198,6 +200,7 @@ int grid16x16() {
     Graph<Coordinates> graph = loadGraph("GridGraphs", "16x16Random", true, preview);
     Graph<Coordinates> reducedGraph = loadGraph("GridGraphs", "16x16Bike", true);
 
+    cout << "\t....processing city map..."<< endl;
     graph.floydWarshallShortestPath();
     reducedGraph.floydWarshallShortestPath();
 
@@ -244,6 +247,7 @@ int grid20x20() {
     Graph<Coordinates> graph = loadGraph("GridGraphs", "20x20", true, preview);
     Graph<Coordinates> reducedGraph = loadGraph("GridGraphs", "20x20Bike", true);
 
+    cout << "\t....processing city map..."<< endl;
     graph.floydWarshallShortestPath();
     reducedGraph.floydWarshallShortestPath();
 
@@ -294,6 +298,7 @@ int grid30x30() {
     Graph<Coordinates> graph = loadGraph("GridGraphs", "30x30", true, preview);
     Graph<Coordinates> reducedGraph = loadGraph("GridGraphs", "30x30Bike", true);
 
+    cout << "\t....processing city map..."<< endl;
     graph.floydWarshallShortestPath();
     reducedGraph.floydWarshallShortestPath();
 
@@ -357,7 +362,7 @@ int simulate(Graph<Coordinates> & graph, Graph<Coordinates> & reducedGraph) {
         if(employeesNum > 10 || employeesNum < 1) cout << "Try again!" << endl;
     } while(employeesNum > 10 || employeesNum < 1);
 
-    if(employeesNum < 3) maxRequests = min(employeesNum, 3*employeesNum);
+    if(employeesNum < 3) maxRequests = employeesNum*3;
     do{
         cout << "\t Number of requests (1 to " << maxRequests << ") ?: ";
         cin >> requestsNum;
@@ -464,7 +469,7 @@ min_priority_queue randomRequests(unsigned number, unsigned vertices){
     for(int i = 0 ; i < number; i++){
         int restaurant =  rand() % restaurantIds.size();
         int delivery_address = rand() % vertices;
-        int cargo = rand() % 10 + 1;
+        int cargo = rand() % 8 + 1;
 
         time_t newTime = now + 60 * i;
         tm* now = localtime(&newTime);
@@ -486,23 +491,23 @@ vector<Employee*> randomEmployees(unsigned number, unsigned vertices){
 
     if(number == 1){
         int randV = rand() % vertices;
-        Employee * e = new Employee(id, Coordinates(randV), 11, CAR, true);
+        Employee * e = new Employee(id, Coordinates(randV), 15, CAR, true);
         employees.push_back(e);
     }
     else if(number == 2){
         int randV = rand() % vertices;
-        Employee * e1 = new Employee(id, Coordinates(randV), 11, MOTORCYCLE, true);
+        Employee * e1 = new Employee(id, Coordinates(randV), 6, BIKE, true);
         employees.push_back(e1);
         id++;
         randV = rand() % vertices;
-        Employee * e2 = new Employee(id, Coordinates(randV), 11, CAR, true);
+        Employee * e2 = new Employee(id, Coordinates(randV), 12, CAR, true);
         employees.push_back(e2);
     }
     else{
         int byCar = number / 2;
         for (int i = 0; i < byCar; i++) {
             int randV = rand() % vertices;
-            int cargo = rand() % 11 + 8;
+            int cargo = 8 + rand() % (( 12 + 1 ) - 8);
             Employee * e = new Employee(id, Coordinates(randV), cargo, CAR, true);
             employees.push_back(e);
             id++;
@@ -511,7 +516,7 @@ vector<Employee*> randomEmployees(unsigned number, unsigned vertices){
         int byMotorcycle = number / 4;
         for (int i = 0; i < byMotorcycle; i++) {
             int randV = rand() % vertices;
-            int cargo = rand() % 9 + 6;
+            int cargo = 6 + rand() % (( 9 + 1 ) - 6);
             Employee * e = new Employee(id, Coordinates(randV), cargo, MOTORCYCLE, true);
             employees.push_back(e);
             id++;

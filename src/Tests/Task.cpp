@@ -7,7 +7,9 @@
 
 // Task class
 
-Task::Task(Employee * employee, Request request, int id) : employee(employee), request(request), id(id) {}
+Task::Task(Employee * employee, Request request, int id) : employee(employee), request(request), id(id) {
+    this->time = 0;
+}
 
 void Task::setFloydWarshallPath(Graph<Coordinates> & graph){
     Coordinates orig = employee->getCoordinates();
@@ -32,8 +34,13 @@ void Task::setFloydWarshallPath(Graph<Coordinates> & graph){
     totalDistance += graph.getDist(graph.findVertexIdx(orig), graph.findVertexIdx(dest));
 
     path.insert(path.end(),tempPath.begin()+1, tempPath.end());
+
     employee->setCoordinates(path.at(path.size()-1));
     employee->setReady(true);
+
+    int t = (totalDistance * 60) / (1000 * employee->getAvgVelocity());
+    employee->addTime(t);
+    time = employee->getTotalTime();
 }
 
 void Task::setDijkstraPath(Graph<Coordinates> & graph){
@@ -88,13 +95,14 @@ std::ostream &operator<<(std::ostream &os, const Task &task){
     if(!task.path.empty())
         os << "\tInitial Employee's Position: " << task.path[0] << endl;
 
-    os << "\tPATH: ";
+    os << "\tPath: ";
     for(unsigned int i = 0; i < task.path.size(); i++)
         os << task.path[i] << " ";
     os << endl;
 
-    os << "\tTotal distance: " << task.totalDistance << endl;
-    os << "\tEstimated time: " << task.totalDistance / task.employee->getAvgVelocity() << endl;
+    os << "\tTotal distance: " << task.totalDistance << " m" << endl;
+
+    os << "\tEstimated time: " << task.time << " min" << endl;
 
     return os;
 }
