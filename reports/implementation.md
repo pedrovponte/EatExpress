@@ -4,9 +4,22 @@ Iniciada a parte de implementação prática de tudo o que foi discutido anterio
 
 ## 5.1 Grafos e Mapas usados
 
-Em matéria de testes, para uma possível readaptação futura em grafos com representação real de áreas urbanas, foram usados grafos em forma de grelha, de diversas dimensões e alguns com distâncias e arestas aleatoriamente distribuídas. A utilização de diferentes mapas com dimensões, em número de vértices, $N \times N$, permitiu uma mais fácil visualização de todo o processo e uma fundamentação mais cuidada na escolha de determinados algoritmos. Um exemplo de um grafo utilizado na implementação é o seguinte:
+Em matéria de testes, para uma possível readaptação futura em grafos com representação real de áreas urbanas, foram usados grafos em forma de grelha, de diversas dimensões e alguns com distâncias e arestas aleatoriamente distribuídas. A utilização de diferentes mapas com dimensões, em número de vértices, $N \times N$, fortemente conexos, permitiu uma mais fácil visualização de todo o processo e uma fundamentação mais cuidada na escolha de determinados algoritmos. Exemplos de grafos utilizados na implementação são os seguintes:
 
-> Colocar aqui imagem de um grafo bonito com 20x20 ou assim qq coisa.
+
+![](../logs/8x8.png)  |  ![](../logs/30x30-graph.png)
+:-------------------------:|:-------------------------:
+Grafo $8 \times 8$ | Grafo $30 \times 30$
+
+Todos os grafos presentes na aplicação têm as localizações dos seus restaurantes definidas inicialmente e os seus vértices, na API de visualização, distinguidos com diferentes ícones, para os diferentes tipos de restaurante. Para o grafo $8 \times 8$, por exemplo, a lista de restaurantes existentes é:
+```cpp
+Type: Fast Food         Vertex id: 10
+Type: Pizzeria          Vertex id: 13
+Type: Restaurant        Vertex id: 25
+Type: Restaurant        Vertex id: 58
+Type: Fast Food         Vertex id: 73
+Type: Vegetarian        Vertex id: 80
+```
 
 ## 5.2 Análise empírica
 
@@ -14,14 +27,14 @@ Para uma análise generalizada e abrangente dos algoritmos tidos em consideraç�
 
 ### 5.2.1 Fase I
 
-Na Fase I de implementação, considerado o caso atómico de um estafeta que entrega apenas um pedido, entre um restaurante e a morada de um cliente, realizando todas as tarefas em sequência, foi calculada a média do tempo demorado na realização de 1 a 100 pedidos, para os algoritmos mais genéricos, neste caso, o Dijkstra unidirecional e o Floyd-Warshall. Os grafos considerados tinham dimensões variando entre $4 \times 4$ e $30 \times 30$, como relatam os seguintes dados:
+Na Fase I de implementação, considerado o caso atómico de um estafeta que entrega apenas um pedido, entre um restaurante e a morada de um cliente, realizando todas as tarefas em sequência, foi calculada a média do tempo demorado na realização de 1 a 100 pedidos, para os algoritmos mais genéricos, neste caso, o Dijkstra unidirecional e o Floyd-Warshall. Os tempos foram medidos em micro-segundos e os grafos considerados tinham dimensões variando entre $4 \times 4$ e $30 \times 30$, como relatam os seguintes dados:
 
 
 ![](../logs/phase1/4x4_all.png)  |  ![](../logs/phase1/16x16_all.png)
 :-------------------------:|:-------------------------:
 ![](../logs/phase1/20x20_all.png)  |  ![](../logs/phase1/30x30_all.png)
 
-Uma aproximação aos dados do grafo de dimensões $20 \times 20$, por exemplo, revela um pormenor interessante relativamente à concorrência entre estes dois algoritmos. A explicação para os valores reside no facto de o algoritmo de Floyd-Warshall demorar ligeiramente mais tempo, inicialmente, devido ao pré-processamento necessário, mantendo, de seguida, um tempo muito inferior de execução de cada pedido, sendo logo ultrapassado pelo algoritmo de Dijkstra, com um comportamento linear.
+Uma aproximação aos dados do grafo de dimensões $20 \times 20$, por exemplo, revela um pormenor interessante relativamente à concorrência entre estes dois algoritmos e à sua rentabilidade, para uso na aplicação. A explicação para os valores reside no facto de o algoritmo de Floyd-Warshall demorar ligeiramente mais tempo, inicialmente, devido ao pré-processamento necessário, mantendo, de seguida, um tempo médio de execução de cada pedido muito inferior, sendo logo ultrapassado, em matéria de tempo acumulado total, pelo algoritmo de Dijkstra, com um comportamento linear mais acentuado.
 
 ![](../logs/phase1/20x20_head.png)
 
@@ -30,7 +43,7 @@ A partir de um certo número de pedidos, o algoritmo de Floyd-Warshall torna-se 
 ![](../logs/phase1/DijkstraG.png)  |  ![](../logs/phase1/FloydG.png)
 :-------------------------:|:-------------------------:
 
-Os valores mais precisos, em micro-segundos, para cada um destes gráficos, encontram-se na tabela seguinte:
+O tempo médio gasto a cada pedido, para o algoritmo de Dijkstra, revela, assim, o esperado e aproximado tempo computacional de proporções $O(E + V \log V )$, ou "linearítmico", e o pré-processamento realizado pelo algoritmo de Floyd-Warshall, contabilizado apenas como parte do primeiro pedido, revela a sua complexidade na ordem $O(V³)$ e um tempo de execução mínimo para a reconstrução dos caminhos, na ordem $O(E)$, com $E$ o número de arestas entre os dois vértices em consideração. Os valores mais precisos, em micro-segundos, para cada um destes gráficos, encontram-se na tabela seguinte:
 
 ![](../logs/phase1/table.png)
 
