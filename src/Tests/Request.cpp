@@ -126,3 +126,7 @@ void Request::setDeliverableByCar(bool deliverable) {
 void Request::setCheckpoints(const vector<Coordinates> &checkpoints) {
     Request::checkpoints = checkpoints;
 }
+
+bool requestsById(const Request & r1, const Request & r2){
+    return r1.getId()<r2.getId();
+}

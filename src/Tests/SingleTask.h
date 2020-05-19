@@ -21,6 +21,7 @@ public:
     bool isCheckpoint(Coordinates coordinates);
     bool isDeliveryAddress(Coordinates coordinates);
     const Request & getRequest() const;
+    int getTime() const;
     bool operator <(const SingleTask & task);
     friend std::ostream &operator<<(std::ostream &os, const SingleTask &task);
 };

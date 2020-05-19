@@ -9,11 +9,11 @@ using namespace std;
 int main(int argc, char* argv[]) {
     testing::InitGoogleTest(&argc, argv);
 
-    // chooseMap();
+    chooseMap();
 
-     simulateSimultaneousRequests();
+     // simulateSimultaneousRequests();
 
-    cout << "\tEnter to exit!";
+    cout << "\tPress ENTER to exit!";
     getchar();
     return 0;
     //return RUN_ALL_TESTS();

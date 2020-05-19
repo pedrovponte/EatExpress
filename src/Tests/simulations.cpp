@@ -280,11 +280,11 @@ void simulateSimultaneousRequests(){
 
     Employee * employee = new Employee(6, Coordinates(165), 15, CAR, true);
 
-    requests_queue requests;
-    requests.push_back(Request(0, Date(2020,07,10), Hour(16,0),Coordinates(7),Coordinates(260),5));
-    requests.push_back(Request(1, Date(2020,07,10), Hour(16,0),Coordinates(0),Coordinates(95),5));
+    vector<Request> requests;
+    requests.push_back(Request(0, Date(2020,07,10), Hour(16,0),Coordinates(7),Coordinates(260),1));
+    requests.push_back(Request(1, Date(2020,07,10), Hour(16,0),Coordinates(0),Coordinates(95),2));
     requests.push_back(Request(2, Date(2020,07,10), Hour(16,0),Coordinates(250),Coordinates(88),3));
-    requests.push_back(Request(3, Date(2020,07,10), Hour(16,0),Coordinates(7),Coordinates(169),9));
+    requests.push_back(Request(3, Date(2020,07,10), Hour(16,0),Coordinates(7),Coordinates(169),2));
 
     SpecialTask * task = simultaneousRequests(graph,requests,employee);
     viewSinglePath(graph,task->getPath());

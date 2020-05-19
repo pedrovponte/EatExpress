@@ -38,9 +38,7 @@ void SingleTask::setFloydWarshallPath(Graph<Coordinates> & graph){
     employee->setCoordinates(path.at(path.size()-1));
     employee->setReady(true);
 
-    int t = (totalDistance * 60) / (1000 * employee->getAvgVelocity());
-    employee->addTime(t);
-    time = employee->getTotalTime();
+    time = (totalDistance * 60) / (1000 * employee->getAvgVelocity());
 }
 
 void SingleTask::setDijkstraPath(Graph<Coordinates> & graph){
@@ -92,8 +90,6 @@ std::ostream &operator<<(std::ostream &os, const SingleTask &task){
 
     os << "\tTotal distance: " << task.totalDistance << " m" << endl;
 
-    os << "\tEstimated time: " << task.time << " min" << endl;
-
     return os;
 }
 
@@ -110,6 +106,10 @@ bool  SingleTask::operator <(const SingleTask & task){
 
 const Request & SingleTask::getRequest() const {
     return request;
+}
+
+int SingleTask::getTime() const {
+    return time;
 }
 
 bool compareTasks(SingleTask * t1, SingleTask * t2){

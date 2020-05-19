@@ -11,6 +11,7 @@
 #include <edgetype.h>
 #include "utils.h"
 #include "SingleTask.h"
+#include "SpecialTask.h"
 
 using namespace std;
 
@@ -309,6 +310,42 @@ void viewEmployeePath(const Graph<Coordinates> & graph, vector<SingleTask*> task
         }
         i++;
     }
+    gv->rearrange();
+}
+
+void viewSpecialTask(const Graph<Coordinates> & graph, SpecialTask * task){
+    vector<Coordinates> delivery_addresses = task->getDeliveryAddresses();
+
+    GraphViewer *gv = new GraphViewer(700, 700, false);
+    graphViewerProperties(gv);
+
+    int i = 0;
+    for(Coordinates c: task->getPath()){
+        gv->clearVertexColor(c.getId());
+        gv->setVertexColor(c.getId(),"red");
+
+        if(i == 0){
+            setVehicleIcon(gv,task->getVehicleType(),c.getId());
+        }
+
+        setRestaurantIcon(gv,graph.findVertex(c)->getType(),c.getId());
+
+        if(find(delivery_addresses.begin(),delivery_addresses.end(), c) != delivery_addresses.end()){
+            gv->setVertexIcon(c.getId(),"../Mapas/icons/house.png");
+        }
+
+        if(i != 0){
+            int edgeId = graph.getEdge(task->getPath()[i-1].getId(),c.getId()).getId();
+            gv->clearEdgeColor(edgeId);
+            gv->clearEdgeLabel(edgeId);
+            gv->setEdgeColor(edgeId,"red");
+            gv->setEdgeThickness(edgeId,3);
+        }
+        i++;
+    }
+
+    drawGraph(gv,graph);
+
     gv->rearrange();
 }
 

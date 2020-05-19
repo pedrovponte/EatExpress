@@ -56,6 +56,8 @@ public:
     }
 };
 
+bool requestsById(const Request & r1, const Request & r2);
+
 typedef priority_queue <Request, vector<Request>, requestComparator>  min_priority_queue;
 
 
