@@ -168,9 +168,9 @@ Graph<Coordinates> loadGraph(string dir, string subDir, bool euclidean, bool pre
     }
     edges.close();
 
-    if(preview) gv->rearrange();
-
     cleanGraph(g);
+
+    if(preview) gv->rearrange();
 
     return g;
 }
