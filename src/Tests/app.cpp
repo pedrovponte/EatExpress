@@ -362,7 +362,7 @@ int simulate(Graph<Coordinates> & graph, Graph<Coordinates> & reducedGraph) {
         if(employeesNum > 10 || employeesNum < 1) cout << "Try again!" << endl;
     } while(employeesNum > 10 || employeesNum < 1);
 
-    if(employeesNum < 3) maxRequests = employeesNum*3;
+    if(employeesNum < 3) maxRequests = employeesNum * 3;
     do{
         cout << "\t Number of requests (1 to " << maxRequests << ") ?: ";
         cin >> requestsNum;
