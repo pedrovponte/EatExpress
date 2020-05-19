@@ -16,5 +16,5 @@ int main(int argc, char* argv[]) {
     cout << "\tEnter to exit!";
     getchar();
     return 0;
-    return RUN_ALL_TESTS();
+    //return RUN_ALL_TESTS();
 }

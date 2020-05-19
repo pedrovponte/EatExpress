@@ -4,14 +4,29 @@
 
 #include "SpecialTask.h"
 
-// Simultaneous requests - best route between multiple restaurants and requests for the same staff member
-void repeatedRestaurants(vector<Request> & to_pick, vector<Request> & to_deliver);
+SpecialTask::SpecialTask(Employee * employee, vector<Request> & requests, int id) : Task(employee,id), requests(requests) {}
 
-vector<Request> orderByRestaurantDistance(Graph<Coordinates> & graph, vector<Request> requests, Coordinates origin);
+void SpecialTask::setFloydWarshallPath(Graph<Coordinates> & graph, const vector<Coordinates> & checkpoints){
+    if(checkpoints.empty()) return;
+    vector<Coordinates> tempPath;
+    Coordinates orig = checkpoints[0];
+    totalDistance = 0;
 
-vector<Request> orderByDeliveryDistance(Graph<Coordinates> & graph, vector<Request> requests, Coordinates origin);
+    for(int i = 1; i< checkpoints.size(); i++){
+        tempPath = graph.getfloydWarshallPath(orig, checkpoints[i]);
+        totalDistance += graph.getDist(graph.findVertexIdx(orig), graph.findVertexIdx(checkpoints[i]));
 
-vector<Coordinates> simultaneousRequests(Graph<Coordinates> & graph,vector<Request> & requests, Employee* employee);
+        if(i == 1) path = tempPath;
+        else path.insert(path.end(),tempPath.begin()+1, tempPath.end());
+        orig = checkpoints[i];
+    }
+
+    employee->setCoordinates(path.at(path.size()-1));
+    employee->setReady(true);
+
+    int t = (totalDistance * 60) / (1000 * employee->getAvgVelocity());
+    employee->addTime(t);
+}
 
 // Simultaneous requests - best route between multiple restaurants and requests for the same staff member
 
@@ -77,27 +92,25 @@ void repeatedRestaurants(vector<Request> & to_pick, vector<Request> & to_deliver
     }
 }
 
-vector<Coordinates> simultaneousRequests(Graph<Coordinates> & graph,vector<Request> & requests, Employee* employee){
+SpecialTask * simultaneousRequests(Graph<Coordinates> & graph, vector<Request> & requests, Employee* employee){
     Coordinates origin = employee->getCoordinates();
     vector<Request> to_pick = orderByRestaurantDistance(graph, requests, origin);
     vector<Request> to_deliver;
     vector<Coordinates> path;
-    int totalCargo = 0;
+    path.push_back(employee->getCoordinates());
 
     int iter = 0;
     while(!to_deliver.empty() || !to_pick.empty()){
         if(iter == 0 || to_deliver.empty()){
-            cout << iter << endl;
             // Go pick from restaurant
             origin = to_pick.front().getCheckpoints()[0];
             path.push_back(origin);
-            totalCargo += to_pick.front().getCargo();
 
             repeatedRestaurants(to_pick,to_deliver);
             to_deliver.push_back(to_pick.front());
             to_pick.erase(to_pick.begin());
         }
-        else if(totalCargo == employee->getMaxCargo() || to_pick.empty()){
+        else if(to_pick.empty()){
             // Delivers one request
             origin = to_deliver.front().getDeliveryAddr();
             path.push_back(origin);
@@ -118,7 +131,6 @@ vector<Coordinates> simultaneousRequests(Graph<Coordinates> & graph,vector<Reque
                 // Go pick from restaurant
                 origin = to_pick.front().getCheckpoints()[0];
                 path.push_back(origin);
-                totalCargo += to_pick.front().getCargo();
 
                 repeatedRestaurants(to_pick,to_deliver);
 
@@ -133,5 +145,7 @@ vector<Coordinates> simultaneousRequests(Graph<Coordinates> & graph,vector<Reque
         iter++;
     }
 
-    return path;
+    SpecialTask * s = new SpecialTask(employee, requests,0);
+    s->setFloydWarshallPath(graph,path);
+    return s;
 }

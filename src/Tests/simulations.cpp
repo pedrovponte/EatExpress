@@ -286,9 +286,9 @@ void simulateSimultaneousRequests(){
     requests.push_back(Request(2, Date(2020,07,10), Hour(16,0),Coordinates(250),Coordinates(88),3));
     requests.push_back(Request(3, Date(2020,07,10), Hour(16,0),Coordinates(7),Coordinates(169),9));
 
-    vector<Coordinates> path = simultaneousRequests(graph,requests,employee);
-
-    for(Coordinates c: path){
+    SpecialTask * task = simultaneousRequests(graph,requests,employee);
+    viewSinglePath(graph,task->getPath());
+    for(Coordinates c:task->getPath()){
         cout << c << " ";
     }
 }

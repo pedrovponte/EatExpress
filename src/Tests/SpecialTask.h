@@ -12,8 +12,10 @@
 
 class SpecialTask : public Task{
     vector<Request> requests;
+    //vector<int> times;
 public:
-    virtual void setFloydWarshallPath(Graph<Coordinates> & graph);
+    SpecialTask(Employee * employee, vector<Request> & requests, int id);
+    virtual void setFloydWarshallPath(Graph<Coordinates> & graph, const vector<Coordinates> & checkpoints);
 };
 
 // Simultaneous requests - best route between multiple restaurants and requests for the same staff member
@@ -23,6 +25,6 @@ vector<Request> orderByRestaurantDistance(Graph<Coordinates> & graph, vector<Req
 
 vector<Request> orderByDeliveryDistance(Graph<Coordinates> & graph, vector<Request> requests, Coordinates origin);
 
-vector<Coordinates> simultaneousRequests(Graph<Coordinates> & graph,vector<Request> & requests, Employee* employee);
+SpecialTask * simultaneousRequests(Graph<Coordinates> & graph,vector<Request> & requests, Employee* employee);
 
 #endif //CAL_T3G4_SPECIALTASK_H

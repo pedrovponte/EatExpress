@@ -19,7 +19,6 @@ protected:
     int id;
 public:
     Task(Employee *  employee, int id);
-    virtual void setFloydWarshallPath(Graph<Coordinates> & graph) = 0;
     const vector<Coordinates> getPath() const;
     VehicleType getVehicleType() const;
     Employee *getEmployee() const;
