@@ -55,6 +55,10 @@ public:
 	~Graph();
 
     bool addBidirectionalEdge(unsigned long idSourc, unsigned  long idDest, const T &sourc, const T &dest, double w);
+
+    vector<T> dfs() const;
+    vector<T> dfs(T info) const;
+    void dfsVisit(Vertex<T> *v, vector<T> &res) const;
 };
 
 
@@ -313,6 +317,55 @@ void Graph<T>::setVertexSet(const vector<Vertex<T>*> vertexSet) {
     this->vertexSet.clear();
 
     this->vertexSet.insert(this->vertexSet.begin(), vertexSet.begin(), vertexSet.end());
+}
+
+
+/*
+ * Performs a depth-first search (dfs) in a graph (this).
+ * Returns a vector with the contents of the vertices by dfs order.
+ * Follows the algorithm described in theoretical classes.
+ */
+template <class T>
+vector<T> Graph<T>::dfs() const {
+    for (int i = 0; i < this->vertexSet.size(); i++)
+        vertexSet[i]->visited = false;
+
+    vector<T> res = vector<T>();
+
+    for (int i = 0; i < this->vertexSet.size(); i++)
+        if (!vertexSet[i]->visited)
+            dfsVisit(vertexSet[i],res);
+
+    return res;
+}
+
+template <class T>
+vector<T> Graph<T>::dfs(T info) const {
+    for (int i = 0; i < this->vertexSet.size(); i++)
+        vertexSet[i]->visited = false;
+
+    vector<T> res = vector<T>();
+
+    Vertex<T> * vertex = this->findVertex(info);
+
+    if (!vertex->visited)
+        dfsVisit(vertex,res);
+
+    return res;
+}
+
+/*
+ * Auxiliary function that visits a vertex (v) and its adjacent not yet visited, recursively.
+ * Updates a parameter with the list of visited node contents.
+ */
+template <class T>
+void Graph<T>::dfsVisit(Vertex<T> *v, vector<T> & res) const {
+    v->visited = true;
+    res.push_back(v->info);
+    for (int i = 0; i < v->adj.size(); ++i) {
+        if (!v->adj[i].dest->visited)
+            dfsVisit(v->adj[i].dest,res);
+    }
 }
 
 

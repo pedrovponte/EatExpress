@@ -40,7 +40,9 @@ Type: Vegetarian        Vertex id: 80
 
 ## 5.3 Algoritmos efetivamente implementados
 
-Dadas as limitações temporais e logísticas deste projeto, chegado o momento de eleger algoritmos de cálculo de distâncias e caminhos entre vértices, por questões mais relacionadas com uma análise interpretativa de resultados distintos, decidimos focar-nos em dois algoritmos apenas. Cada um representa uma generalização de um subproblema do caminho mais curto, o Dijkstra unidirecional como algoritmo representativo do problema *Single Source Multiple Destinations* 
+Dadas as limitações temporais e logísticas deste projeto, chegado o momento de eleger algoritmos de cálculo de distâncias e caminhos entre vértices, por questões mais relacionadas com uma análise interpretativa de resultados distintos, decidimos focar-nos em dois algoritmos apenas.
+
+Cada um representa uma generalização de um subproblema do caminho mais curto, o Dijkstra unidirecional como algoritmo representativo do problema *Single Source Multiple Destinations*, que, com a utilização de uma *fila de prioridade*, apresenta uma complexidade temporal de $O( (V+E)\log V)$ e espacial de $O(V)$
 
 ```cpp
 
@@ -69,7 +71,7 @@ Dadas as limitações temporais e logísticas deste projeto, chegado o momento d
 23     return dist, prev
 ```
 
-e o Floyd-Warshall como algoritmo abrangendo a questão *Multiple Sources Multiple Destinations*. 
+e o Floyd-Warshall como algoritmo abrangendo a questão *Multiple Sources Multiple Destinations*, com complexidade temporal na ordem de $O(V³)$ e espacial na ordem de $O(V²)$. 
 
 ```cpp
 1 let dist be a |V| × |V| array of minimum distances initialized to ∞ (infinity)
@@ -130,7 +132,7 @@ A partir de um certo número de pedidos, o algoritmo de Floyd-Warshall torna-se 
 ![](../logs/phase1/DijkstraG.png)  |  ![](../logs/phase1/FloydG.png)
 :-------------------------:|:-------------------------:
 
-O tempo médio gasto a cada pedido, para o algoritmo de Dijkstra, revelou, assim, o esperado e aproximado tempo computacional de proporções $O(E + V \log V )$, ou "linearítmico". O pré-processamento realizado pelo algoritmo de Floyd-Warshall, contabilizado apenas como parte do primeiro pedido, revelou a sua complexidade na ordem $O(V³)$ e um tempo de execução mínimo para a reconstrução dos caminhos, na ordem $O(E)$, com $E$ somente o número de arestas entre os dois vértices em consideração. Os valores mais precisos, em micro-segundos, para cada um destes gráficos, encontram-se na tabela seguinte:
+O tempo médio gasto a cada pedido, para o algoritmo de Dijkstra, revelou, assim, o esperado e aproximado tempo computacional de proporções $O((E + V) \log V )$. O pré-processamento realizado pelo algoritmo de Floyd-Warshall, contabilizado apenas como parte do primeiro pedido, revelou a sua complexidade na ordem $O(V³)$ e um tempo de execução mínimo para a reconstrução dos caminhos, na ordem $O(E)$, com $E$ somente o número de arestas entre os dois vértices em consideração. Os valores mais precisos, em micro-segundos, para cada um destes gráficos, encontram-se na tabela seguinte:
 
 ![](../logs/phase1/table.png)
 
@@ -170,11 +172,12 @@ Nesta segunda fase, voltámos a analisar a execução dos algoritmos, desta vez,
         for(int i = 0; i < tasks.size(); i++){
             tasks[i]->setDijkstraPath(graph);
         }
-        requestsRound++;
     }
 ```
 
 Para efeitos de teste desta fase de implementação, considerou-se a existência de 3 estafetas, distribuídos aleatoriamente por um grafo, representativo de uma área urbana, de dimensões $16 \times 16$, e geraram-se até 2000 pedidos também aleatórios.
+
+![](../logs/phase2/Dijkstra-Floyd.png)
 
 ### 5.4.3 Fase III
 
@@ -183,3 +186,16 @@ Aqui, variados meios de transporte começaram já a ser considerados, o que corr
 ![](../logs/phase3/16x16-original.png)  |  ![](../logs/phase3/16x16-bike.png)
 :-------------------------:|:-------------------------:
 Grafo original para veículos motorizados | Grafo reduzido para estafetas a pé ou de bicicleta
+
+Neste ponto, tornou-se pertinente a análise paralela à conetividade dos grafos, sobretudo dos grafos maiores e dos respetivos grafos reduzidos, que revelaram pormenores também visíveis nas imagens anteriores. Obteve-se, assim, a média e o máximo do número de vértices descobertos, partindo de um dado vértice, através do algoritmo de Pesquisa em Profundidade (DFS):
+
+Grafo | Número de Vértices | Média de Vértices Encontrados | Máximo de Vértices Encontrados
+---|---|---|---
+16x16|256|256|256
+16x16 reduzido|142|9|20
+20x20|400|400|400 
+20x20 reduzido|206|10|17
+30x30|900|900|900
+30x30 reduzido|498|10|26
+
+Desta tabela, retira-se, apenas, a informação da super conectividade dos grafos originais, que contrasta com a mais fraca conectividade dos grafos adaptados/reduzidos, usados para entregas a pé, ou de bicicleta.
