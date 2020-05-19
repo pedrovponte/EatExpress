@@ -10,7 +10,7 @@
 #include <cmath>
 #include <edgetype.h>
 #include "utils.h"
-#include "Task.h"
+#include "SingleTask.h"
 
 using namespace std;
 
@@ -273,7 +273,7 @@ void viewSinglePath(const Graph<Coordinates> & graph, const vector<Coordinates> 
     gv->rearrange();
 }
 
-void viewEmployeePath(const Graph<Coordinates> & graph, vector<Task*> tasks){
+void viewEmployeePath(const Graph<Coordinates> & graph, vector<SingleTask*> tasks){
 
     GraphViewer *gv = new GraphViewer(700, 700, false);
     graphViewerProperties(gv);
@@ -282,7 +282,7 @@ void viewEmployeePath(const Graph<Coordinates> & graph, vector<Task*> tasks){
 
     int i = 0;
     sort(tasks.begin(), tasks.end(), compareTasks);
-    for(Task * task: tasks){
+    for(SingleTask * task: tasks){
         vector<Coordinates> path = task->getPath();
         for(int j = 0; j< path.size();j++){
 
@@ -312,14 +312,14 @@ void viewEmployeePath(const Graph<Coordinates> & graph, vector<Task*> tasks){
     gv->rearrange();
 }
 
-void viewEmployeesPaths(const Graph<Coordinates> & graph,const Graph<Coordinates> & reducedGraph,vector<Task*> tasks){
+void viewEmployeesPaths(const Graph<Coordinates> & graph,const Graph<Coordinates> & reducedGraph,vector<SingleTask*> tasks){
     int id = -1;
     VehicleType vehicleType = INVALID;
-    vector<Task*> employeeTasks;
+    vector<SingleTask*> employeeTasks;
 
     sort(tasks.begin(), tasks.end(), compareTasks);
 
-    for(Task * task: tasks){
+    for(SingleTask * task: tasks){
         // No employee assigned to the task
         if(task->getEmployee() == nullptr)
             cout << "The request nr " << task->getId() << " could not be completed by any of the employees!" << endl;

@@ -48,4 +48,8 @@ public:
 
 };
 
+bool compareEmployees(Employee * e1, Employee * e2);
+
+bool equalEmployees(Employee * e1, Employee * e2);
+
 #endif //CAL_T3G4_EMPLOYEE_H

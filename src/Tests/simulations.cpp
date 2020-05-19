@@ -4,7 +4,8 @@
 
 #include "Employee.h"
 #include "Request.h"
-#include "Task.h"
+#include "SingleTask.h"
+#include "SpecialTask.h"
 #include "Graph.h"
 #include "algorithm"
 
@@ -32,7 +33,7 @@ void simulateFloydWarshallPhase1(){
     // Give the request to an employee
     Employee employee(0,Coordinates(10),40,CAR,true);
 
-    Task task(&employee,request,0);
+    SingleTask task(&employee, request, 0);
 
     // Calculate shortest path using FloydWarshall
     task.setFloydWarshallPath(graph);
@@ -61,7 +62,7 @@ void simulateDijkstraPhase1(){
     // Give the request to an employee
     Employee employee(0,Coordinates(10),40,CAR,true);
 
-    Task task(&employee,request,0);
+    SingleTask task(&employee, request, 0);
 
     // Calculate shortest path using Dijkstra
     task.setDijkstraPath(graph);
@@ -102,7 +103,7 @@ void simulateFloydWarshallPhase2(){
 
     while(!requestsQueue.empty()){
         cout << "REQUESTS ROUND " << requestsRound << endl;
-        vector<Task*> tasks = distributeRequestsByCloseness_FloydWarshall(graph,requestsQueue,employees);
+        vector<SingleTask*> tasks = distributeRequestsByCloseness_FloydWarshall(graph, requestsQueue, employees);
 
         // Couldn't find any Employees to fulfill the remaining requests
         if(tasks.empty())
@@ -143,7 +144,7 @@ void simulateDijkstraPhase2(){
 
     while(!requestsQueue.empty()){
         cout << "REQUESTS ROUND " << requestsRound << endl;
-        vector<Task*> tasks = distributeRequestsByCloseness_Dijkstra(graph,requestsQueue,employees);
+        vector<SingleTask*> tasks = distributeRequestsByCloseness_Dijkstra(graph, requestsQueue, employees);
 
         // Couldn't find any Employees to fulfill the remaining requests
         if(tasks.empty())
@@ -195,9 +196,9 @@ void simulatePhase3(){
     requests.push(Request(6, Date(2020,07,10), Hour(3,10),Coordinates(205),Coordinates(234),2));
     requests.push(Request(7, Date(2020,07,10), Hour(5,10),Coordinates(205),Coordinates(145),4));
 
-    vector<Task*> tasks = distributeRequests(graph,reducedGraph,requests,employees);
+    vector<SingleTask*> tasks = distributeRequests(graph, reducedGraph, requests, employees);
 
-    for(Task * task : tasks){
+    for(SingleTask * task : tasks){
         cout << *task << endl;
         viewSinglePath(graph,task->getPath(),task->getVehicleType());
     }
@@ -254,9 +255,9 @@ void simulateMultipleRestaurantsRequest(){
 
     Request r(0, Date(2020,07,10), Hour(21,0),checkpoints,Coordinates(76),3);
 
-    Task * task = multipleRestaurantsRequest(graph, reducedGraph, employees,r);
+    SingleTask * task = multipleRestaurantsRequest(graph, reducedGraph, employees, r);
 
-    vector<Task*> tasks;
+    vector<SingleTask*> tasks;
     tasks.push_back(task);
     if(task->getEmployee() != nullptr){
         cout << *task<< endl;
@@ -269,3 +270,25 @@ void simulateMultipleRestaurantsRequest(){
 
 }
 
+// Simultaneous requests - best route between multiple restaurants and requests for the same staff member
+
+void simulateSimultaneousRequests(){
+    Graph<Coordinates> graph = loadGraph("GridGraphs", "16x16",true);
+
+    // Pre-process Distances with Floyd Warshall
+    graph.floydWarshallShortestPath();
+
+    Employee * employee = new Employee(6, Coordinates(165), 15, CAR, true);
+
+    vector<Request> requests;
+    requests.push_back(Request(0, Date(2020,07,10), Hour(16,0),Coordinates(7),Coordinates(260),5));
+    requests.push_back(Request(1, Date(2020,07,10), Hour(16,0),Coordinates(0),Coordinates(95),5));
+    requests.push_back(Request(2, Date(2020,07,10), Hour(16,0),Coordinates(250),Coordinates(88),3));
+    requests.push_back(Request(3, Date(2020,07,10), Hour(16,0),Coordinates(7),Coordinates(169),9));
+
+    vector<Coordinates> path = simultaneousRequests(graph,requests,employee);
+
+    for(Coordinates c: path){
+        cout << c << " ";
+    }
+}

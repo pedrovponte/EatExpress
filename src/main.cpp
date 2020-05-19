@@ -11,8 +11,7 @@ int main(int argc, char* argv[]) {
 
     chooseMap();
 
-    //Graph<Coordinates> g = loadGraph("GridGraphs", "30x30Grid",true, true);
-    //simulateMultipleRestaurantsRequest();
+    //simulateSimultaneousRequests();
 
     cout << "\tEnter to exit!";
     getchar();

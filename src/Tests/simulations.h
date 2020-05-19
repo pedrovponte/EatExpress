@@ -17,4 +17,6 @@ void simulatePhase3();
 
 void simulateMultipleRestaurantsRequest();
 
+void simulateSimultaneousRequests();
+
 #endif //CAL_T3G4_SIMULATIONS_H

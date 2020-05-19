@@ -6,7 +6,7 @@
 #include <vector>
 #include <ctime>
 #include "app.h"
-#include "Task.h"
+#include "SingleTask.h"
 #include <algorithm>
 #include <iomanip>
 
@@ -108,21 +108,21 @@ int deliveryRequests(Graph<Coordinates> & graph, Graph<Coordinates> & reducedGra
     if(r.getCheckpoints().size() == 1){
         min_priority_queue requests;
         requests.push(r);
-        vector<Task*> tasks = distributeRequests(graph, reducedGraph,requests,employees);
+        vector<SingleTask*> tasks = distributeRequests(graph, reducedGraph, requests, employees);
 
-        for(Task * task : tasks){
+        for(SingleTask * task : tasks){
             cout << *task << endl;
             if(task->getEmployee() != nullptr)
                 viewSinglePath(graph,task->getPath(),task->getVehicleType());
         }
     }
     else {
-        Task *t = multipleRestaurantsRequest(graph, reducedGraph, employees, r);
+        SingleTask *t = multipleRestaurantsRequest(graph, reducedGraph, employees, r);
 
-        vector<Task *> tasks;
+        vector<SingleTask *> tasks;
         tasks.push_back(t);
 
-        for(Task * task : tasks) {
+        for(SingleTask * task : tasks) {
             cout << *task << endl;
 
             if(task->getEmployee() != nullptr){
@@ -388,11 +388,11 @@ int simulate(Graph<Coordinates> & graph, Graph<Coordinates> & reducedGraph) {
     for(Employee * e: employeesList)
         cout << "\t " << *e << "; Initial Position: " << e->getCoordinates() << endl;
 
-    vector<Task*> tasks = distributeRequests(graph, reducedGraph, requests, employeesList);
+    vector<SingleTask*> tasks = distributeRequests(graph, reducedGraph, requests, employeesList);
 
     cout << endl << "\t Request distribution: " << endl;
 
-    for(Task * task : tasks){
+    for(SingleTask * task : tasks){
         cout << *task << endl;
     }
 
@@ -405,7 +405,7 @@ int simulate(Graph<Coordinates> & graph, Graph<Coordinates> & reducedGraph) {
                 cin >> n;
             } while(n < 0 || n > requests.size()-1);
 
-            for(Task * t: tasks){
+            for(SingleTask * t: tasks){
                 if(t->getRequest().getId() == n){
 
                     if(t->getEmployee() == nullptr)
@@ -425,10 +425,10 @@ int simulate(Graph<Coordinates> & graph, Graph<Coordinates> & reducedGraph) {
                 cin >> n;
             } while(n < 0 || n > employeesList.size()-1);
 
-            vector<Task*> employeeTasks;
+            vector<SingleTask*> employeeTasks;
             VehicleType type = employeesList[n]->getType();
 
-            for(Task * t: tasks ){
+            for(SingleTask * t: tasks ){
                 if(t->getEmployee()->getId() == n)
                     employeeTasks.push_back(t);
             }

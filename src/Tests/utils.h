@@ -11,7 +11,7 @@
 #include <string>
 #include <map>
 
-class Task;
+class SingleTask;
 class Request;
 
 using namespace std;
@@ -119,9 +119,9 @@ void cleanGraph(Graph<Coordinates> &graph);
 
 void viewSinglePath(const Graph<Coordinates> & graph, const vector<Coordinates> & path, VehicleType type = CAR);
 
-void viewEmployeePath(const Graph<Coordinates> & graph, vector<Task*> tasks);
+void viewEmployeePath(const Graph<Coordinates> & graph, vector<SingleTask*> tasks);
 
-void viewEmployeesPaths(const Graph<Coordinates> & graph,const Graph<Coordinates> & reducedGraph, vector<Task*> tasks);
+void viewEmployeesPaths(const Graph<Coordinates> & graph,const Graph<Coordinates> & reducedGraph, vector<SingleTask*> tasks);
 
 void graphViewerProperties(GraphViewer * gv);
 

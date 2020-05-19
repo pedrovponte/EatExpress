@@ -9,7 +9,7 @@
 #include "../utils.h"
 #include "../Employee.h"
 #include "../Request.h"
-#include "../Task.h"
+#include "../SingleTask.h"
 
 using namespace std;
 using testing::Eq;
@@ -43,7 +43,7 @@ long test_dijkstra_time(int nrequests){
     auto start = std::chrono::high_resolution_clock::now();
 
     while(!requestsQueue.empty()){
-        vector<Task*> tasks = distributeRequestsByCloseness_Dijkstra(graph,requestsQueue,employees);
+        vector<SingleTask*> tasks = distributeRequestsByCloseness_Dijkstra(graph, requestsQueue, employees);
 
         // Couldn't find any Employees to fulfill the remaining requests
         if(tasks.empty())
@@ -100,7 +100,7 @@ long test_floyd_time(int nrequests){
     graph.floydWarshallShortestPath();
 
     while(!requestsQueue.empty()){
-        vector<Task*> tasks = distributeRequestsByCloseness_FloydWarshall(graph,requestsQueue,employees);
+        vector<SingleTask*> tasks = distributeRequestsByCloseness_FloydWarshall(graph, requestsQueue, employees);
 
         // Couldn't find any Employees to fulfill the remaining requests
         if(tasks.empty())
