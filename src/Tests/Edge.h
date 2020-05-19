@@ -17,10 +17,10 @@ public:
 
 template <class T>
 class Edge {
-    Vertex<T> *orig;
-    Vertex<T> * dest;
+    Vertex<T> *orig;        // origin vertex
+    Vertex<T> * dest;       // destination vertex
 private:
-    // destination vertex
+
     double weight;         // edge weight
     unsigned long id;      // unique id
 
