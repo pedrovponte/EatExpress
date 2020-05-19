@@ -9,9 +9,9 @@ using namespace std;
 int main(int argc, char* argv[]) {
     testing::InitGoogleTest(&argc, argv);
 
-    chooseMap();
+    // chooseMap();
 
-    //simulateSimultaneousRequests();
+     simulateSimultaneousRequests();
 
     cout << "\tEnter to exit!";
     getchar();

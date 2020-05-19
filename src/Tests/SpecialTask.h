@@ -10,6 +10,8 @@
 #include "Request.h"
 #include "Task.h"
 
+typedef vector<Request>  requests_queue;
+
 class SpecialTask : public Task{
     vector<Request> requests;
     //vector<int> times;
@@ -19,12 +21,12 @@ public:
 };
 
 // Simultaneous requests - best route between multiple restaurants and requests for the same staff member
-void repeatedRestaurants(vector<Request> & to_pick, vector<Request> & to_deliver);
+void repeatedRestaurants(vector<Request> & to_pick, requests_queue & to_deliver);
 
-vector<Request> orderByRestaurantDistance(Graph<Coordinates> & graph, vector<Request> requests, Coordinates origin);
+void setNearestRestaurant(Graph<Coordinates> & graph, requests_queue & requests, Coordinates origin);
 
-vector<Request> orderByDeliveryDistance(Graph<Coordinates> & graph, vector<Request> requests, Coordinates origin);
+void setNearestDeliveryAddress(Graph<Coordinates> & graph, requests_queue & requests, Coordinates origin);
 
-SpecialTask * simultaneousRequests(Graph<Coordinates> & graph,vector<Request> & requests, Employee* employee);
+SpecialTask * simultaneousRequests(Graph<Coordinates> & graph, requests_queue & requests, Employee* employee);
 
 #endif //CAL_T3G4_SPECIALTASK_H
