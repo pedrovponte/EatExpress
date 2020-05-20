@@ -9,11 +9,11 @@ using namespace std;
 int main(int argc, char* argv[]) {
     testing::InitGoogleTest(&argc, argv);
 
-    chooseMap();
-
+    //chooseMap();
+    Graph<Coordinates> graph = loadGraph("PortugalMaps", "Porto", true);
      // simulateSimultaneousRequests();
 
-    cout << "\tPress ENTER to exit!";
+    //cout << "\tPress ENTER to exit!";
     getchar();
     return 0;
     //return RUN_ALL_TESTS();
