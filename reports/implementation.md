@@ -38,6 +38,8 @@ Type: Fast Food         Vertex id: 73
 Type: Vegetarian        Vertex id: 80
 ```
 
+A conectividade dos grafos usados é analisada seguidamente, durante a Fase III de implementação, onde foram criados grafos reduzidos a partir destes em grelha, representando mapas para outros meios de transporte, mais restritivos.
+
 ## 5.3 Algoritmos efetivamente implementados
 
 Dadas as limitações temporais e logísticas deste projeto, chegado o momento de eleger algoritmos de cálculo de distâncias e caminhos entre vértices, por questões mais relacionadas com uma análise interpretativa de resultados distintos, decidimos focar-nos em dois algoritmos apenas.
@@ -87,28 +89,18 @@ e o Floyd-Warshall como algoritmo abrangendo a questão *Multiple Sources Multip
 11                     dist[i][j] ← dist[i][k] + dist[k][j]
 12                 end if
 ```
-*Reconstrução do caminho*
-
-```cpp
-1 let dist be the array of minimum distances initialized to  infinity
-2 let next be the array of vertex indices initialized to null
-3 
-4 function FloydWarshallWithPathReconstruction():
-5     for each edge (u, v) do
-6         dist[u][v] ← w(u, v)  // The weight of the edge (u, v)
-7         next[u][v] ← v
-8     for each vertex v do
-9         dist[v][v] ← 0
-10         next[v][v] ← v
-11     for k from 1 to |V| do // standard Floyd-Warshall implementation
-12         for i from 1 to |V|
-13             for j from 1 to |V|
-14                 if dist[i][j] > dist[i][k] + dist[k][j] then
-15                     dist[i][j] ← dist[i][k] + dist[k][j]
-16                     next[i][j] ← next[i][k]
-```
 
 Como alicerce para a aplicação final, dada a análise exaustiva a todas as fases de implementação, o algoritmo Floyd-Warshall foi o escolhido para vigorar e funcionar em pleno.
+
+Enuncia-se, também, a implementação do algoritmo de Pesquisa em Profundidade, na sua versão recursiva, para a análise da conectividade dos grafos, com uma complexidade temporal de $O(V+E)$ e espacial de $O(V)$:
+
+```cpp
+1 function DFS-recursive(G, s):
+2       mark s as visited
+3       for all neighbours w of s in Graph G:
+4           if w is not visited:
+5               DFS-recursive(G, w)
+```
 
 ## 5.4 Análise empírica
 
@@ -132,9 +124,14 @@ A partir de um certo número de pedidos, o algoritmo de Floyd-Warshall torna-se 
 ![](../logs/phase1/DijkstraG.png)  |  ![](../logs/phase1/FloydG.png)
 :-------------------------:|:-------------------------:
 
-O tempo médio gasto a cada pedido, para o algoritmo de Dijkstra, revelou, assim, o esperado e aproximado tempo computacional de proporções $O((E + V) \log V )$. O pré-processamento realizado pelo algoritmo de Floyd-Warshall, contabilizado apenas como parte do primeiro pedido, revelou a sua complexidade na ordem $O(V³)$ e um tempo de execução mínimo para a reconstrução dos caminhos, na ordem $O(E)$, com $E$ somente o número de arestas entre os dois vértices em consideração. Os valores mais precisos, em micro-segundos, para cada um destes gráficos, encontram-se na tabela seguinte:
+Os valores mais precisos, em micro-segundos, para alguns destes gráficos, encontram-se na tabela seguinte:
 
 ![](../logs/phase1/table.png)
+
+O tempo médio gasto a cada pedido, para o algoritmo de Dijkstra, revelou, assim, o esperado e aproximado tempo computacional de proporções $O((E + V) \log V )$. O pré-processamento realizado pelo algoritmo de Floyd-Warshall, contabilizado apenas como parte do primeiro pedido, revelou a sua complexidade na ordem $O(V³)$ e um tempo de execução mínimo para a reconstrução dos caminhos, na ordem $O(E)$, com $E$ somente o número de arestas entre os dois vértices em consideração.
+
+![](../logs/phase1/Dijkstra-Floyd-Dtime.png) | ![](../logs/phase1/Dijkstra-Floyd-Ftime.png)
+:---|---:
 
 Com isto, confirmamos também a complexidade temporal destes algoritmos e reafirmamos e fundamentamos as escolhas para as fases seguintes.
 
