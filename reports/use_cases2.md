@@ -6,9 +6,15 @@ A aplicação desenvolvida, poderá ser utilizada em vários mapas (4x4, 8x8, 16
 
 ![](../images/initialScreen.png)
 
+Escolhido o mapa, é perguntado ao utilizador se pretende fazer apenas um pedido ou simular múltiplos pedidos.
+
+|![](../images/typeRequest.png)|
+|:-------------------------:|
+|Escolha do tipo de pedido|
+
 Des seguida, irá ser perguntado ao utilizador se deseja visualizar o mapa escolhido, onde será possível visualizar a localização dos vários restaurantes.
 
-Para todos os grafos apresentados será possível fazer um pedido que poderá conter apenas um restaurante entre os apresentados na lista ou então vários, sendo que para cada restaurante se escolhe quantas refeições se deseja deste, estando o tamanho total do pedido limitado a 15 refeições.
+Quando a opção escolhida é fazer apenas um pedido, é possível fazer um pedido que pode conter apenas um restaurante entre os apresentados na lista ou então vários, sendo que para cada restaurante se escolhe quantas refeições se deseja deste, estando o tamanho total do pedido limitado a 15 refeições.
 
 |![](../images/restaurantsScreen.png)|
 |:-------------------------:|
@@ -24,9 +30,27 @@ Depois de o pedido estar completo, serão apresentadas na aplicação as informa
 |:-------------------------:|
 |Caminho percorrido pelo estafeta|
 
-Para os grafos maiores (16x16, 20x20 e 30x30), depois da seleção do mapa, será também dada ao utilizador a opção de se simular múltiplos pedidos aleatórios, além da opção descrita anteriormente.
+No caso de a opção escolhida ser a de simular vários pedidos, existem 2 opções.
 
-Neste caso, o utilizador terá de escolher um número de estafetas entre 1 e 10 e o número de pedidos a simular, cujo máximo varia conforme o número de estafetas.
+|![](../images/multipleRequestsTypes.png)|
+|:-------------------------:|
+|Opções de simulação de pedidos|
+
+Caso o utilizador opte pela **opção A**, será apresentado ao utilizador o estafeta disponível para entregar os pedidos simultâneos e será pedido ao utilizador quantos pedidos quer simular.
+
+|![](../images/oneEmployeeRequests.png)|
+|:-------------------------:|
+|Introdução dos dados para simulação de pedidos simultâneos|
+
+Depois de escolhidos, irão aparecer as informações de cada um dos pedidos simulados, bem como sobre a sua entrega, tal como foi descrito anteriormente.
+
+É também mostrado ao utilizador o grafo com o caminho percorrido pelo estafeta para entregar os pedidos.
+
+|![](../images/simultaneosGraph.png)|
+|:-------------------------:|
+|Caminho percorrido pelo estafeta|
+
+Se o utilizador preferir a **opção B**, a seguir terá de escolher um número de estafetas, entre 1 e 10, e o número de pedidos a simular, cujo máximo varia conforme o número de estafetas.
 
 ```cpp
 int maxRequests = 15;
@@ -41,7 +65,7 @@ do{
     if(employeesNum < 3) maxRequests = employeesNum * 3;
 ```
 
-|![](../images/simulateRequests.png)|
+|![](../images/simulateRequests.jpg)|
 |:-------------------------:|
 |Introdução dos dados para simulação de pedidos|
 
@@ -58,5 +82,3 @@ No final da lista, aparece um menu onde podemos escolher entre algumas possívei
 **Opção B -** Visualizar os percursos efetuados por um determinado estafeta;
 
 **Opção C -** Visualizar os percursos efetuados por todos os estafetas.
-
-Falta adicionar o caso de um estafeta entregar varios pedidos ao mesmo tempo
