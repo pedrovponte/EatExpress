@@ -66,7 +66,7 @@ std::ostream &operator<<(std::ostream &os, const SpecialTask &task){
     return os;
 }
 
-// Simultaneous requests - best route between multiple restaurants and requests for the same staff member
+/**************** One Employee - Best Route to pick and deliver multiple requests (TSP variant) ***************/
 
 void setNearestRestaurant(Graph<Coordinates> & graph, vector<Request>  & requests, Coordinates origin){
 

@@ -210,7 +210,7 @@ vector<SingleTask*> distributeRequestsByCloseness_Dijkstra(Graph<Coordinates> & 
 }
 
 
-// Request distribution Phase 3
+/**************** Distribute Requests among Employees - Phase 3  ***************/
 
 min_priority_queue setRequestsDeliverability(const Graph<Coordinates> & graph, const Graph<Coordinates> & reducedGraph, min_priority_queue & requests){
 
