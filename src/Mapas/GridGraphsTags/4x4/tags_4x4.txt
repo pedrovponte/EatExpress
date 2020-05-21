@@ -1,13 +1,3 @@
-4
-restaurant
-1
-5
-fast_food
-1
-19
-pizza
-1
-2
-vegetarian
-1
-21
+version https://git-lfs.github.com/spec/v1
+oid sha256:b12620e12620de3b8901deb778adc5cbbfeace41da7d597ee9853c19a1a71d96
+size 71
