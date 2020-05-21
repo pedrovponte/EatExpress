@@ -12,7 +12,7 @@ Escolhido o mapa, é perguntado ao utilizador se pretende fazer apenas um pedido
 |:-------------------------:|
 |Escolha do tipo de pedido|
 
-Des seguida, irá ser perguntado ao utilizador se deseja visualizar o mapa escolhido, onde será possível visualizar a localização dos vários restaurantes.
+De seguida, irá ser perguntado ao utilizador se deseja visualizar o mapa escolhido, onde será possível visualizar a localização dos vários restaurantes.
 
 Quando a opção escolhida é fazer apenas um pedido, é possível fazer um pedido que pode conter apenas um restaurante entre os apresentados na lista ou então vários, sendo que para cada restaurante se escolhe quantas refeições se deseja deste, estando o tamanho total do pedido limitado a 15 refeições.
 
@@ -50,7 +50,7 @@ Depois de escolhidos, irão aparecer as informações de cada um dos pedidos sim
 |:-------------------------:|
 |Caminho percorrido pelo estafeta|
 
-Se o utilizador preferir a **opção B**, a seguir terá de escolher um número de estafetas, entre 1 e 10, e o número de pedidos a simular, cujo máximo varia conforme o número de estafetas.
+Se o utilizador preferir a **opção B**, a seguir terá de escolher um número de estafetas, entre 1 e 10, e o número de pedidos a simular.
 
 ```cpp
 int maxRequests = 15;
@@ -61,8 +61,6 @@ do{
         cout << endl;
         if(employeesNum > 10 || employeesNum < 1) cout << "Try again!" << endl;
 } while(employeesNum > 10 || employeesNum < 1);
-
-    if(employeesNum < 3) maxRequests = employeesNum * 3;
 ```
 
 |![](../images/simulateRequests.jpg)|
