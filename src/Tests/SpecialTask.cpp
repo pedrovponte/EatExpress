@@ -8,25 +8,31 @@ SpecialTask::SpecialTask(Employee * employee, const vector<Request> & requests, 
 
 void SpecialTask::setFloydWarshallPath(Graph<Coordinates> & graph, const vector<pair<Coordinates,unsigned long>> & checkpoints){
     if(checkpoints.empty()) return;
+
     Coordinates orig = employee->getCoordinates();
     vector<Coordinates> tempPath;
     totalDistance = 0;
 
     sort(requests.begin(),requests.end(),requestsById);
     for(int i = 0; i< checkpoints.size(); i++){
-        tempPath = graph.getfloydWarshallPath(orig, checkpoints[i].first);
+        mainCheckpoints.push_back(checkpoints[i].first); // Save the partial path coordinates
+        tempPath = graph.getfloydWarshallPath(orig, checkpoints[i].first); // Get path between the previous position and the actual position
         totalDistance += graph.getDist(graph.findVertexIdx(orig), graph.findVertexIdx(checkpoints[i].first));
 
-        if(checkpoints[i].first == requests[checkpoints[i].second].getDeliveryAddr()){
-            int t = (totalDistance * 60) / (1000 * employee->getAvgVelocity());
+        // Calculate the estimated time for the request that corresponds with this delivery address
+        if(checkpoints[i].first == requests[findRequestId(checkpoints[i].second)].getDeliveryAddr()){
+            int t = (totalDistance * 60) / (1000 * employee->getAvgVelocity()); // Get total distance in meters
             times.insert(make_pair(checkpoints[i].second,t));
             employee->addTime(t);
         }
 
+        // Add path to previously calculated path
         if(i == 0) path = tempPath;
         else path.insert(path.end(),tempPath.begin()+1, tempPath.end());
+
         orig = checkpoints[i].first;
     }
+
 
     employee->setCoordinates(path.at(path.size()-1));
     employee->setReady(true);
@@ -42,7 +48,7 @@ vector<Coordinates> SpecialTask::getDeliveryAddresses() const{
 
 std::ostream &operator<<(std::ostream &os, const SpecialTask &task){
     if(task.employee == nullptr){
-        os << "\tRequests couldn't be completed!"<< endl;
+        os << "\tRequests couldn't be completed! Check if the Vertex you picked really exists!"<< endl;
         return os;
     }
 
@@ -51,9 +57,9 @@ std::ostream &operator<<(std::ostream &os, const SpecialTask &task){
     if(!task.path.empty())
         os << "\tInitial Employee's Position: " << task.path[0] << endl;
 
-    os << "\tPath: ";
-    for(unsigned int i = 0; i < task.path.size(); i++)
-        os << task.path[i] << " ";
+    os << "\tReduced Path / Order of visit of restaurants and delivery addresses: ";
+    for(unsigned int i = 0; i < task.mainCheckpoints.size(); i++)
+        os << task.mainCheckpoints[i] << " ";
     os << endl;
 
     cout << endl << "\tRequests: "<<endl;
@@ -64,6 +70,14 @@ std::ostream &operator<<(std::ostream &os, const SpecialTask &task){
     os << endl<< "\tTotal distance: " << task.totalDistance << " m" << endl;
 
     return os;
+}
+
+int SpecialTask::findRequestId(unsigned long id) {
+    for(int i = 0; i < requests.size();i++){
+        if(id == requests[i].getId())
+            return i;
+    }
+    return -1;
 }
 
 /**************** One Employee - Best Route to pick and deliver multiple requests (TSP variant) ***************/
@@ -125,12 +139,12 @@ void repeatedRestaurants(vector<Request> & to_pick, vector<Request>  & to_delive
 }
 
 SpecialTask * simultaneousRequests(Graph<Coordinates> & graph, vector<Request> & requests, Employee* employee){
-    vector<pair<Coordinates,unsigned long>> path;
+    vector<pair<Coordinates,unsigned long>> path; // Match a checkpoint of the path with its Requests id
     Coordinates origin = employee->getCoordinates();
-    vector<Request> to_pick = requests;
-    setNearestRestaurant(graph, to_pick, origin);
+    vector<Request> to_pick = requests; // Requests to pick from the Restaurant
+    setNearestRestaurant(graph, to_pick, origin); // Set the first element of the  vector to be restaurant that is closer to the employee
 
-    vector<Request> to_deliver;
+    vector<Request> to_deliver; // Requests ready to be delivered
 
     int iter = 0;
     int totalCargo = 0;

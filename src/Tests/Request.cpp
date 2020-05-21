@@ -127,6 +127,11 @@ void Request::setCheckpoints(const vector<Coordinates> &checkpoints) {
     Request::checkpoints = checkpoints;
 }
 
+void Request::setCheckpoint(const Coordinates &checkpoint) {
+    checkpoints.clear();
+    checkpoints.push_back(checkpoint);
+}
+
 bool requestsById(const Request & r1, const Request & r2){
     return r1.getId()<r2.getId();
 }

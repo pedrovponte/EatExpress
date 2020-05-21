@@ -13,16 +13,19 @@
 class SpecialTask : public Task{
     vector<Request> requests;
     map<unsigned long, int> times; // Match each Request id with the estimated time of the Request
+    vector<Coordinates> mainCheckpoints;
 public:
     SpecialTask(Employee * employee, const vector<Request> & requests, int id);
 
     /*
-     * Build the complete path to go through all the checkpoints - restaurants and delivery addresses; in order and saves the
-     * estimated time for each Request. The order of visit of the checkpoints must be already defined when this function is used.
+     * Build the complete path to go through all the checkpoints - restaurants and delivery addresses; in order.
+     * Saves the main checkpoints of the path and the estimated times for each Request.
+     * The order of visit of the checkpoints must be already defined when this function is used.
      * Uses graph's distance matrix, pre-processed with Floyd Warshall.
      */
     virtual void setFloydWarshallPath(Graph<Coordinates> & graph, const vector<pair<Coordinates,unsigned long>> & checkpoints);
     vector<Coordinates> getDeliveryAddresses() const;
+    int findRequestId(unsigned long id);
     friend std::ostream &operator<<(std::ostream &os, const SpecialTask &task);
 };
 

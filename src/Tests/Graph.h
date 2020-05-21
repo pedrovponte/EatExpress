@@ -10,9 +10,11 @@
 #include <algorithm>
 #include <unordered_set>
 #include <map>
+#include <fstream>
 #include "MutablePriorityQueue.h"
 #include "Vertex.h"
 #include "Edge.h"
+#include <iostream>
 
 using namespace std;
 
@@ -51,6 +53,10 @@ public:
 	void floydWarshallShortestPath();
 	vector<T> getfloydWarshallPath(const T &origin, const T &dest) const;
     double ** getDistancesMatrix() const;
+    void readDistancesMatrix(string filename);
+    void readPredecessorMatrix(string filename);
+    void saveDistancesMatrix(string filename);
+    void savePredecessorMatrix(string filename);
     double getDist(int orig, int dest) const;
 	~Graph();
 
@@ -299,6 +305,73 @@ vector<T> Graph<T>::getfloydWarshallPath(const T &orig, const T &dest) const{
 template<class T>
 double ** Graph<T>::getDistancesMatrix() const{
     return W;
+}
+
+template<class T>
+void Graph<T>::readDistancesMatrix(string filename){
+    ifstream in("../" + filename);
+    string s;
+    int n = getNumVertex();
+    W = new double *[n];
+    for (unsigned i = 0; i < n; i++)
+        W[i] = new double[n];
+
+    if(in.is_open()){
+        for(int i = 0; i < n; i++){
+            for(int j = 0; j < n; j++){
+                getline(in,s,' ');
+                W[i][j] = stod(s);
+            }
+        }
+    }
+}
+
+template<class T>
+void Graph<T>::readPredecessorMatrix(string filename){
+    ifstream in("../" + filename);
+    string s;
+    int n = getNumVertex();
+
+    P = new int *[n];
+    for (unsigned i = 0; i < n; i++)
+        P[i] = new int[n];
+
+    if(in.is_open()){
+        for(int i = 0; i < n; i++){
+            for(int j = 0; j < n; j++){
+                getline(in,s,' ');
+                P[i][j] = stoi(s);
+            }
+        }
+    }
+}
+
+template<class T>
+void Graph<T>::saveDistancesMatrix(string filename){
+    ofstream out("../" + filename);
+    int n = getNumVertex();
+    if(out.is_open()){
+        for(int i = 0; i < n; i++){
+            for(int j = 0; j < n; j++){
+                out << W[i][j] << " ";
+            }
+            out << endl;
+        }
+    }
+}
+
+template<class T>
+void Graph<T>::savePredecessorMatrix(string filename){
+    ofstream out("../" + filename);
+    int n = getNumVertex();
+    if(out.is_open()){
+        for(int i = 0; i < n; i++){
+            for(int j = 0; j < n; j++){
+                out << P[i][j] << " ";
+            }
+            out << endl;
+        }
+    }
 }
 
 template<class T>

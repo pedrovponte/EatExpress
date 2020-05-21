@@ -70,12 +70,11 @@ Request makeRequest(Graph<Coordinates> & graph) {
 
     } while((cont == 'Y' || cont == 'y') && checkpoints.size() < restaurantIds.size());
 
-    do{
-        cout << endl
-             << "\tInsert your location vertex: ";
-        cin >> client_vertex;
-        cin.ignore(1000, '\n');
-    } while(client_vertex >= graph.getNumVertex());
+
+    cout << endl
+         << "\tInsert your location vertex: ";
+    cin >> client_vertex;
+    cin.ignore(1000, '\n');
 
     time_t t = time(0);
     tm* now = localtime(&t);
@@ -113,7 +112,7 @@ int deliveryRequests(Graph<Coordinates> & graph, Graph<Coordinates> & reducedGra
         vector<SingleTask*> tasks = distributeRequests(graph, reducedGraph, requests, employees);
 
         for(SingleTask * task : tasks){
-            cout << *task << "\tEstimated time: " << task->getTime() << " min" << endl << endl;
+            cout << *task << task->pathToString() << "\tEstimated time: " << task->getTime() << " min" << endl << endl;
             if(task->getEmployee() != nullptr)
                 viewSinglePath(graph,task->getPath(),task->getVehicleType());
         }
@@ -125,7 +124,7 @@ int deliveryRequests(Graph<Coordinates> & graph, Graph<Coordinates> & reducedGra
         tasks.push_back(t);
 
         for(SingleTask * task : tasks) {
-            cout << *task << endl;
+            cout << *task << task->pathToString() << endl;
 
             if(task->getEmployee() != nullptr){
                 if (task->getVehicleType() == CAR || task->getVehicleType() == MOTORCYCLE)
@@ -152,6 +151,7 @@ int grid4x4() {
     Graph<Coordinates> graph = loadGraph("GridGraphs", "4x4", true, preview);
     cout << "\t....processing city map..."<< endl;
     graph.floydWarshallShortestPath();
+    system("CLS");
 
     restaurants = graph.getVTypes();
 
@@ -188,6 +188,7 @@ int grid8x8() {
     Graph<Coordinates> graph = loadGraph("GridGraphs", "8x8", true, preview);
     cout << "\t....processing city map..."<< endl;
     graph.floydWarshallShortestPath();
+    system("CLS");
 
     restaurants = graph.getVTypes();
 
@@ -227,6 +228,7 @@ int grid16x16() {
     cout << "\t....processing city map..."<< endl;
     graph.floydWarshallShortestPath();
     reducedGraph.floydWarshallShortestPath();
+    system("CLS");
 
     restaurants = graph.getVTypes();
 
@@ -274,6 +276,7 @@ int grid20x20() {
     cout << "\t....processing city map..."<< endl;
     graph.floydWarshallShortestPath();
     reducedGraph.floydWarshallShortestPath();
+    system("CLS");
 
     restaurants = graph.getVTypes();
 
@@ -325,6 +328,7 @@ int grid30x30() {
     cout << "\t....processing city map..."<< endl;
     graph.floydWarshallShortestPath();
     reducedGraph.floydWarshallShortestPath();
+    system("CLS");
 
     restaurants = graph.getVTypes();
 
@@ -369,6 +373,66 @@ int grid30x30() {
     return 0;
 }
 
+int penafiel(){
+    char c;
+    if((c = singleRequest()) == 'X' || c == 'x')
+        return 0;
+
+    cout << endl;
+
+    bool preview = previewCity();
+
+    system("CLS");
+
+    Graph<Coordinates> graph = loadGraph("PortugalMaps", "Penafiel", true,preview);
+    cout << "\t....processing city map..."<< endl;
+    graph.readDistancesMatrix("Mapas/PortugalMaps/Penafiel/distances_penafiel.txt");
+    graph.readPredecessorMatrix("Mapas/PortugalMaps/Penafiel/predecessor_penafiel.txt");
+    system("CLS");
+
+    restaurants = graph.getVTypes();
+
+    if(c == 'B'){
+        cout << endl;
+        return simulationMenuPenafiel(graph);
+    }
+
+    Employee * employee1 = new Employee(0, Coordinates(6669), 2, FOOT, true);
+    employees.push_back(employee1);
+    Employee * employee2 = new Employee(1, Coordinates(4625), 3, BIKE, true);
+    employees.push_back(employee2);
+    Employee * employee3 = new Employee(2, Coordinates(3814), 5, BIKE, true);
+    employees.push_back(employee3);
+    Employee * employee4 = new Employee(3, Coordinates(6607), 3, FOOT, true);
+    employees.push_back(employee4);
+    Employee * employee5 = new Employee(4, Coordinates(5828), 5, BIKE, true);
+    employees.push_back(employee5);
+    Employee * employee6 = new Employee(5, Coordinates(8564), 3, BIKE, true);
+    employees.push_back(employee6);
+    Employee * employee7 = new Employee(6, Coordinates(3847), 15, CAR, true);
+    employees.push_back(employee7);
+    Employee * employee8 = new Employee(7, Coordinates(2944), 10, MOTORCYCLE, true);
+    employees.push_back(employee8);
+    Employee * employee9 = new Employee(8, Coordinates(6371), 8, MOTORCYCLE, true);
+    employees.push_back(employee9);
+    Employee * employee10 = new Employee(9, Coordinates(821), 12, CAR, true);
+    employees.push_back(employee10);
+    Employee * employee11 = new Employee(10, Coordinates(5565), 15, CAR, true);
+    employees.push_back(employee11);
+    Employee * employee12 = new Employee(11, Coordinates(3240), 10, MOTORCYCLE, true);
+    employees.push_back(employee12);
+    Employee * employee13 = new Employee(12, Coordinates(2488), 11, CAR, true);
+    employees.push_back(employee13);
+    Employee * employee14 = new Employee(13, Coordinates(980), 13, CAR, true);
+    employees.push_back(employee14);
+
+    Request r = makeRequest(graph);
+
+    deliveryRequests(graph,graph, r);
+
+    return 0;
+}
+
 int simulationMenu(Graph<Coordinates> & graph, Graph<Coordinates> & reducedGraph) {
     for(auto i : restaurants)
         restaurantIds.push_back(i.first);
@@ -401,11 +465,11 @@ int simultaneousRequestsSimulation(Graph<Coordinates> & graph){
     unsigned requestsNum;
     Employee * employee = getRandomEmployee(graph.getNumVertex());
 
-    cout << endl << "\t Our employee: " << endl;
-    cout << "\t " << *employee << "; Initial Position: " << employee->getCoordinates() << endl<<endl;
+    cout << endl << "\tOur employee: " << endl;
+    cout << "\t" << *employee << "; Initial Position: " << employee->getCoordinates() << endl<<endl;
 
     do{
-        cout << "\t Number of requests (1 to 5) ?: ";
+        cout << "\tNumber of requests (1 to 5) ?: ";
         cin >> requestsNum;
         cin.ignore(1000, '\n');
         cout << endl;
@@ -413,13 +477,13 @@ int simultaneousRequestsSimulation(Graph<Coordinates> & graph){
     } while(requestsNum > 5 || requestsNum < 1);
 
     vector<Request> requests = randomRequests2(requestsNum,graph.getNumVertex());
-    cout << "\t Requests: " << endl;
+    cout << "\tRequests: " << endl;
     for(Request request: requests)
-        cout << "\t " << request;
+        cout << "\t" << request;
     cout << endl;
 
     SpecialTask * task = simultaneousRequests(graph,requests,employee);
-    cout << *task << endl;
+    cout << *task <<  endl;
     viewSpecialTask(graph,task);
 
     return 0;
@@ -431,7 +495,7 @@ int temporalOrderRequestsSimulation(Graph<Coordinates> & graph, Graph<Coordinate
     char opt = ' ';
 
     do{
-        cout << "\t Number of employees (1 to 10) ?: ";
+        cout << "\tNumber of employees (1 to 10) ?: ";
         cin >> employeesNum;
         cin.ignore(1000, '\n');
         cout << endl;
@@ -439,7 +503,7 @@ int temporalOrderRequestsSimulation(Graph<Coordinates> & graph, Graph<Coordinate
     } while(employeesNum > 10 || employeesNum < 1);
 
     do{
-        cout << "\t Number of requests (1 to " << maxRequests << ") ?: ";
+        cout << "\tNumber of requests (1 to " << maxRequests << ") ?: ";
         cin >> requestsNum;
         cin.ignore(1000, '\n');
         cout << endl;
@@ -451,28 +515,28 @@ int temporalOrderRequestsSimulation(Graph<Coordinates> & graph, Graph<Coordinate
     min_priority_queue requests = randomRequests1(requestsNum,graph.getNumVertex());
     min_priority_queue temp = requests;
 
-    cout << "\t Requests: " << endl;
+    cout << "\tRequests: " << endl;
     while(!temp.empty()){
-        cout << "\t " << temp.top();
+        cout << "\t" << temp.top();
         temp.pop();
     }
 
-    cout << endl << "\t Our employees: " << endl;
+    cout << endl << "\tOur employees: " << endl;
     vector<Employee*> employeesList = randomEmployees(employeesNum,graph.getNumVertex());
 
     for(Employee * e: employeesList)
-        cout << "\t " << *e << "; Initial Position: " << e->getCoordinates() << endl;
+        cout << "\t" << *e << "; Initial Position: " << e->getCoordinates() << endl;
 
-    cout << endl << "\t Press ENTER to distribute the requests among the employees: ";
+    cout << endl << "\tPress ENTER to distribute the requests among the employees: ";
     string dummy;
     getline (cin,dummy);
 
     vector<SingleTask*> tasks = distributeRequests(graph, reducedGraph, requests, employeesList);
 
-    cout << endl << "\t Request distribution: " << endl;
+    cout << endl << "\tRequest distribution: " << endl;
 
     for(SingleTask * task : tasks){
-        cout << *task << endl;
+        cout << *task << task->pathToString() << endl;
     }
 
 
@@ -480,7 +544,7 @@ int temporalOrderRequestsSimulation(Graph<Coordinates> & graph, Graph<Coordinate
         int n = 0;
         if(opt == 'A'){
             do {
-                cout << "\t Request's id: "<<endl;
+                cout << "\tRequest's id: "<<endl;
                 cin >> n;
             } while(n < 0 || n > requests.size()-1);
 
@@ -500,7 +564,7 @@ int temporalOrderRequestsSimulation(Graph<Coordinates> & graph, Graph<Coordinate
         }
         else if(opt == 'B'){
             do {
-                cout << "\t Employee's id: "<<endl;
+                cout << "\tEmployee's id: "<<endl;
                 cin >> n;
             } while(n < 0 || n > employeesList.size()-1);
 
@@ -536,6 +600,195 @@ int temporalOrderRequestsSimulation(Graph<Coordinates> & graph, Graph<Coordinate
 
     return 0;
 }
+
+
+int simulationMenuPenafiel(Graph<Coordinates> & graph) {
+    for(auto i : restaurants)
+        restaurantIds.push_back(i.first);
+
+    char opt = ' ';
+    do {
+        if(opt == 'A'){
+            return simultaneousRequestsSimulationPenafiel(graph);
+        }
+        else if(opt == 'B'){
+            return temporalOrderRequestsSimulationPenafiel(graph);
+        }
+        else if(opt != ' ') return 0;
+
+        cout << "\t(A) Simultaneous Requests - One employee" << endl
+             << "\t(B) Requests in Temporal Order - One/Many employees" << endl
+             << "\t(X) Exit"<<endl
+             << endl << "\tChoose an option: ";
+        cin >> opt;
+        cin.ignore(1000, '\n');
+        cout << endl;
+        system("CLS");
+
+    } while(opt == 'A' || opt == 'a' || opt == 'B' || opt == 'b');
+
+    return 0;
+}
+
+int simultaneousRequestsSimulationPenafiel(Graph<Coordinates> & graph){
+    unsigned requestsNum;
+    Employee * employee = new Employee(0, Coordinates(5565), 25, CAR, true);
+
+    cout << endl << "\tOur employee: " << endl;
+    cout << "\t" << *employee << "; Initial Position: " << employee->getCoordinates() << endl<<endl;
+
+    do{
+        cout << "\tNumber of requests (1 to 5) ?: ";
+        cin >> requestsNum;
+        cin.ignore(1000, '\n');
+        cout << endl;
+        if(requestsNum > 5 || requestsNum < 1) cout << "Try again!" << endl;
+    } while(requestsNum > 5 || requestsNum < 1);
+
+    vector<Request> requests = requestsPenafiel(requestsNum);
+
+    cout << "\tRequests: " << endl;
+    for(Request request: requests)
+        cout << "\t" << request;
+    cout << endl;
+
+    SpecialTask * task = simultaneousRequests(graph,requests,employee);
+
+    cout << *task << endl;
+    viewSpecialTask(graph,task);
+
+    return 0;
+}
+
+int temporalOrderRequestsSimulationPenafiel(Graph<Coordinates> & graph){
+    unsigned requestsNum, employeesNum;
+    int maxRequests = 15;
+    char opt = ' ';
+
+    do{
+        cout << "\tNumber of employees (1 to 10) ?: ";
+        cin >> employeesNum;
+        cin.ignore(1000, '\n');
+        cout << endl;
+        if(employeesNum > 10 || employeesNum < 1) cout << "Try again!" << endl;
+    } while(employeesNum > 10 || employeesNum < 1);
+
+    do{
+        cout << "\tNumber of requests (1 to " << maxRequests << ") ?: ";
+        cin >> requestsNum;
+        cin.ignore(1000, '\n');
+        cout << endl;
+        if(requestsNum > maxRequests || requestsNum < 1) cout << "Try again!" << endl;
+    } while(requestsNum > maxRequests || requestsNum < 1);
+
+    system("CLS");
+
+    vector<Request> requests = requestsPenafiel(requestsNum);
+    min_priority_queue requestsQueue;
+    cout << "\tRequests: " << endl;
+    for(Request r: requests){
+        cout << "\t" << r;
+        requestsQueue.push(r);
+    }
+
+    cout << endl << "\tOur employees: " << endl;
+    vector<Employee*> employeesList = employeesPenafiel(employeesNum);
+
+    for(Employee * e: employeesList)
+        cout << "\t" << *e << "; Initial Position: " << e->getCoordinates() << endl;
+
+    cout << endl << "\tPress ENTER to distribute the requests among the employees: ";
+    string dummy;
+    getline (cin,dummy);
+
+    vector<SingleTask*> tasks = distributeRequests(graph, graph, requestsQueue, employeesList);
+
+    cout << endl << "\tRequest distribution: " << endl;
+
+    for(SingleTask * task : tasks){
+        cout << *task << endl;
+    }
+
+
+    do {
+        int n = 0;
+        if(opt == 'A'){
+            do {
+                cout << "\tRequest's id: "<<endl;
+                cin >> n;
+            } while(n < 0 || n > requests.size()-1);
+
+            for(SingleTask * t: tasks){
+                if(t->getRequest().getId() == n){
+
+                    if(t->getEmployee() == nullptr)
+                        cout << "The request nr " << n << " could not be completed by any of the employees!" << endl;
+
+                    viewSinglePath(graph,t->getPath(),t->getVehicleType());
+                }
+            }
+
+        }
+        else if(opt == 'B'){
+            do {
+                cout << "\tEmployee's id: "<<endl;
+                cin >> n;
+            } while(n < 0 || n > employeesList.size()-1);
+
+            vector<SingleTask*> employeeTasks;
+            VehicleType type = employeesList[n]->getType();
+
+            for(SingleTask * t: tasks ){
+                if(t->getEmployee()->getId() == n)
+                    employeeTasks.push_back(t);
+            }
+
+            if(employeeTasks.empty())
+                cout << "The employee nr " << n << " was not assigned to any request!" << endl;
+
+            viewEmployeePath(graph,employeeTasks);
+        }
+        else if(opt == 'C'){
+            viewEmployeesPaths(graph,graph,tasks);
+        }
+
+        cout << "\t(A) View a Request in city map" << endl
+             << "\t(B) View an Employee's complete route in city map" << endl
+             << "\t(C) View all Employees complete routes in city map" << endl
+             << "\t(X) Exit"<<endl
+             << endl << "\tChoose an option: ";
+        cin >> opt;
+        cin.ignore(1000, '\n');
+        cout << endl;
+    } while(opt == 'A' || opt == 'a' || opt == 'B' || opt == 'b' || opt == 'C' || opt == 'c');
+
+    return 0;
+}
+
+vector<Request> requestsPenafiel(int number){
+    vector<unsigned long> coordsIds = {5928,2119,8029,1880,48,6076,1817,99,4247,6598,6999,7584,3063,7413,416};
+    vector<Request> requestsOptions = randomRequests2(number,100);
+    vector<Request> requests;
+    for(int i = 0; i < number; i++){
+        requestsOptions[i].setDeliveryAddr(Coordinates(coordsIds[i]));
+        requests.push_back(requestsOptions[i]);
+    }
+
+    return requests;
+}
+
+vector<Employee*> employeesPenafiel(int number){
+    vector<unsigned long> coordsIds = {4625,7750,2008,2335,2632,10268,3595,8188,6917,4141};
+    vector<Employee*> employeesOptions = randomEmployees(number,100);
+    vector<Employee*> employees;
+    for(int i = 0; i < number; i++){
+        employeesOptions[i]->setCoordinates(Coordinates(coordsIds[i]));
+        employees.push_back(employeesOptions[i]);
+    }
+
+    return employees;
+}
+
 
 min_priority_queue randomRequests1(unsigned number, unsigned vertices){
     min_priority_queue requests;
@@ -643,7 +896,7 @@ Employee * getRandomEmployee(unsigned vertices){
     srand (time(NULL));
 
     int randV = rand() % (vertices-1);
-    Employee * e = new Employee(id, Coordinates(randV), 25, CAR, true);
+    Employee * e = new Employee(0, Coordinates(randV), 25, CAR, true);
     employees.push_back(e);
 
     return e;
@@ -660,6 +913,7 @@ int chooseMap() {
         << "\t(C) GridGraph 16x16" << endl
         << "\t(D) GridGraph 20x20" << endl
         << "\t(E) GridGraph 30x30" << endl
+        << "\t(F) Penafiel" << endl
         << "\t(X) Exit" << endl
         << endl
         << "\t------------------------------------" << endl
@@ -688,6 +942,10 @@ int chooseMap() {
         case 'E':
             system("CLS");
             grid30x30();
+            break;
+        case 'F':
+            system("CLS");
+            penafiel();
             break;
         case 'X':
             return 1;

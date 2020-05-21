@@ -73,7 +73,7 @@ bool SingleTask::isDeliveryAddress(Coordinates coordinates){
 std::ostream &operator<<(std::ostream &os, const SingleTask &task){
     if(task.employee == nullptr){
         os << "\t" << task.request;
-        os << "\tRequest couldn't be completed!"<< endl;
+        os << "\tRequest couldn't be completed! Check if the Vertex you picked really exists!"<< endl;
         return os;
     }
 
@@ -83,14 +83,20 @@ std::ostream &operator<<(std::ostream &os, const SingleTask &task){
     if(!task.path.empty())
         os << "\tInitial Employee's Position: " << task.path[0] << endl;
 
-    os << "\tPath: ";
-    for(unsigned int i = 0; i < task.path.size(); i++)
-        os << task.path[i] << " ";
-    os << endl;
-
     os << "\tTotal distance: " << task.totalDistance << " m" << endl;
 
     return os;
+}
+
+string SingleTask::pathToString(){
+    ostringstream os;
+
+    os << "\tPath: ";
+    for(unsigned int i = 0; i < path.size(); i++)
+        os << path[i] << " ";
+    os << endl;
+
+    return os.str();
 }
 
 bool  SingleTask::operator <(const SingleTask & task){

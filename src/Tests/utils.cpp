@@ -63,15 +63,15 @@ Graph<Coordinates> loadGraph(string dir, string subDir, bool euclidean, bool pre
         edgesFile << "/edges.txt";
         nodesFile << "/nodes.txt";
         tagsFile << "../Mapas/" << dir << "Tags/" << subDir.substr(0,5) << "/tags_" << subDir.substr(0,5) <<".txt";
-        vTypes  = loadTags(tagsFile.str());
     }
     else{
         transform(subDir.begin(), subDir.end(), subDir.begin(), ::tolower);
 
         edgesFile << "/edges_" << subDir << ".txt";
         nodesFile << "/nodes_x_y_" << subDir << ".txt";
+        tagsFile << "../Mapas/" << dir << "Tags/" << subDir << "/tags_" << subDir <<".txt";
     }
-
+    vTypes  = loadTags(tagsFile.str());
     g.setVTypes(vTypes);
 
     ifstream nodes, edges;

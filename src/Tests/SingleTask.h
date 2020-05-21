@@ -28,6 +28,7 @@ public:
     const Request & getRequest() const;
     int getTime() const;
     bool operator <(const SingleTask & task);
+    string pathToString();
     friend std::ostream &operator<<(std::ostream &os, const SingleTask &task);
 };
 
