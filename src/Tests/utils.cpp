@@ -56,20 +56,21 @@ Graph<Coordinates> loadGraph(string dir, string subDir, bool euclidean, bool pre
 
     map<unsigned long, VertexType> vTypes;
 
-    edgesFile << "../Mapas/" << dir << "/" << subDir;
-    nodesFile << "../Mapas/" << dir << "/" << subDir;
+    edgesFile << "../Mapas/" << dir;
+    nodesFile << "../Mapas/" << dir;
 
     if(dir == "GridGraphs"){
-        edgesFile << "/edges.txt";
-        nodesFile << "/nodes.txt";
+        edgesFile << "/" << subDir << "/edges.txt";
+        nodesFile << "/" << subDir << "/nodes.txt";
         tagsFile << "../Mapas/" << dir << "Tags/" << subDir.substr(0,5) << "/tags_" << subDir.substr(0,5) <<".txt";
     }
     else{
+        subDir = dir;
         transform(subDir.begin(), subDir.end(), subDir.begin(), ::tolower);
 
         edgesFile << "/edges_" << subDir << ".txt";
         nodesFile << "/nodes_x_y_" << subDir << ".txt";
-        tagsFile << "../Mapas/" << dir << "Tags/" << subDir << "/tags_" << subDir <<".txt";
+        tagsFile << "../Mapas/" << dir << "/tags_" << subDir <<".txt";
     }
     vTypes  = loadTags(tagsFile.str());
     g.setVTypes(vTypes);

@@ -5,5 +5,5 @@ src/cmake-build-debug/
 
 bin/plots/
 
-src/Mapas/PortugalMaps/Penafiel/distances_penafiel.txt
-src/Mapas/PortugalMaps/Penafiel/predecessor_penafiel.txt
+src/Mapas/Penafiel/distances_penafiel.txt
+src/Mapas/Penafiel/predecessor_penafiel.txt

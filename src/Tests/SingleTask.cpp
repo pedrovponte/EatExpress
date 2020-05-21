@@ -238,7 +238,8 @@ min_priority_queue setRequestsDeliverability(const Graph<Coordinates> & graph, c
         else
             request.setDeliverableByCar(false);
 
-        if(origIdx2 != -1 && destIdx2 != -1 && reducedGraph.getDist(origIdx2,destIdx2) != INF)
+        // Also check if the distance is not over the limit of 6km - for bikes and employees that travel by foot
+        if(origIdx2 != -1 && destIdx2 != -1 && reducedGraph.getDist(origIdx2,destIdx2) <= 6000)
             request.setDeliverableByFoot(true);
         else
             request.setDeliverableByFoot(false);
@@ -265,7 +266,8 @@ void setDistancesToCheckpoint(Graph<Coordinates> & graph, Graph<Coordinates> & r
         }
         else if(e->getType() == BIKE || e->getType() == FOOT){
             origIdx =  reducedGraph.findVertexIdx(e->getCoordinates());
-            if(origIdx != -1 && checkpointIdx2 != -1)
+            // Also check if the distance is not over the limit of 6km - for bikes and employees that travel by foot
+            if(origIdx != -1 && checkpointIdx2 != -1 && reducedGraph.getDist(origIdx, checkpointIdx2) <= 6000)
                 e->setDist(reducedGraph.getDist(origIdx, checkpointIdx2));
             else{
                 request.setDeliverableByFoot(false);
@@ -359,7 +361,7 @@ vector<SingleTask*> distributeRequests(Graph<Coordinates> & graph, Graph<Coordin
     return tasks;
 }
 
-// Multiple Restaurants request
+/**************** Multiple Restaurants Request  ***************/
 
 vector<Employee*> getEligibleEmployeesMultipleRestaurants(vector<Employee*> & employees, const Request & request){
     vector<Employee*> eligibleEmployees;
@@ -436,7 +438,7 @@ SingleTask * multipleRestaurantsRequest(Graph<Coordinates> & graph, Graph<Coordi
                 dist = reducedGraph.getDist(reducedGraph.findVertexIdx(origin),reducedGraph.findVertexIdx(requestRestaurants[nearestRestaurantPos]));
 
                 // No path found for this employee
-                if(dist == INF){
+                if(dist == INF || totalDist > 6000){
                     totalDist = INF;
                     break;
                 }

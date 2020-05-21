@@ -384,10 +384,10 @@ int penafiel(){
 
     system("CLS");
 
-    Graph<Coordinates> graph = loadGraph("PortugalMaps", "Penafiel", true,preview);
+    Graph<Coordinates> graph = loadGraph("Penafiel","",true,preview);
     cout << "\t....processing city map..."<< endl;
-    graph.readDistancesMatrix("Mapas/PortugalMaps/Penafiel/distances_penafiel.txt");
-    graph.readPredecessorMatrix("Mapas/PortugalMaps/Penafiel/predecessor_penafiel.txt");
+    graph.readDistancesMatrix("Mapas/Penafiel/distances_penafiel.txt");
+    graph.readPredecessorMatrix("Mapas/Penafiel/predecessor_penafiel.txt");
     system("CLS");
 
     restaurants = graph.getVTypes();
@@ -397,7 +397,7 @@ int penafiel(){
         return simulationMenuPenafiel(graph);
     }
 
-    Employee * employee1 = new Employee(0, Coordinates(6669), 2, FOOT, true);
+    Employee * employee1 = new Employee(0, Coordinates(3847), 15, CAR, true);
     employees.push_back(employee1);
     Employee * employee2 = new Employee(1, Coordinates(4625), 3, BIKE, true);
     employees.push_back(employee2);
@@ -405,11 +405,11 @@ int penafiel(){
     employees.push_back(employee3);
     Employee * employee4 = new Employee(3, Coordinates(6607), 3, FOOT, true);
     employees.push_back(employee4);
-    Employee * employee5 = new Employee(4, Coordinates(5828), 5, BIKE, true);
+    Employee * employee5 = new Employee(4, Coordinates(5828), 3, BIKE, true);
     employees.push_back(employee5);
     Employee * employee6 = new Employee(5, Coordinates(8564), 3, BIKE, true);
     employees.push_back(employee6);
-    Employee * employee7 = new Employee(6, Coordinates(3847), 15, CAR, true);
+    Employee * employee7 = new Employee(6, Coordinates(6669), 2, FOOT, true);
     employees.push_back(employee7);
     Employee * employee8 = new Employee(7, Coordinates(2944), 10, MOTORCYCLE, true);
     employees.push_back(employee8);
