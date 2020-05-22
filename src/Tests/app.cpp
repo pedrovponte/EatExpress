@@ -130,7 +130,7 @@ int deliveryRequests(Graph<Coordinates> & graph, Graph<Coordinates> & reducedGra
             cout << *task;
             if(fullPath)
                 cout << task->pathToString();
-            cout << endl;
+            cout << "\tEstimated time: " << task->getTime() << " min" << endl << endl;
 
             if(task->getEmployee() != nullptr){
                 if (task->getVehicleType() == CAR || task->getVehicleType() == MOTORCYCLE)
@@ -164,6 +164,7 @@ int grid4x4() {
         }
         else if (c == 'A'){
             employees.clear();
+
             Employee * employee1 = new Employee(0,Coordinates(13),4,FOOT,true);
             employees.push_back(employee1);
             Employee * employee2 = new Employee(1,Coordinates(4),10,MOTORCYCLE,true);
@@ -615,7 +616,7 @@ int temporalOrderRequestsSimulation(Graph<Coordinates> & graph, Graph<Coordinate
         }
         else if(opt == 'B'){
             do {
-                cout << "\tEmployee's id: "<<endl;
+                cout << "\tEmployee's id: ";
                 cin >> n;
             } while(n < 0 || n > employeesList.size()-1);
 
@@ -771,7 +772,7 @@ int temporalOrderRequestsSimulationPenafiel(Graph<Coordinates> & graph){
         int n = 0;
         if(opt == 'A'){
             do {
-                cout << "\tRequest's id: "<<endl;
+                cout << "\tRequest's id: ";
                 cin >> n;
             } while(n < 0 || n > requests.size()-1);
 
@@ -788,7 +789,7 @@ int temporalOrderRequestsSimulationPenafiel(Graph<Coordinates> & graph){
         }
         else if(opt == 'B'){
             do {
-                cout << "\tEmployee's id: "<<endl;
+                cout << "\tEmployee's id: ";
                 cin >> n;
             } while(n < 0 || n > employeesList.size()-1);
 
