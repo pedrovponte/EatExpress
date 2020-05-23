@@ -156,7 +156,7 @@ multipleRestaurantsRequest(Graph G1, Graph G2, vector<Employee> E, Request reque
 
 Outra alternativa que pensamos ser essencial incluir na nossa implementação, tendo em conta a essência do problema, foi o caso em que um só estafeta deve, num só trajeto, recolher todos os pedidos dos restaurantes e entregá-los nas respetivas moradas de entrega, tendo em atenção que o restaurante de um pedido deve sempre ser visitado antes da morada de entrega e que podem existir múltiplos pedidos do mesmo restaurante.
 
-Para isso, na função `SpecialTask * simultaneousRequests(Graph<Coordinates> & graph, vector<Request> & requests, Employee* employee)` - definida em `SpecialTask.cpp`, utilizam-se dois vetores auxiliares que acabam por funcionar como filas, uma com o restaurante não visitado mais próximo da posição atual do estafeta à cabeça e outra com a morada de entrega não visitada mais próxima da posição atual do estafeta à cabeça.
+Para isso, na função `SpecialTask * simultaneousRequests(Graph<Coordinates> & graph, vector<Request> & requests, Employee* employee)` - definida em `SpecialTask.cpp`; utilizam-se dois vetores auxiliares que acabam por funcionar como filas, uma com o restaurante não visitado mais próximo da posição atual do estafeta à cabeça e outra com a morada de entrega não visitada mais próxima da posição atual do estafeta à cabeça.
 Estas posições mais próximas são atualizadas nas funções: `setNearestRestaurant(Graph<Coordinates> & graph, vector<Request>  & requests, Coordinates origin)` e `setNearestDeliveryAddress(Graph<Coordinates> & graph, vector<Request>  & requests, Coordinates origin)`, chamadas a cada iteração.
 
 Enquanto existirem restaurantes ou moradas de entrega por visitar, o próximo ponto a visitar é escolhido do seguinte modo:
@@ -180,7 +180,7 @@ simultaneousRequests(Graph G, vector<Request> R, Employee employee){
 
     int totalCargo ← 0;
     while deliver == ∅ || pick == ∅ :
-        // O estafeta não tem mais capacidade / Não há mais pedidos para recolher do restaurante
+        // Não há mais pedidos para recolher do restaurante / O estafeta não tem mais capacidade
         if totalCargo == maxCargo(e) || pick == ∅ :
             // Entrega um pedido 
             orig ← deliveryAddr(deliver.front());

@@ -104,7 +104,7 @@ Enuncia-se, também, a implementação do algoritmo de **Pesquisa em Profundidad
 
 ## 5.4 Análise empírica
 
-Para uma análise generalizada e abrangente dos algoritmos tidos em consideração, estes foram testados em todos os grafos grid elegíveis e à nossa disposição. Os testes foram efetuados em conformidade com as fases de elaboração determinadas anteriormente e a sua eficiência temporal foi avaliada.
+Para uma análise generalizada e abrangente dos algoritmos tidos em consideração, estes foram testados em todos os grafos elegíveis e à nossa disposição. Os testes foram efetuados em conformidade com as fases de elaboração determinadas anteriormente e a sua eficiência temporal foi avaliada.
 
 ### 5.4.1 Fase I
 
