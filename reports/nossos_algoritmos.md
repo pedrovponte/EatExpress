@@ -152,7 +152,7 @@ multipleRestaurantsRequest(Graph G1, Graph G2, vector<Employee> E, Request reque
 
 ```
 
-## 6.3. Um estafeta - entrega de vários pedidos no mesmo deslocamento (variante do TSP)
+## 6.3. Um estafeta - Vários pedidos no mesmo deslocamento (variante do TSP)
 
 Outra alternativa que pensamos ser essencial incluir na nossa implementação, tendo em conta a essência do problema, foi o caso em que um só estafeta deve, num só trajeto, recolher todos os pedidos dos restaurantes e entregá-los nas respetivas moradas de entrega, tendo em atenção que o restaurante de um pedido deve sempre ser visitado antes da morada de entrega e que podem existir múltiplos pedidos do mesmo restaurante.
 

@@ -115,9 +115,7 @@ Na Fase I de implementação, considerado o caso atómico de um estafeta que ent
 :-------------------------:|:-------------------------:
 ![](../logs/phase1/20x20_all.png)  |  ![](../logs/phase1/30x30_all.png)
 
-Uma aproximação aos dados do grafo de dimensões $20 \times 20$, por exemplo, revela um pormenor interessante relativamente à concorrência entre estes dois algoritmos e à sua rentabilidade, para uso na aplicação. A explicação para os valores reside no facto de o algoritmo de **Floyd-Warshall** demorar ligeiramente mais tempo, inicialmente, devido ao pré-processamento necessário, mantendo, de seguida, um tempo médio de execução de cada pedido muito inferior, sendo logo ultrapassado, em matéria de tempo acumulado total, pelo algoritmo de **Dijkstra**, com um comportamento linear mais acentuado.
-
-![](../logs/phase1/20x20_head.png)
+Um olhar mais atento aos dados do grafo de dimensões $20 \times 20$, por exemplo, revela um pormenor interessante relativamente à concorrência entre estes dois algoritmos e à sua rentabilidade, para uso na aplicação. A explicação para os valores reside no facto de o algoritmo de **Floyd-Warshall** demorar ligeiramente mais tempo, inicialmente, devido ao pré-processamento necessário, mantendo, de seguida, um tempo médio de execução de cada pedido muito inferior, sendo logo ultrapassado, em matéria de tempo acumulado total, pelo algoritmo de **Dijkstra**, com um comportamento linear mais acentuado.
 
 A partir de um certo número de pedidos, o algoritmo de **Floyd-Warshall** torna-se o mais viável, o que satisfaz as necessidades, a longo prazo, de uma aplicação deste tipo, tanto em grafos grandes, como em grafos mais pequenos, já que o custo de operação do algoritmo de **Dijkstra** aumenta consideravelmente.
 
@@ -196,3 +194,11 @@ Grafo | Número de Vértices | Média de Vértices Encontrados | Máximo de Vér
 30x30 reduzido|498|10|26
 
 Desta tabela, retira-se, apenas, a informação da super conectividade dos grafos originais, que contrasta com a mais fraca conectividade dos grafos adaptados/reduzidos, usados para entregas a pé, ou de bicicleta.
+
+### 5.4.4 Fase IV
+
+Chegada esta fase, decidiu-se a sua não inclusão prática na aplicação, pelo seu desajuste em relação à situação real, sendo apenas representativa de algo hipotético. A sua implementação resumir-se-ia a duas estratégias, após a deteção de um obstáculo na via - aresta inacessível: 
+* pré-processar, de novo os grafos envolvidos, com o algoritmo de Floyd-Warshall; 
+* ou optar, nestas situações específicas, por usar o algoritmo de Dijkstra. 
+
+Ambas teriam as vantagens e desvantagens já enunciadas e a sua demonstração não traria mais valor ao que já foi simulado.

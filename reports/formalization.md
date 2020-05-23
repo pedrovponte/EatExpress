@@ -94,7 +94,7 @@ O importante, realmente, aqui, é a entrega das tarefas aos estafetas, o que res
     * o tempo estimado $estimatedTime$ para a entrega, com base na velocidade média do $employee$ e na distância a percorrer.
 
 O que se segue, nomeadamente, o ato de percorrer o caminho, com a identificação dos pontos já visitados, da entrega dos pedidos, do cálculo da distância percorrida, é um tanto independente desta análise algorítmica inicial, mas poderá ser, eventualmente, alvo de estudo e reflexão, para interpretação de resultados.
-<br><br><br>
+
 ## 2.5 Restrições
 
 A primeira restrição prende-se com o tamanho do grafo. Em termos reais, aplicações deste género, por uma questão de praticabilidade, limitam as zonas de atuação a áreas urbanas, onde exista um número razoável de restaurantes registados e de estafetas em operação. Assim sendo, os grafos aqui analisados também terão a sua área limitada.

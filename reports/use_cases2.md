@@ -28,7 +28,7 @@ Depois de o pedido estar completo, serão apresentadas na aplicação as informa
 |:-------------------------:|
 |Informações sobre o pedido e respetiva entrega|
 
-|![](../images/finalGraph.png)|
+|<img src="../images/finalGraph.png" height="50%" width="50%" style="text-align:center"/>|
 |:-------------------------:|
 |Caminho percorrido pelo estafeta|
 
@@ -43,7 +43,7 @@ No caso de a opção escolhida ser a de simular vários pedidos, existem 2 opç�
 |:-------------------------:|
 |Opções de simulação de pedidos|
 
-### Um estafeta - entrega de vários pedidos no mesmo deslocamento (variante do TSP)
+### Um estafeta - Vários pedidos no mesmo deslocamento (variante do TSP)
 
 Caso o utilizador opte pela **opção A**, será apresentado ao utilizador o estafeta disponível para entregar os pedidos simultâneos e será pedido ao utilizador quantos pedidos quer simular.
 
@@ -55,7 +55,7 @@ Depois de escolhidos, irão aparecer as informações de cada um dos pedidos sim
 
 É também mostrado ao utilizador o grafo com o caminho percorrido pelo estafeta para entregar os pedidos.
 
-|![](../images/simultaneosGraph.png)|
+|<img src="../images/simultaneosGraph.png" height="50%" width="50%" style="text-align:center"/>|
 |:-------------------------:|
 |Caminho percorrido pelo estafeta|
 

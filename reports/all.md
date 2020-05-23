@@ -34,8 +34,27 @@ class: "body footer"
       - [3.1.3 Algoritmo A*](#313-algoritmo-a)
       - [3.1.4 Algoritmo Floyd-Warshall](#314-algoritmo-floyd-warshall)
       - [3.1.5 Abordagens consideradas na Fase III](#315-abordagens-consideradas-na-fase-iii)
-- [4. Conclusão Preliminar](#4-conclusão-preliminar)
-- [5. Referências](#5-referências)
+- [4. Casos de utilização a serem suportados](#4-casos-de-utilização-a-serem-suportados)
+- [5. Implementação](#5-implementação)
+  - [5.1 Estruturas de dados](#51-estruturas-de-dados)
+  - [5.2 Grafos e Mapas usados](#52-grafos-e-mapas-usados)
+  - [5.3 Algoritmos efetivamente implementados](#53-algoritmos-efetivamente-implementados)
+  - [5.4 Análise empírica](#54-análise-empírica)
+    - [5.4.1 Fase I](#541-fase-i)
+    - [5.4.2 Fase II](#542-fase-ii)
+    - [5.4.3 Fase III](#543-fase-iii)
+    - [5.4.4 Fase IV](#544-fase-iv)
+- [6. Algoritmos e Estratégias implementadas](#6-algoritmos-e-estratégias-implementadas)
+  - [6.1. Um ou vários pedidos por ordem temporal](#61-um-ou-vários-pedidos-por-ordem-temporal)
+  - [6.2. Pedido de múltiplos restaurantes](#62-pedido-de-múltiplos-restaurantes)
+  - [6.3. Um estafeta - Vários pedidos no mesmo deslocamento (variante do TSP)](#63-um-estafeta-vários-pedidos-no-mesmo-deslocamento-variante-do-tsp)
+  - [6.5. Nota geral acerca dos algoritmos implementados](#65-nota-geral-acerca-dos-algoritmos-implementados)
+- [7. Principais casos de uso implementados](#7-principais-casos-de-uso-implementados)
+  - [Realização de um pedido](#realização-de-um-pedido)
+  - [Simulação de múltiplos pedidos](#simulação-de-múltiplos-pedidos)
+    - [Um estafeta - Vários pedidos no mesmo deslocamento (variante do TSP)](#um-estafeta-vários-pedidos-no-mesmo-deslocamento-variante-do-tsp)
+    - [Múltiplos estafetas - distribuição de pedidos por ordem temporal](#múltiplos-estafetas-distribuição-de-pedidos-por-ordem-temporal)
+- [8. Referências](#8-referências)
 
 <!-- /code_chunk_output -->
 
@@ -48,7 +67,14 @@ class: "body footer"
 
 <!-- @import "algoritmos.md" -->
 
-<br><br><br><br>
-<!-- @import "conclusion.md" -->
+<!-- @import "use-cases.md" -->
+
+<!-- @import "implementation.md" -->
+
+<br><br><br><br><br><br><br>
+
+<!-- @import "nossos_algoritmos.md" -->
+
+<!-- @import "use_cases2.md" -->
 
 <!-- @import "references.md" -->

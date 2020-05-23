@@ -43,19 +43,13 @@ A primeira estratégia tem o nome de **Manhattan Distance** e calcula a distânc
 
 $h=∣x_{start}​−x_{destination}​∣+∣y_{start}​−y_{destination}​∣$
 
-![](../images/manhattan-distance.svg)
-
 Outra estratégia, conhecida como **Euclidean Distance**, um pouco mais precisa que a anterior, explora o percurso em linha reta, demorando, em contrapartida, mais tempo a executar, por necessitar de explorar uma área maior. A sua função é representada na forma:
 
 $h=\sqrt{(x_{start}​−x_{destination}​)^2+(y_{start}​−y_{destination}​)^2}$ 
 
-![](../images/euclidean-distance.svg)
-
 Por fim, existe também a **Diagonal Distance**. Esta última perde interesse real, quando comparada com as outras funções, porque tem a limitação de só poder ser usada em movimentos realizados numa direção apenas:
 
 $h = \max( abs(x_{start} – x_{destination}), abs(y_{start} – y_{destination}) )$
-
-![](../images/diagonal.png)
 
 Este algoritmo em particular é conhecido por não garantir uma solução ótima em muitos casos. No entanto, os seus resultados serão avaliados, a par com os restantes algoritmos, tendo em conta, também, as diferentes funções de heurística aqui referidas. 
 
