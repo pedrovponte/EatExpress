@@ -158,11 +158,11 @@ int grid4x4() {
     char c;
     do{
         system("CLS");
-        if((c = singleRequest()) == 'B'){
+        if((c = singleRequest()) == 'B' || c == 'b'){
             cout << endl;
             simulationMenu(graph,graph);
         }
-        else if (c == 'A'){
+        else if (c == 'A' || c == 'a'){
             employees.clear();
 
             Employee * employee1 = new Employee(0,Coordinates(13),4,FOOT,true);
@@ -203,11 +203,11 @@ int grid8x8() {
     char c;
     do{
         system("CLS");
-        if((c = singleRequest()) == 'B'){
+        if((c = singleRequest()) == 'B' || c == 'b'){
             cout << endl;
             simulationMenu(graph,graph);
         }
-        else if (c == 'A'){
+        else if (c == 'A' || c == 'a'){
             employees.clear();
 
             Employee * employee1 = new Employee(0,Coordinates(69),3,FOOT,true);
@@ -250,11 +250,11 @@ int grid16x16() {
     char c;
     do{
         system("CLS");
-        if((c = singleRequest()) == 'B'){
+        if((c = singleRequest()) == 'B' || c == 'b'){
             cout << endl;
             simulationMenu(graph,reducedGraph);
         }
-        else if (c == 'A'){
+        else if (c == 'A' || c == 'a'){
             employees.clear();
 
             Employee * employee1 = new Employee(0,Coordinates(182),3,FOOT,true);
@@ -304,11 +304,11 @@ int grid20x20() {
     char c;
     do{
         system("CLS");
-        if((c = singleRequest()) == 'B'){
+        if((c = singleRequest()) == 'B' || c == 'b'){
             cout << endl;
             simulationMenu(graph,reducedGraph);
         }
-        else if (c == 'A'){
+        else if (c == 'A' || c == 'a'){
             employees.clear();
 
             Employee * employee1 = new Employee(0, Coordinates(90), 4, FOOT, true);
@@ -363,11 +363,11 @@ int grid30x30() {
     char c;
     do{
         system("CLS");
-        if((c = singleRequest()) == 'B'){
+        if((c = singleRequest()) == 'B' || c == 'b'){
             cout << endl;
             simulationMenu(graph,reducedGraph);
         }
-        else if (c == 'A'){
+        else if (c == 'A' || c == 'a'){
             employees.clear();
 
             Employee * employee1 = new Employee(0, Coordinates(50), 2, FOOT, true);
@@ -429,11 +429,11 @@ int penafiel(){
     char c;
     do{
         system("CLS");
-        if((c = singleRequest()) == 'B'){
+        if((c = singleRequest()) == 'B' || c == 'b'){
             cout << endl;
             simulationMenuPenafiel(graph);
         }
-        else if (c == 'A'){
+        else if (c == 'A' || c == 'a'){
             employees.clear();
 
             Employee * employee1 = new Employee(0, Coordinates(3847), 15, CAR, true);
@@ -485,17 +485,17 @@ int simulationMenu(Graph<Coordinates> & graph, Graph<Coordinates> & reducedGraph
 
     char opt = ' ';
     do {
-        if(opt == 'A'){
+        if(opt == 'A' || opt == 'a'){
             return simultaneousRequestsSimulation(graph);
         }
-        else if(opt == 'B'){
+        else if(opt == 'B' || opt == 'b'){
             return temporalOrderRequestsSimulation(graph,reducedGraph);
         }
         else if(opt != ' ') return 0;
 
         cout << "\t(A) Simultaneous Requests - One employee" << endl
              << "\t(B) Requests in Temporal Order - One/Many employees" << endl
-             << "\t(X) Exit"<<endl
+             << "\t(X) Exit" << endl
              << endl << "\tChoose an option: ";
         cin >> opt;
         cin.ignore(1000, '\n');
@@ -515,7 +515,7 @@ int simultaneousRequestsSimulation(Graph<Coordinates> & graph){
     cout << "\t" << *employee << "; Initial Position: " << employee->getCoordinates() << endl<<endl;
 
     do{
-        cout << "\tNumber of requests (1 to 5) ?: ";
+        cout << "\tNumber of requests (1 to 5) ? ";
         cin >> requestsNum;
         cin.ignore(1000, '\n');
         cout << endl;
@@ -594,11 +594,11 @@ int temporalOrderRequestsSimulation(Graph<Coordinates> & graph, Graph<Coordinate
 
     do {
         int n = 0;
-        if(opt == 'A'){
+        if(opt == 'A' || opt == 'a'){
             do {
                 cout << "\tRequest's id: ";
                 cin >> n;
-            } while(n < 0 || n > requests.size()-1);
+            } while(n < 0 || n > requests.size() - 1);
 
             for(SingleTask * t: tasks){
                 if(t->getRequest().getId() == n){
@@ -614,11 +614,11 @@ int temporalOrderRequestsSimulation(Graph<Coordinates> & graph, Graph<Coordinate
             }
 
         }
-        else if(opt == 'B'){
+        else if(opt == 'B' || opt == 'b'){
             do {
                 cout << "\tEmployee's id: ";
                 cin >> n;
-            } while(n < 0 || n > employeesList.size()-1);
+            } while(n < 0 || n > employeesList.size() - 1);
 
             vector<SingleTask*> employeeTasks;
             VehicleType type = employeesList[n]->getType();
@@ -636,7 +636,7 @@ int temporalOrderRequestsSimulation(Graph<Coordinates> & graph, Graph<Coordinate
             else
                 viewEmployeePath(reducedGraph,employeeTasks);
         }
-        else if(opt == 'C'){
+        else if(opt == 'C' || opt == 'c'){
             viewEmployeesPaths(graph,reducedGraph,tasks);
         }
 
@@ -660,17 +660,17 @@ int simulationMenuPenafiel(Graph<Coordinates> & graph) {
 
     char opt = ' ';
     do {
-        if(opt == 'A'){
+        if(opt == 'A' || opt == 'a'){
             return simultaneousRequestsSimulationPenafiel(graph);
         }
-        else if(opt == 'B'){
+        else if(opt == 'B' || opt == 'b'){
             return temporalOrderRequestsSimulationPenafiel(graph);
         }
         else if(opt != ' ') return 0;
 
         cout << "\t(A) Simultaneous Requests - One employee" << endl
              << "\t(B) Requests in Temporal Order - One/Many employees" << endl
-             << "\t(X) Exit"<<endl
+             << "\t(X) Exit" << endl
              << endl << "\tChoose an option: ";
         cin >> opt;
         cin.ignore(1000, '\n');
@@ -770,7 +770,7 @@ int temporalOrderRequestsSimulationPenafiel(Graph<Coordinates> & graph){
 
     do {
         int n = 0;
-        if(opt == 'A'){
+        if(opt == 'A' || opt == 'a'){
             do {
                 cout << "\tRequest's id: ";
                 cin >> n;
@@ -787,7 +787,7 @@ int temporalOrderRequestsSimulationPenafiel(Graph<Coordinates> & graph){
             }
 
         }
-        else if(opt == 'B'){
+        else if(opt == 'B' || opt == 'b'){
             do {
                 cout << "\tEmployee's id: ";
                 cin >> n;
@@ -806,7 +806,7 @@ int temporalOrderRequestsSimulationPenafiel(Graph<Coordinates> & graph){
 
             viewEmployeePath(graph,employeeTasks);
         }
-        else if(opt == 'C'){
+        else if(opt == 'C' || opt == 'c'){
             viewEmployeesPaths(graph,graph,tasks);
         }
 
@@ -903,12 +903,12 @@ vector<Employee*> randomEmployees(unsigned number, unsigned vertices){
    srand (1);
 
     if(number == 1){
-        int randV = rand() % (vertices-1);
+        int randV = rand() % (vertices - 1);
         Employee * e = new Employee(id, Coordinates(randV), 15, CAR, true);
         employees.push_back(e);
     }
     else if(number == 2){
-        int randV = rand() % (vertices-1);
+        int randV = rand() % (vertices - 1);
         Employee * e1 = new Employee(id, Coordinates(randV), 6, BIKE, true);
         employees.push_back(e1);
         id++;
