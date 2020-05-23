@@ -13,7 +13,7 @@ int main(int argc, char* argv[]) {
     //Graph<Coordinates> graph = loadGraph("PortugalMaps", "Espinho", true, true);
      // simulateSimultaneousRequests();
 
-    cout << endl << "\t(X) Exit ";
+    cout << "\tPress ENTER to exit!";
     getchar();
     return 0;
     //return RUN_ALL_TESTS();

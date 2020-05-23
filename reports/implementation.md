@@ -10,7 +10,7 @@ Para representar toda a informação necessária e construir a aplicação final
 * Classe **Coordinates**, usada como implementação da classe *Template T* das estruturas anteriores, representando as coordenadas dos vértices que servem de identificação e são usadas para o cálculo das distâncias reais e visualização dos mapas.
 * Classe **Employee**, que representa um Estafeta, com todos os atributos anteriormente descritos.
 * Classe **Request**, concretizando e contendo a informação de um pedido realizado por um cliente.
-* Classe **Task**, com subclasses **SingleTask** e **SpecialTask** - a primeira representando uma tarefa simples de atribuição e entrega de um pedido por um dado estafeta; a segunda, para o caso especial de implementação da situação de entrega de vários pedidos de uma só vez por um único estafeta. Ambos os ficheiros são acompanhados de utilitários que permitem, entre outros aspetos, determinar, por exemplo, as distâncias para cada estafeta até ao restaurante do pedido, distribuir os pedidos pelos estafetas, determinar se um dado estafeta é elegível para a realização de um pedido, etc.
+* Classe **Task**, com subclasses **SingleTask** e **SpecialTask** - a primeira representando uma tarefa simples de atribuição e entrega de um pedido por um dado estafeta; a segunda, para o caso especial de implementação da situação de entrega de vários pedidos de uma só vez por um único estafeta. Ambos os ficheiros são acompanhados de utilitários que permitem, entre outros aspetos, determinar, por exemplo, as distâncias para cada estafeta, até ao restaurante do pedido, ou se um dado estafeta é elegível para a sua realização, etc.
 
 > Informação adicional
 
@@ -44,7 +44,7 @@ A conectividade dos grafos usados é analisada seguidamente, durante a Fase III 
 
 Dadas as limitações temporais e logísticas deste projeto, chegado o momento de eleger algoritmos de cálculo de distâncias e caminhos entre vértices, por questões mais relacionadas com uma análise interpretativa de resultados distintos, decidimos focar-nos em dois algoritmos apenas.
 
-Cada um representa uma generalização de um subproblema do caminho mais curto, o **Dijkstra unidirecional** como algoritmo representativo do problema *Single Source Multiple Destinations*, que, com a utilização de uma *fila de prioridade*, apresenta uma complexidade temporal de $O( (V+E)\log V)$ e espacial de $O(V)$
+Cada um representa uma generalização de um subproblema do caminho mais curto, o Dijkstra unidirecional como algoritmo representativo do problema *Single Source Multiple Destinations*, que, com a utilização de uma *fila de prioridade*, apresenta uma complexidade temporal de $O( (V+E)\log V)$ e espacial de $O(V)$
 
 ```cpp
 
@@ -73,7 +73,7 @@ Cada um representa uma generalização de um subproblema do caminho mais curto, 
 23     return dist, prev
 ```
 
-e o **Floyd-Warshall** como algoritmo abrangendo a questão *Multiple Sources Multiple Destinations*, com complexidade temporal na ordem de $O(V³)$ e espacial na ordem de $O(V²)$. 
+e o Floyd-Warshall como algoritmo abrangendo a questão *Multiple Sources Multiple Destinations*, com complexidade temporal na ordem de $O(V³)$ e espacial na ordem de $O(V²)$. 
 
 ```cpp
 1 let dist be a |V| × |V| array of minimum distances initialized to ∞ (infinity)
@@ -90,9 +90,9 @@ e o **Floyd-Warshall** como algoritmo abrangendo a questão *Multiple Sources Mu
 12                 end if
 ```
 
-Como alicerce para a aplicação final, dada a análise exaustiva a todas as fases de implementação, o algoritmo **Floyd-Warshall** foi o escolhido para vigorar e funcionar em pleno.
+Como alicerce para a aplicação final, dada a análise exaustiva a todas as fases de implementação, o algoritmo Floyd-Warshall foi o escolhido para vigorar e funcionar em pleno.
 
-Enuncia-se, também, a implementação do algoritmo de **Pesquisa em Profundidade (DFS)**, na sua versão recursiva, para a análise da conectividade dos grafos, com uma complexidade temporal de $O(V+E)$ e espacial de $O(V)$:
+Enuncia-se, também, a implementação do algoritmo de Pesquisa em Profundidade, na sua versão recursiva, para a análise da conectividade dos grafos, com uma complexidade temporal de $O(V+E)$ e espacial de $O(V)$:
 
 ```cpp
 1 function DFS-recursive(G, s):
@@ -108,18 +108,18 @@ Para uma análise generalizada e abrangente dos algoritmos tidos em consideraç�
 
 ### 5.4.1 Fase I
 
-Na Fase I de implementação, considerado o caso atómico de um estafeta que entrega apenas um pedido, entre um restaurante e a morada de um cliente, realizando todas as tarefas em sequência, foi calculada a média do tempo demorado na realização de 1 a 100 pedidos, para os algoritmos mais genéricos, neste caso, o **Dijkstra unidirecional** e o **Floyd-Warshall**. Os tempos foram medidos em micro-segundos e os grafos considerados tinham dimensões variando entre $4 \times 4$ e $30 \times 30$, como relatam os seguintes dados:
+Na Fase I de implementação, considerado o caso atómico de um estafeta que entrega apenas um pedido, entre um restaurante e a morada de um cliente, realizando todas as tarefas em sequência, foi calculada a média do tempo demorado na realização de 1 a 100 pedidos, para os algoritmos mais genéricos, neste caso, o Dijkstra unidirecional e o Floyd-Warshall. Os tempos foram medidos em micro-segundos e os grafos considerados tinham dimensões variando entre $4 \times 4$ e $30 \times 30$, como relatam os seguintes dados:
 
 
 ![](../logs/phase1/4x4_all.png)  |  ![](../logs/phase1/16x16_all.png)
 :-------------------------:|:-------------------------:
 ![](../logs/phase1/20x20_all.png)  |  ![](../logs/phase1/30x30_all.png)
 
-Uma aproximação aos dados do grafo de dimensões $20 \times 20$, por exemplo, revela um pormenor interessante relativamente à concorrência entre estes dois algoritmos e à sua rentabilidade, para uso na aplicação. A explicação para os valores reside no facto de o algoritmo de **Floyd-Warshall** demorar ligeiramente mais tempo, inicialmente, devido ao pré-processamento necessário, mantendo, de seguida, um tempo médio de execução de cada pedido muito inferior, sendo logo ultrapassado, em matéria de tempo acumulado total, pelo algoritmo de **Dijkstra**, com um comportamento linear mais acentuado.
+Uma aproximação aos dados do grafo de dimensões $20 \times 20$, por exemplo, revela um pormenor interessante relativamente à concorrência entre estes dois algoritmos e à sua rentabilidade, para uso na aplicação. A explicação para os valores reside no facto de o algoritmo de Floyd-Warshall demorar ligeiramente mais tempo, inicialmente, devido ao pré-processamento necessário, mantendo, de seguida, um tempo médio de execução de cada pedido muito inferior, sendo logo ultrapassado, em matéria de tempo acumulado total, pelo algoritmo de Dijkstra, com um comportamento linear mais acentuado.
 
 ![](../logs/phase1/20x20_head.png)
 
-A partir de um certo número de pedidos, o algoritmo de **Floyd-Warshall** torna-se o mais viável, o que satisfaz as necessidades, a longo prazo, de uma aplicação deste tipo, tanto em grafos grandes, como em grafos mais pequenos, já que o custo de operação do algoritmo de **Dijkstra** aumenta consideravelmente.
+A partir de um certo número de pedidos, o algoritmo de Floyd-Warshall torna-se o mais viável, o que satisfaz as necessidades, a longo prazo, de uma aplicação deste tipo, tanto em grafos grandes, como em grafos mais pequenos, já que o custo de operação do algoritmo de Dijkstra aumenta consideravelmente.
 
 ![](../logs/phase1/DijkstraG.png)  |  ![](../logs/phase1/FloydG.png)
 :-------------------------:|:-------------------------:
@@ -128,7 +128,7 @@ Os valores mais precisos, em micro-segundos, para alguns destes gráficos, encon
 
 ![](../logs/phase1/table.png)
 
-O tempo médio gasto a cada pedido, para o algoritmo de **Dijkstra**, revelou, assim, o esperado e aproximado tempo computacional de proporções $O((E + V) \log V )$. O pré-processamento realizado pelo algoritmo de **Floyd-Warshall**, contabilizado apenas como parte do primeiro pedido, revelou a sua complexidade na ordem $O(V³)$ e um tempo de execução mínimo para a reconstrução dos caminhos, na ordem $O(E)$, com $E$ somente o número de arestas entre os dois vértices em consideração.
+O tempo médio gasto a cada pedido, para o algoritmo de Dijkstra, revelou, assim, o esperado e aproximado tempo computacional de proporções $O((E + V) \log V )$. O pré-processamento realizado pelo algoritmo de Floyd-Warshall, contabilizado apenas como parte do primeiro pedido, revelou a sua complexidade na ordem $O(V³)$ e um tempo de execução mínimo para a reconstrução dos caminhos, na ordem $O(E)$, com $E$ somente o número de arestas entre os dois vértices em consideração.
 
 ![](../logs/phase1/Dijkstra-Floyd-Dtime.png) | ![](../logs/phase1/Dijkstra-Floyd-Ftime.png)
 :---|---:
@@ -184,7 +184,7 @@ Aqui, variados meios de transporte começaram já a ser considerados, o que corr
 :-------------------------:|:-------------------------:
 Grafo original para veículos motorizados | Grafo reduzido para estafetas a pé ou de bicicleta
 
-Neste ponto, tornou-se pertinente a análise paralela à conetividade dos grafos, sobretudo dos grafos maiores e dos respetivos grafos reduzidos, que revelaram pormenores também visíveis nas imagens anteriores. Obteve-se, assim, a média e o máximo do número de vértices descobertos, partindo de um dado vértice, através do algoritmo de **Pesquisa em Profundidade (DFS)**:
+Neste ponto, tornou-se pertinente a análise paralela à conetividade dos grafos, sobretudo dos grafos maiores e dos respetivos grafos reduzidos, que revelaram pormenores também visíveis nas imagens anteriores. Obteve-se, assim, a média e o máximo do número de vértices descobertos, partindo de um dado vértice, através do algoritmo de Pesquisa em Profundidade (DFS):
 
 Grafo | Número de Vértices | Média de Vértices Encontrados | Máximo de Vértices Encontrados
 ---|---|---|---

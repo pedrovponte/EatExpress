@@ -4,6 +4,3 @@ src/.idea/
 src/cmake-build-debug/
 
 bin/plots/
-
-src/Mapas/Penafiel/distances_penafiel.txt
-src/Mapas/Penafiel/predecessor_penafiel.txt

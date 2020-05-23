@@ -54,11 +54,6 @@ void setNearestDeliveryAddress(Graph<Coordinates> & graph, vector<Request> & req
  * - picks the checkpoint that is closer to the previous checkpoint visited, whenever possible.
  * - always chooses to deliver a request that was already picked from the restaurant when the capacity of the Employee doesn't allow any more cargo.
  * - avoids going to the same restaurant multiple times if the capacity is enough to take more than one request from that restaurant.
- *
- * @param graph the graph used for cars and motorcycles
- * @param requests the requests
- * @param employee the employee
- * @return a task that assigns the requests to the employee
  */
 SpecialTask * simultaneousRequests(Graph<Coordinates> & graph, vector<Request> & requests, Employee* employee);
 

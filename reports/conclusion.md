@@ -1,4 +1,4 @@
-# 8. Conclusão
+# 4. Conclusão Preliminar
 
 Terminado o processo de análise e discussão dos diversos algoritmos e sua aplicabilidade, ficam, assim, estabelecidos os próximos objetivos, relacionados com a sua implementação. 
 
