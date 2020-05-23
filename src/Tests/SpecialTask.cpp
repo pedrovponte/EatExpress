@@ -2,6 +2,7 @@
 // Created by Diana Freitas on 19/05/2020.
 //
 
+#include <cmath>
 #include "SpecialTask.h"
 
 SpecialTask::SpecialTask(Employee * employee, const vector<Request> & requests, int id) : Task(employee,id), requests(requests) {}
@@ -17,11 +18,11 @@ void SpecialTask::setFloydWarshallPath(Graph<Coordinates> & graph, const vector<
     for(int i = 0; i< checkpoints.size(); i++){
         mainCheckpoints.push_back(checkpoints[i].first); // Save the partial path coordinates
         tempPath = graph.getfloydWarshallPath(orig, checkpoints[i].first); // Get path between the previous position and the actual position
-        totalDistance += graph.getDist(graph.findVertexIdx(orig), graph.findVertexIdx(checkpoints[i].first));
+        totalDistance += graph.getDist(graph.findVertexIdx(orig), graph.findVertexIdx(checkpoints[i].first)); // Get total distance in meters
 
         // Calculate the estimated time for the request that corresponds with this delivery address
         if(checkpoints[i].first == requests[findRequestId(checkpoints[i].second)].getDeliveryAddr()){
-            int t = (totalDistance * 60) / (1000 * employee->getAvgVelocity()); // Get total distance in meters
+            int t = ceil((totalDistance * 60) / (1000 * employee->getAvgVelocity())); // Get total time in meters
             times.insert(make_pair(checkpoints[i].second,t));
             employee->addTime(t);
         }
