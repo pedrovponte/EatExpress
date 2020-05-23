@@ -14,7 +14,7 @@ Escolhido o mapa, é perguntado ao utilizador se pretende fazer apenas um pedido
 
 De seguida, irá ser perguntado ao utilizador se deseja visualizar o mapa escolhido, onde será possível visualizar a localização dos vários restaurantes.
 
-## Realização de um pedido
+## 7.1 Realização de um pedido
 
 Quando a opção escolhida é fazer apenas um pedido, é possível fazer um pedido que pode conter apenas um restaurante entre os apresentados na lista ou então vários, sendo que para cada restaurante se escolhe quantas refeições se deseja deste, estando o tamanho total do pedido limitado a 15 refeições.
 
@@ -35,7 +35,7 @@ Depois de o pedido estar completo, serão apresentadas na aplicação as informa
 *Para a implementação deste caso de utilização são usados os algoritmos **1** e **2**, sendo o segundo usado se forem definidos múltiplos restaurantes e o primeiro quando é escolhido apenas um.*
 
 
-## Simulação de múltiplos pedidos
+## 7.2 Simulação de múltiplos pedidos
 
 No caso de a opção escolhida ser a de simular vários pedidos, existem 2 opções.
 
@@ -43,7 +43,7 @@ No caso de a opção escolhida ser a de simular vários pedidos, existem 2 opç�
 |:-------------------------:|
 |Opções de simulação de pedidos|
 
-### Um estafeta - Vários pedidos no mesmo deslocamento (variante do TSP)
+### 7.2.1 Um estafeta - Vários pedidos no mesmo deslocamento (variante do TSP)
 
 Caso o utilizador opte pela **opção A**, será apresentado ao utilizador o estafeta disponível para entregar os pedidos simultâneos e será pedido ao utilizador quantos pedidos quer simular.
 
@@ -62,7 +62,7 @@ Depois de escolhidos, irão aparecer as informações de cada um dos pedidos sim
 *Para a implementação deste caso de utilização é usado o algoritmos **3**.*
 
 
-### Múltiplos estafetas - distribuição de pedidos por ordem temporal
+### 7.2.2 Múltiplos estafetas - distribuição de pedidos por ordem temporal
 
 Se o utilizador preferir a **opção B**, a seguir terá de escolher um número de estafetas, entre 1 e 10, e o número de pedidos a simular.
 

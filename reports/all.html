@@ -326,19 +326,19 @@ pre[data-line] .line-highlight[data-end]:after {
 </li>
 <li><a href="#6-algoritmos-e-estrat%C3%A9gias-implementadas">6. Algoritmos e Estrat&#xE9;gias implementadas</a>
 <ul>
-<li><a href="#61-um-ou-v%C3%A1rios-pedidos-por-ordem-temporal">6.1. Um ou v&#xE1;rios pedidos por ordem temporal</a></li>
-<li><a href="#62-pedido-de-m%C3%BAltiplos-restaurantes">6.2. Pedido de m&#xFA;ltiplos restaurantes</a></li>
-<li><a href="#63-um-estafeta-v%C3%A1rios-pedidos-no-mesmo-deslocamento-variante-do-tsp">6.3. Um estafeta - V&#xE1;rios pedidos no mesmo deslocamento (variante do TSP)</a></li>
-<li><a href="#65-nota-geral-acerca-dos-algoritmos-implementados">6.5. Nota geral acerca dos algoritmos implementados</a></li>
+<li><a href="#61-um-ou-v%C3%A1rios-pedidos-por-ordem-temporal">6.1 Um ou v&#xE1;rios pedidos por ordem temporal</a></li>
+<li><a href="#62-pedido-de-m%C3%BAltiplos-restaurantes">6.2 Pedido de m&#xFA;ltiplos restaurantes</a></li>
+<li><a href="#63-um-estafeta-v%C3%A1rios-pedidos-no-mesmo-deslocamento-variante-do-tsp">6.3 Um estafeta - V&#xE1;rios pedidos no mesmo deslocamento (variante do TSP)</a></li>
+<li><a href="#64-nota-geral-acerca-dos-algoritmos-implementados">6.4 Nota geral acerca dos algoritmos implementados</a></li>
 </ul>
 </li>
 <li><a href="#7-principais-casos-de-uso-implementados">7. Principais casos de uso implementados</a>
 <ul>
-<li><a href="#realiza%C3%A7%C3%A3o-de-um-pedido">Realiza&#xE7;&#xE3;o de um pedido</a></li>
-<li><a href="#simula%C3%A7%C3%A3o-de-m%C3%BAltiplos-pedidos">Simula&#xE7;&#xE3;o de m&#xFA;ltiplos pedidos</a>
+<li><a href="#71-realiza%C3%A7%C3%A3o-de-um-pedido">7.1 Realiza&#xE7;&#xE3;o de um pedido</a></li>
+<li><a href="#72-simula%C3%A7%C3%A3o-de-m%C3%BAltiplos-pedidos">7.2 Simula&#xE7;&#xE3;o de m&#xFA;ltiplos pedidos</a>
 <ul>
-<li><a href="#um-estafeta-v%C3%A1rios-pedidos-no-mesmo-deslocamento-variante-do-tsp">Um estafeta - V&#xE1;rios pedidos no mesmo deslocamento (variante do TSP)</a></li>
-<li><a href="#m%C3%BAltiplos-estafetas-distribui%C3%A7%C3%A3o-de-pedidos-por-ordem-temporal">M&#xFA;ltiplos estafetas - distribui&#xE7;&#xE3;o de pedidos por ordem temporal</a></li>
+<li><a href="#721-um-estafeta-v%C3%A1rios-pedidos-no-mesmo-deslocamento-variante-do-tsp">7.2.1 Um estafeta - V&#xE1;rios pedidos no mesmo deslocamento (variante do TSP)</a></li>
+<li><a href="#722-m%C3%BAltiplos-estafetas-distribui%C3%A7%C3%A3o-de-pedidos-por-ordem-temporal">7.2.2 M&#xFA;ltiplos estafetas - distribui&#xE7;&#xE3;o de pedidos por ordem temporal</a></li>
 </ul>
 </li>
 </ul>
@@ -827,14 +827,18 @@ Type<span class="token operator">:</span> Vegetarian        Vertex id<span class
 <p>A primeira e segunda fase planeadas na primeira parte do trabalho serviram de base para desenvolver a fase que realmente consideramos crucial, a fase III, na qual j&#xE1; se tem em conta as v&#xE1;rias condicionantes do problema, entre as quais as dist&#xE2;ncias dos estafetas aos restaurantes dos pedidos, as capacidades m&#xE1;ximas de transporte, os meios de transporte utilizados e a disponibilidade dos estafetas.<br>
 Como tal, todos estes fatores que foram ignorados numa fase inicial do desenvolvimento do trabalho, na qual s&#xF3; se pretendia abordar o problema na sua ess&#xEA;ncia, s&#xE3;o, na aplica&#xE7;&#xE3;o final, trabalhados tanto para o caso de um estafeta como para o caso em que existem v&#xE1;rios.</p>
 <p>Para melhor analisar a implementa&#xE7;&#xE3;o, optamos, ent&#xE3;o, por descrever sucintamente as estrat&#xE9;gias adotadas para cada caso de utiliza&#xE7;&#xE3;o, acompanhadas de pseudo-c&#xF3;digo.</p>
-<h2 class="mume-header" id="61-um-ou-v%C3%A1rios-pedidos-por-ordem-temporal">6.1. Um ou v&#xE1;rios pedidos por ordem temporal</h2>
+<h2 class="mume-header" id="61-um-ou-v%C3%A1rios-pedidos-por-ordem-temporal">6.1 Um ou v&#xE1;rios pedidos por ordem temporal</h2>
 
 <p>Para o caso em que &#xE9; feito um pedido ou v&#xE1;rios, cada um de um &#xFA;nico restaurante, e existem m&#xFA;ltiplos estafetas para o realizar, seguimos a estrat&#xE9;gia descrita na fase III para a escolha do estafeta.</p>
 <p>A implementa&#xE7;&#xE3;o deste caso tem como base a fun&#xE7;&#xE3;o:<br>
 <code>vector&lt;SingleTask*&gt; distributeRequests(Graph&lt;Coordinates&gt; &amp; graph, Graph&lt;Coordinates&gt; &amp; reducedGraph, min_priority_queue &amp; requests, vector&lt;Employee*&gt; &amp; employees)</code> - definida em <code>SingleTask.cpp</code>; que devolve um conjunto de tarefas, consistindo uma tarefa na atribui&#xE7;&#xE3;o de um pedido a um estafeta.</p>
-<p>Come&#xE7;a-se por verificar que tipos de meio de transporte podem ser utilizados para completar cada pedido, tendo em conta que s&#xE3;o utilizados grafos diferentes para representar os caminhos transit&#xE1;veis a p&#xE9;/bicicleta e aqueles que podem ser percorridos de carro/motociclo. Para isso, s&#xE3;o atualizadas as vari&#xE1;veis <code>deliverableByCar</code> e <code>deliverableByFoot</code> do pedido, consoante exista ou n&#xE3;o um caminho entre o v&#xE9;rtice do restaurante e a morada de entrega no grafo correpondente a cada meio de transporte. Utiliza-se a fun&#xE7;&#xE3;o <code>setRequestsDeliverability(const Graph&lt;Coordinates&gt; &amp; graph, const Graph&lt;Coordinates&gt; &amp; reducedGraph, min_priority_queue &amp; requests)</code> para realizar esta verifica&#xE7;&#xE3;o.</p>
-<p>Seguidamente, realizando os pedidos por ordem temporal, para a escolha de um estafeta para cada pedido, come&#xE7;a-se por definir as dist&#xE2;ncias dos estafetas ao restaurante, armazenadas na matriz de dist&#xE2;ncias calculada previamente com o algoritmo de Floyd Warshall - <code>setDistancesToCheckpoint(Graph&lt;Coordinates&gt; &amp; graph, Graph&lt;Coordinates&gt; &amp; reducedGraph, vector&lt;Employee*&gt; &amp; employees, Request &amp; request)</code>. A&#xED;, verifica-se tamb&#xE9;m se existe um caminho entre estes dois pontos no grafo de cada meio de transporte e imp&#xF5;e-se uma dist&#xE2;ncia limite para a realiza&#xE7;&#xE3;o de pedidos de bicicleta ou a p&#xE9;, evitando trajetos excessivamente longos para estafetas que utilizem este meio de transporte.</p>
-<p>O passo seguinte, &#xE9; excluir todos os estafetas que n&#xE3;o t&#xEA;m possibilidade de entregar o pedido, n&#xE3;o s&#xF3; devido aos fatores anteriores mas tamb&#xE9;m por n&#xE3;o terem capacidade para o transportar ou por n&#xE3;o estarem dispon&#xED;veis - <code>getEligibleEmployees(vector&lt;Employee*&gt; &amp; employees, const Request &amp; request)</code>.</p>
+<p>Come&#xE7;a-se por verificar que tipos de meio de transporte podem ser utilizados para completar cada pedido, tendo em conta que s&#xE3;o utilizados grafos diferentes para representar os caminhos transit&#xE1;veis a p&#xE9;/bicicleta e aqueles que podem ser percorridos de carro/motociclo. Para isso, s&#xE3;o atualizadas as vari&#xE1;veis <code>deliverableByCar</code> e <code>deliverableByFoot</code> do pedido, consoante exista ou n&#xE3;o um caminho entre o v&#xE9;rtice do restaurante e a morada de entrega no grafo correpondente a cada meio de transporte. Utiliza-se a fun&#xE7;&#xE3;o<br>
+<code>setRequestsDeliverability(const Graph&lt;Coordinates&gt; &amp; graph, const Graph&lt;Coordinates&gt; &amp; reducedGraph, min_priority_queue &amp; requests)</code><br>
+para realizar esta verifica&#xE7;&#xE3;o.</p>
+<p>Seguidamente, realizando os pedidos por ordem temporal, para a escolha de um estafeta para cada pedido, come&#xE7;a-se por definir as dist&#xE2;ncias dos estafetas ao restaurante, armazenadas na matriz de dist&#xE2;ncias calculada previamente com o algoritmo de Floyd Warshall -<br>
+<code>setDistancesToCheckpoint(Graph&lt;Coordinates&gt; &amp; graph, Graph&lt;Coordinates&gt; &amp; reducedGraph, vector&lt;Employee*&gt; &amp; employees, Request &amp; request)</code>. A&#xED;, verifica-se tamb&#xE9;m se existe um caminho entre estes dois pontos no grafo de cada meio de transporte e imp&#xF5;e-se uma dist&#xE2;ncia limite para a realiza&#xE7;&#xE3;o de pedidos de bicicleta ou a p&#xE9;, evitando trajetos excessivamente longos para estafetas que utilizem este meio de transporte.</p>
+<p>O passo seguinte, &#xE9; excluir todos os estafetas que n&#xE3;o t&#xEA;m possibilidade de entregar o pedido, n&#xE3;o s&#xF3; devido aos fatores anteriores mas tamb&#xE9;m por n&#xE3;o terem capacidade para o transportar ou por n&#xE3;o estarem dispon&#xED;veis -<br>
+<code>getEligibleEmployees(vector&lt;Employee*&gt; &amp; employees, const Request &amp; request)</code>.</p>
 <p>Finalmente, de todos os estafetas dispon&#xED;veis, a escolha passa pela conjuga&#xE7;&#xE3;o de tr&#xEA;s fatores: dist&#xE2;ncia mais curta at&#xE9; ao restaurante, carga e velocidade m&#xE9;dia do meio de transporte, dando prioridade &#xE0; dist&#xE2;ncia, com um peso de 50% na decis&#xE3;o. Para isso utiliza-se o operador menor da classe <code>Employee</code> para escolher o estafeta a realizar o pedido.</p>
 <pre data-role="codeBlock" data-info="cpp" class="language-cpp"><span class="token keyword">bool</span> Employee<span class="token operator">::</span><span class="token keyword">operator</span><span class="token operator">&lt;</span><span class="token punctuation">(</span><span class="token keyword">const</span> Employee <span class="token operator">&amp;</span>rhs<span class="token punctuation">)</span> <span class="token keyword">const</span> <span class="token punctuation">{</span>
     <span class="token keyword">return</span> dist<span class="token operator">*</span><span class="token number">0.5</span> <span class="token operator">+</span> maxCargo<span class="token operator">*</span><span class="token number">0.3</span> <span class="token operator">+</span> avgVelocity <span class="token operator">*</span> <span class="token number">0.2</span> <span class="token operator">&lt;</span> rhs<span class="token punctuation">.</span><span class="token function">getDist</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">*</span><span class="token number">0.5</span> <span class="token operator">+</span> rhs<span class="token punctuation">.</span><span class="token function">getMaxCargo</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">*</span> <span class="token number">0.3</span> <span class="token operator">+</span> rhs<span class="token punctuation">.</span><span class="token function">getAvgVelocity</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">*</span> <span class="token number">0.2</span> <span class="token punctuation">;</span>
@@ -877,9 +881,10 @@ Como existem pedidos que s&#xF3; podem ser realizados por alguns estafetas espec
             roundTasks<span class="token punctuation">.</span><span class="token function">clear</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> 
     <span class="token keyword">return</span> tasks<span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
-</pre><h2 class="mume-header" id="62-pedido-de-m%C3%BAltiplos-restaurantes">6.2. Pedido de m&#xFA;ltiplos restaurantes</h2>
+</pre><h2 class="mume-header" id="62-pedido-de-m%C3%BAltiplos-restaurantes">6.2 Pedido de m&#xFA;ltiplos restaurantes</h2>
 
-<p>Um outro caso de utiliza&#xE7;&#xE3;o consiste na atribui&#xE7;&#xE3;o de um pedido que inclui refei&#xE7;&#xF5;es de mais do que um restaurante, cuja implementa&#xE7;&#xE3;o se centra essencialmente na fun&#xE7;&#xE3;o <code>SingleTask * multipleRestaurantsRequest(Graph&lt;Coordinates&gt; &amp; graph, Graph&lt;Coordinates&gt; &amp; reducedGraph, vector&lt;Employee*&gt; &amp; employees, Request &amp; request)</code> - definida em <code>SingleTask.cpp</code>.<br>
+<p>Um outro caso de utiliza&#xE7;&#xE3;o consiste na atribui&#xE7;&#xE3;o de um pedido que inclui refei&#xE7;&#xF5;es de mais do que um restaurante, cuja implementa&#xE7;&#xE3;o se centra essencialmente na fun&#xE7;&#xE3;o<br>
+<code>SingleTask * multipleRestaurantsRequest(Graph&lt;Coordinates&gt; &amp; graph, Graph&lt;Coordinates&gt; &amp; reducedGraph, vector&lt;Employee*&gt; &amp; employees, Request &amp; request)</code> - definida em <code>SingleTask.cpp</code>.<br>
 Para isso, determinam-se, mais uma vez, quais os estafeta elig&#xED;veis para realizar o pedido. Neste caso, no entanto, s&#xF3; podemos descartar, numa fase inicial, aqueles estafetas que n&#xE3;o possuam capacidade para transportar a carga do pedido.<br>
 Seguidamente, determina-se para cada estafeta o caminho a seguir para recolher o pedido dos restaurantes, escolhendo sempre o restaurante mais perto  - <code>int getNearestRestaurant(Graph&lt;Coordinates&gt; &amp; graph, const Coordinates &amp; origin, vector&lt;Coordinates&gt; &amp; restaurants)</code>; (consultando a matriz de dist&#xE2;ncias pr&#xE9; calculada com o algoritmo de Floyd Warshall). Mant&#xE9;m-se sempre guardada a melhor dist&#xE2;ncia, o estafeta ao qual essa dist&#xE2;ncia corresponde e a ordem de visita dos restaurantes, tendo sempre em aten&#xE7;&#xE3;o que pode n&#xE3;o existir caminho poss&#xED;vel, no caso de alguns meios de transporte (dependendo do grafo de entrada). No fim, &#xE9; escolhido o estafeta ao qual corresponde a melhor dist&#xE2;ncia.</p>
 <p>Mais uma vez, para definir o caminho completo a percorrer pelo estafeta, utiliza-se a fun&#xE7;&#xE3;o <code>setFloydWarshallPath(Graph&lt;Coordinates&gt; &amp; graph)</code> - em <code>SingleTask.cpp</code>; que calcula o caminho mais curto entre restaurantes consecutivos cuja ordem de visita j&#xE1; fora determinada no algoritmo descrito.</p>
@@ -953,11 +958,14 @@ Seguidamente, determina-se para cada estafeta o caminho a seguir para recolher o
     <span class="token keyword">return</span> task<span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
 
-</pre><h2 class="mume-header" id="63-um-estafeta-v%C3%A1rios-pedidos-no-mesmo-deslocamento-variante-do-tsp">6.3. Um estafeta - V&#xE1;rios pedidos no mesmo deslocamento (variante do TSP)</h2>
+</pre><h2 class="mume-header" id="63-um-estafeta-v%C3%A1rios-pedidos-no-mesmo-deslocamento-variante-do-tsp">6.3 Um estafeta - V&#xE1;rios pedidos no mesmo deslocamento (variante do TSP)</h2>
 
 <p>Outra alternativa que pensamos ser essencial incluir na nossa implementa&#xE7;&#xE3;o, tendo em conta a ess&#xEA;ncia do problema, foi o caso em que um s&#xF3; estafeta deve, num s&#xF3; trajeto, recolher todos os pedidos dos restaurantes e entreg&#xE1;-los nas respetivas moradas de entrega, tendo em aten&#xE7;&#xE3;o que o restaurante de um pedido deve sempre ser visitado antes da morada de entrega e que podem existir m&#xFA;ltiplos pedidos do mesmo restaurante.</p>
 <p>Para isso, na fun&#xE7;&#xE3;o <code>SpecialTask * simultaneousRequests(Graph&lt;Coordinates&gt; &amp; graph, vector&lt;Request&gt; &amp; requests, Employee* employee)</code> - definida em <code>SpecialTask.cpp</code>; utilizam-se dois vetores auxiliares que acabam por funcionar como filas, uma com o restaurante n&#xE3;o visitado mais pr&#xF3;ximo da posi&#xE7;&#xE3;o atual do estafeta &#xE0; cabe&#xE7;a e outra com a morada de entrega n&#xE3;o visitada mais pr&#xF3;xima da posi&#xE7;&#xE3;o atual do estafeta &#xE0; cabe&#xE7;a.<br>
-Estas posi&#xE7;&#xF5;es mais pr&#xF3;ximas s&#xE3;o atualizadas nas fun&#xE7;&#xF5;es: <code>setNearestRestaurant(Graph&lt;Coordinates&gt; &amp; graph, vector&lt;Request&gt; &amp; requests, Coordinates origin)</code> e <code>setNearestDeliveryAddress(Graph&lt;Coordinates&gt; &amp; graph, vector&lt;Request&gt; &amp; requests, Coordinates origin)</code>, chamadas a cada itera&#xE7;&#xE3;o.</p>
+Estas posi&#xE7;&#xF5;es mais pr&#xF3;ximas s&#xE3;o atualizadas nas fun&#xE7;&#xF5;es:<br>
+<code>setNearestRestaurant(Graph&lt;Coordinates&gt; &amp; graph, vector&lt;Request&gt; &amp; requests, Coordinates origin)</code><br>
+e<br>
+<code>setNearestDeliveryAddress(Graph&lt;Coordinates&gt; &amp; graph, vector&lt;Request&gt; &amp; requests, Coordinates origin)</code>, chamadas a cada itera&#xE7;&#xE3;o.</p>
 <p>Enquanto existirem restaurantes ou moradas de entrega por visitar, o pr&#xF3;ximo ponto a visitar &#xE9; escolhido do seguinte modo:</p>
 <ul>
 <li>Na primeira itera&#xE7;&#xE3;o e sempre que n&#xE3;o h&#xE1; pedidos para entregar &#xE9; necess&#xE1;rio recolher um pedido de um restaurante;</li>
@@ -966,7 +974,8 @@ Estas posi&#xE7;&#xF5;es mais pr&#xF3;ximas s&#xE3;o atualizadas nas fun&#xE7;&#
 <li>No caso de haver possibilidade de entregar ou recolher um pedido, opta-se por escolher o deslocamento de menor dist&#xE2;ncia;</li>
 </ul>
 <p>A ordem de visita dos v&#xE1;rios pontos &#xE9; guardada num vetor, que mant&#xE9;m a associa&#xE7;&#xE3;o das coordenadas do ponto com o pedido ao qual este est&#xE1; associado, de modo a facilitar c&#xE1;lculos posteriores de tempos estimados.</p>
-<p>Finalmente, &#xE9; definido o caminho completo e tamb&#xE9;m os tempos estimados para cada pedido na fun&#xE7;&#xE3;o <code>setFloydWarshallPath(Graph&lt;Coordinates&gt; &amp; graph, const vector&lt;pair&lt;Coordinates,unsigned long&gt;&gt; &amp; checkpoints)</code> - em <code>SpecialTask.cpp</code>; que procede de modo similar &#xE0; fun&#xE7;&#xE3;o do mesmo nome descrita anteriormente, calculando o caminho mais curto entre cada par de pontos consecutivos do caminho parcial.</p>
+<p>Finalmente, &#xE9; definido o caminho completo e tamb&#xE9;m os tempos estimados para cada pedido na fun&#xE7;&#xE3;o<br>
+<code>setFloydWarshallPath(Graph&lt;Coordinates&gt; &amp; graph, const vector&lt;pair&lt;Coordinates,unsigned long&gt;&gt; &amp; checkpoints)</code> - em <code>SpecialTask.cpp</code>; que procede de modo similar &#xE0; fun&#xE7;&#xE3;o do mesmo nome descrita anteriormente, calculando o caminho mais curto entre cada par de pontos consecutivos do caminho parcial.</p>
 <pre data-role="codeBlock" data-info="cpp" class="language-cpp"><span class="token function">simultaneousRequests</span><span class="token punctuation">(</span>Graph G<span class="token punctuation">,</span> vector<span class="token operator">&lt;</span>Request<span class="token operator">&gt;</span> R<span class="token punctuation">,</span> Employee employee<span class="token punctuation">)</span><span class="token punctuation">{</span>
     vector<span class="token operator">&lt;</span>Coordinates<span class="token operator">&gt;</span> path<span class="token punctuation">;</span> <span class="token comment">// Caminho parcial - ordem de visita dos restaurantes e moradas de entrega</span>
     Coordinates orig &#x2190; <span class="token function">coordinates</span><span class="token punctuation">(</span>employee<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// Ponto de origem &#xE9; a posi&#xE7;&#xE3;o do estafeta</span>
@@ -1015,10 +1024,14 @@ Estas posi&#xE7;&#xF5;es mais pr&#xF3;ximas s&#xE3;o atualizadas nas fun&#xE7;&#
     <span class="token keyword">return</span> s<span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
 
-</pre><h2 class="mume-header" id="65-nota-geral-acerca-dos-algoritmos-implementados">6.5. Nota geral acerca dos algoritmos implementados</h2>
+</pre><p><br><br><br></p>
+<h2 class="mume-header" id="64-nota-geral-acerca-dos-algoritmos-implementados">6.4 Nota geral acerca dos algoritmos implementados</h2>
 
 <p>Por fim, &#xE9; de salientar a vantagem proporcionada pelo pr&#xE9;-processamento com o algoritmo de Floyd Warshall quando utilizados algoritmos como os descritos acima.<br>
-Para efeitos de compara&#xE7;&#xE3;o, no entanto, podem ser consultados em <code>simulations.cpp</code> e em <code>SingleTask.cpp</code> os algoritmos que testamos na Fase II e que utilizam o algoritmo de Dijkstra na sua implementa&#xE7;&#xE3;o. Tamb&#xE9;m a an&#xE1;lise das fun&#xE7;&#xF5;es <code>virtual void setFloydWarshallPath(Graph&lt;Coordinates&gt; &amp; graph)</code> e <code>void setDijkstraPath(Graph&lt;Coordinates&gt; &amp; graph)</code> permite facilmente perceber que, ao utilizar o Floyd Warshall, &#xE9; evitado o c&#xE1;lculo repetitivo das dist&#xE2;ncias e do caminho mais curto para cada novo ponto de origem, uma desvantagem do Dijkstra.</p>
+Para efeitos de compara&#xE7;&#xE3;o, no entanto, podem ser consultados em <code>simulations.cpp</code> e em <code>SingleTask.cpp</code> os algoritmos que testamos na Fase II e que utilizam o algoritmo de Dijkstra na sua implementa&#xE7;&#xE3;o. Tamb&#xE9;m a an&#xE1;lise das fun&#xE7;&#xF5;es<br>
+<code>virtual void setFloydWarshallPath(Graph&lt;Coordinates&gt; &amp; graph)</code><br>
+e<br>
+<code>void setDijkstraPath(Graph&lt;Coordinates&gt; &amp; graph)</code> permite facilmente perceber que, ao utilizar o Floyd Warshall, &#xE9; evitado o c&#xE1;lculo repetitivo das dist&#xE2;ncias e do caminho mais curto para cada novo ponto de origem, uma desvantagem do Dijkstra.</p>
 <p><em>Parte da fun&#xE7;&#xE3;o utilizada para definir o caminho final de um estafeta, nos algoritmos <em>1</em> e <em>2</em></em></p>
 <pre data-role="codeBlock" data-info="cpp" class="language-cpp"><span class="token keyword">void</span> SingleTask<span class="token operator">::</span><span class="token function">setFloydWarshallPath</span><span class="token punctuation">(</span>Graph<span class="token operator">&lt;</span>Coordinates<span class="token operator">&gt;</span> <span class="token operator">&amp;</span> graph<span class="token punctuation">)</span><span class="token punctuation">{</span>
     <span class="token comment">/*...*/</span>
@@ -1051,7 +1064,7 @@ Para efeitos de compara&#xE7;&#xE3;o, no entanto, podem ser consultados em <code
 </tbody>
 </table>
 <p>De seguida, ir&#xE1; ser perguntado ao utilizador se deseja visualizar o mapa escolhido, onde ser&#xE1; poss&#xED;vel visualizar a localiza&#xE7;&#xE3;o dos v&#xE1;rios restaurantes.</p>
-<h2 class="mume-header" id="realiza%C3%A7%C3%A3o-de-um-pedido">Realiza&#xE7;&#xE3;o de um pedido</h2>
+<h2 class="mume-header" id="71-realiza%C3%A7%C3%A3o-de-um-pedido">7.1 Realiza&#xE7;&#xE3;o de um pedido</h2>
 
 <p>Quando a op&#xE7;&#xE3;o escolhida &#xE9; fazer apenas um pedido, &#xE9; poss&#xED;vel fazer um pedido que pode conter apenas um restaurante entre os apresentados na lista ou ent&#xE3;o v&#xE1;rios, sendo que para cada restaurante se escolhe quantas refei&#xE7;&#xF5;es se deseja deste, estando o tamanho total do pedido limitado a 15 refei&#xE7;&#xF5;es.</p>
 <table>
@@ -1092,7 +1105,7 @@ Para efeitos de compara&#xE7;&#xE3;o, no entanto, podem ser consultados em <code
 </tbody>
 </table>
 <p><em>Para a implementa&#xE7;&#xE3;o deste caso de utiliza&#xE7;&#xE3;o s&#xE3;o usados os algoritmos <strong>1</strong> e <strong>2</strong>, sendo o segundo usado se forem definidos m&#xFA;ltiplos restaurantes e o primeiro quando &#xE9; escolhido apenas um.</em></p>
-<h2 class="mume-header" id="simula%C3%A7%C3%A3o-de-m%C3%BAltiplos-pedidos">Simula&#xE7;&#xE3;o de m&#xFA;ltiplos pedidos</h2>
+<h2 class="mume-header" id="72-simula%C3%A7%C3%A3o-de-m%C3%BAltiplos-pedidos">7.2 Simula&#xE7;&#xE3;o de m&#xFA;ltiplos pedidos</h2>
 
 <p>No caso de a op&#xE7;&#xE3;o escolhida ser a de simular v&#xE1;rios pedidos, existem 2 op&#xE7;&#xF5;es.</p>
 <table>
@@ -1107,7 +1120,7 @@ Para efeitos de compara&#xE7;&#xE3;o, no entanto, podem ser consultados em <code
 </tr>
 </tbody>
 </table>
-<h3 class="mume-header" id="um-estafeta-v%C3%A1rios-pedidos-no-mesmo-deslocamento-variante-do-tsp">Um estafeta - V&#xE1;rios pedidos no mesmo deslocamento (variante do TSP)</h3>
+<h3 class="mume-header" id="721-um-estafeta-v%C3%A1rios-pedidos-no-mesmo-deslocamento-variante-do-tsp">7.2.1 Um estafeta - V&#xE1;rios pedidos no mesmo deslocamento (variante do TSP)</h3>
 
 <p>Caso o utilizador opte pela <strong>op&#xE7;&#xE3;o A</strong>, ser&#xE1; apresentado ao utilizador o estafeta dispon&#xED;vel para entregar os pedidos simult&#xE2;neos e ser&#xE1; pedido ao utilizador quantos pedidos quer simular.</p>
 <table>
@@ -1137,7 +1150,7 @@ Para efeitos de compara&#xE7;&#xE3;o, no entanto, podem ser consultados em <code
 </tbody>
 </table>
 <p><em>Para a implementa&#xE7;&#xE3;o deste caso de utiliza&#xE7;&#xE3;o &#xE9; usado o algoritmos <strong>3</strong>.</em></p>
-<h3 class="mume-header" id="m%C3%BAltiplos-estafetas-distribui%C3%A7%C3%A3o-de-pedidos-por-ordem-temporal">M&#xFA;ltiplos estafetas - distribui&#xE7;&#xE3;o de pedidos por ordem temporal</h3>
+<h3 class="mume-header" id="722-m%C3%BAltiplos-estafetas-distribui%C3%A7%C3%A3o-de-pedidos-por-ordem-temporal">7.2.2 M&#xFA;ltiplos estafetas - distribui&#xE7;&#xE3;o de pedidos por ordem temporal</h3>
 
 <p>Se o utilizador preferir a <strong>op&#xE7;&#xE3;o B</strong>, a seguir ter&#xE1; de escolher um n&#xFA;mero de estafetas, entre 1 e 10, e o n&#xFA;mero de pedidos a simular.</p>
 <pre data-role="codeBlock" data-info="cpp" class="language-cpp"><span class="token keyword">int</span> maxRequests <span class="token operator">=</span> <span class="token number">15</span><span class="token punctuation">;</span>

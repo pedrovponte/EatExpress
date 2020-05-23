@@ -5,18 +5,22 @@ Como tal, todos estes fatores que foram ignorados numa fase inicial do desenvolv
 
 Para melhor analisar a implementação, optamos, então, por descrever sucintamente as estratégias adotadas para cada caso de utilização, acompanhadas de pseudo-código.
 
-## 6.1. Um ou vários pedidos por ordem temporal
+## 6.1 Um ou vários pedidos por ordem temporal
 
 Para o caso em que é feito um pedido ou vários, cada um de um único restaurante, e existem múltiplos estafetas para o realizar, seguimos a estratégia descrita na fase III para a escolha do estafeta.
 
 A implementação deste caso tem como base a função: 
 `vector<SingleTask*> distributeRequests(Graph<Coordinates> & graph, Graph<Coordinates> & reducedGraph, min_priority_queue & requests, vector<Employee*> & employees)` - definida em `SingleTask.cpp`; que devolve um conjunto de tarefas, consistindo uma tarefa na atribuição de um pedido a um estafeta.
 
-Começa-se por verificar que tipos de meio de transporte podem ser utilizados para completar cada pedido, tendo em conta que são utilizados grafos diferentes para representar os caminhos transitáveis a pé/bicicleta e aqueles que podem ser percorridos de carro/motociclo. Para isso, são atualizadas as variáveis `deliverableByCar` e `deliverableByFoot` do pedido, consoante exista ou não um caminho entre o vértice do restaurante e a morada de entrega no grafo correpondente a cada meio de transporte. Utiliza-se a função `setRequestsDeliverability(const Graph<Coordinates> & graph, const Graph<Coordinates> & reducedGraph, min_priority_queue & requests)` para realizar esta verificação.
+Começa-se por verificar que tipos de meio de transporte podem ser utilizados para completar cada pedido, tendo em conta que são utilizados grafos diferentes para representar os caminhos transitáveis a pé/bicicleta e aqueles que podem ser percorridos de carro/motociclo. Para isso, são atualizadas as variáveis `deliverableByCar` e `deliverableByFoot` do pedido, consoante exista ou não um caminho entre o vértice do restaurante e a morada de entrega no grafo correpondente a cada meio de transporte. Utiliza-se a função 
+`setRequestsDeliverability(const Graph<Coordinates> & graph, const Graph<Coordinates> & reducedGraph, min_priority_queue & requests)` 
+para realizar esta verificação.
 
-Seguidamente, realizando os pedidos por ordem temporal, para a escolha de um estafeta para cada pedido, começa-se por definir as distâncias dos estafetas ao restaurante, armazenadas na matriz de distâncias calculada previamente com o algoritmo de Floyd Warshall - `setDistancesToCheckpoint(Graph<Coordinates> & graph, Graph<Coordinates> & reducedGraph, vector<Employee*> & employees, Request & request)`. Aí, verifica-se também se existe um caminho entre estes dois pontos no grafo de cada meio de transporte e impõe-se uma distância limite para a realização de pedidos de bicicleta ou a pé, evitando trajetos excessivamente longos para estafetas que utilizem este meio de transporte. 
+Seguidamente, realizando os pedidos por ordem temporal, para a escolha de um estafeta para cada pedido, começa-se por definir as distâncias dos estafetas ao restaurante, armazenadas na matriz de distâncias calculada previamente com o algoritmo de Floyd Warshall - 
+`setDistancesToCheckpoint(Graph<Coordinates> & graph, Graph<Coordinates> & reducedGraph, vector<Employee*> & employees, Request & request)`. Aí, verifica-se também se existe um caminho entre estes dois pontos no grafo de cada meio de transporte e impõe-se uma distância limite para a realização de pedidos de bicicleta ou a pé, evitando trajetos excessivamente longos para estafetas que utilizem este meio de transporte. 
 
-O passo seguinte, é excluir todos os estafetas que não têm possibilidade de entregar o pedido, não só devido aos fatores anteriores mas também por não terem capacidade para o transportar ou por não estarem disponíveis - `getEligibleEmployees(vector<Employee*> & employees, const Request & request)`.
+O passo seguinte, é excluir todos os estafetas que não têm possibilidade de entregar o pedido, não só devido aos fatores anteriores mas também por não terem capacidade para o transportar ou por não estarem disponíveis - 
+`getEligibleEmployees(vector<Employee*> & employees, const Request & request)`.
 
 Finalmente, de todos os estafetas disponíveis, a escolha passa pela conjugação de três fatores: distância mais curta até ao restaurante, carga e velocidade média do meio de transporte, dando prioridade à distância, com um peso de 50% na decisão. Para isso utiliza-se o operador menor da classe `Employee` para escolher o estafeta a realizar o pedido.
 
@@ -71,9 +75,10 @@ distributeRequests(Graph G1, Graph G2, PriorityQueue<Request> R, vector<Employee
 ```
 
 
-## 6.2. Pedido de múltiplos restaurantes
+## 6.2 Pedido de múltiplos restaurantes
 
-Um outro caso de utilização consiste na atribuição de um pedido que inclui refeições de mais do que um restaurante, cuja implementação se centra essencialmente na função `SingleTask * multipleRestaurantsRequest(Graph<Coordinates> & graph, Graph<Coordinates> & reducedGraph, vector<Employee*> & employees, Request & request)` - definida em `SingleTask.cpp`.
+Um outro caso de utilização consiste na atribuição de um pedido que inclui refeições de mais do que um restaurante, cuja implementação se centra essencialmente na função 
+`SingleTask * multipleRestaurantsRequest(Graph<Coordinates> & graph, Graph<Coordinates> & reducedGraph, vector<Employee*> & employees, Request & request)` - definida em `SingleTask.cpp`.
 Para isso, determinam-se, mais uma vez, quais os estafeta eligíveis para realizar o pedido. Neste caso, no entanto, só podemos descartar, numa fase inicial, aqueles estafetas que não possuam capacidade para transportar a carga do pedido. 
 Seguidamente, determina-se para cada estafeta o caminho a seguir para recolher o pedido dos restaurantes, escolhendo sempre o restaurante mais perto  - `int getNearestRestaurant(Graph<Coordinates> & graph, const Coordinates & origin, vector<Coordinates> & restaurants)`; (consultando a matriz de distâncias pré calculada com o algoritmo de Floyd Warshall). Mantém-se sempre guardada a melhor distância, o estafeta ao qual essa distância corresponde e a ordem de visita dos restaurantes, tendo sempre em atenção que pode não existir caminho possível, no caso de alguns meios de transporte (dependendo do grafo de entrada). No fim, é escolhido o estafeta ao qual corresponde a melhor distância.
 
@@ -152,12 +157,15 @@ multipleRestaurantsRequest(Graph G1, Graph G2, vector<Employee> E, Request reque
 
 ```
 
-## 6.3. Um estafeta - Vários pedidos no mesmo deslocamento (variante do TSP)
+## 6.3 Um estafeta - Vários pedidos no mesmo deslocamento (variante do TSP)
 
 Outra alternativa que pensamos ser essencial incluir na nossa implementação, tendo em conta a essência do problema, foi o caso em que um só estafeta deve, num só trajeto, recolher todos os pedidos dos restaurantes e entregá-los nas respetivas moradas de entrega, tendo em atenção que o restaurante de um pedido deve sempre ser visitado antes da morada de entrega e que podem existir múltiplos pedidos do mesmo restaurante.
 
 Para isso, na função `SpecialTask * simultaneousRequests(Graph<Coordinates> & graph, vector<Request> & requests, Employee* employee)` - definida em `SpecialTask.cpp`; utilizam-se dois vetores auxiliares que acabam por funcionar como filas, uma com o restaurante não visitado mais próximo da posição atual do estafeta à cabeça e outra com a morada de entrega não visitada mais próxima da posição atual do estafeta à cabeça.
-Estas posições mais próximas são atualizadas nas funções: `setNearestRestaurant(Graph<Coordinates> & graph, vector<Request>  & requests, Coordinates origin)` e `setNearestDeliveryAddress(Graph<Coordinates> & graph, vector<Request>  & requests, Coordinates origin)`, chamadas a cada iteração.
+Estas posições mais próximas são atualizadas nas funções: 
+`setNearestRestaurant(Graph<Coordinates> & graph, vector<Request>  & requests, Coordinates origin)` 
+e 
+`setNearestDeliveryAddress(Graph<Coordinates> & graph, vector<Request>  & requests, Coordinates origin)`, chamadas a cada iteração.
 
 Enquanto existirem restaurantes ou moradas de entrega por visitar, o próximo ponto a visitar é escolhido do seguinte modo:
 - Na primeira iteração e sempre que não há pedidos para entregar é necessário recolher um pedido de um restaurante;
@@ -167,7 +175,8 @@ Enquanto existirem restaurantes ou moradas de entrega por visitar, o próximo po
 
 A ordem de visita dos vários pontos é guardada num vetor, que mantém a associação das coordenadas do ponto com o pedido ao qual este está associado, de modo a facilitar cálculos posteriores de tempos estimados.
 
-Finalmente, é definido o caminho completo e também os tempos estimados para cada pedido na função `setFloydWarshallPath(Graph<Coordinates> & graph, const vector<pair<Coordinates,unsigned long>> & checkpoints)` - em `SpecialTask.cpp`; que procede de modo similar à função do mesmo nome descrita anteriormente, calculando o caminho mais curto entre cada par de pontos consecutivos do caminho parcial.
+Finalmente, é definido o caminho completo e também os tempos estimados para cada pedido na função 
+`setFloydWarshallPath(Graph<Coordinates> & graph, const vector<pair<Coordinates,unsigned long>> & checkpoints)` - em `SpecialTask.cpp`; que procede de modo similar à função do mesmo nome descrita anteriormente, calculando o caminho mais curto entre cada par de pontos consecutivos do caminho parcial.
 
 ```cpp
 simultaneousRequests(Graph G, vector<Request> R, Employee employee){
@@ -219,11 +228,15 @@ simultaneousRequests(Graph G, vector<Request> R, Employee employee){
 }
 
 ```
+<br><br><br>
 
-## 6.5. Nota geral acerca dos algoritmos implementados
+## 6.4 Nota geral acerca dos algoritmos implementados
 
 Por fim, é de salientar a vantagem proporcionada pelo pré-processamento com o algoritmo de Floyd Warshall quando utilizados algoritmos como os descritos acima.
-Para efeitos de comparação, no entanto, podem ser consultados em `simulations.cpp` e em `SingleTask.cpp` os algoritmos que testamos na Fase II e que utilizam o algoritmo de Dijkstra na sua implementação. Também a análise das funções `virtual void setFloydWarshallPath(Graph<Coordinates> & graph)` e `void setDijkstraPath(Graph<Coordinates> & graph)` permite facilmente perceber que, ao utilizar o Floyd Warshall, é evitado o cálculo repetitivo das distâncias e do caminho mais curto para cada novo ponto de origem, uma desvantagem do Dijkstra. 
+Para efeitos de comparação, no entanto, podem ser consultados em `simulations.cpp` e em `SingleTask.cpp` os algoritmos que testamos na Fase II e que utilizam o algoritmo de Dijkstra na sua implementação. Também a análise das funções 
+`virtual void setFloydWarshallPath(Graph<Coordinates> & graph)`
+e 
+`void setDijkstraPath(Graph<Coordinates> & graph)` permite facilmente perceber que, ao utilizar o Floyd Warshall, é evitado o cálculo repetitivo das distâncias e do caminho mais curto para cada novo ponto de origem, uma desvantagem do Dijkstra. 
 
 *Parte da função utilizada para definir o caminho final de um estafeta, nos algoritmos *1* e *2**
 
