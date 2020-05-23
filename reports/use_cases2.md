@@ -1,4 +1,4 @@
-# Principais casos de uso implementados
+# 7. Principais casos de uso implementados
 
 Depois de todos os algoritmos estarem implementados e estudadas todas as questões relacionadas com a análise temporal e espacial, passamos para o desenvolvimento da solução para o contexto do projeto.
 

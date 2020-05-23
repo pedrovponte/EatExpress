@@ -3,6 +3,7 @@
 //
 
 #include <sstream>
+#include <cmath>
 #include "SingleTask.h"
 
 // SingleTask class
@@ -38,7 +39,7 @@ void SingleTask::setFloydWarshallPath(Graph<Coordinates> & graph){
     employee->setCoordinates(path.at(path.size()-1));
     employee->setReady(true);
 
-    time = (totalDistance * 60) / (1000 * employee->getAvgVelocity());
+    time = ceil((totalDistance * 60) / (1000 * employee->getAvgVelocity()));
 }
 
 void SingleTask::setDijkstraPath(Graph<Coordinates> & graph){
@@ -438,7 +439,7 @@ SingleTask * multipleRestaurantsRequest(Graph<Coordinates> & graph, Graph<Coordi
                 dist = reducedGraph.getDist(reducedGraph.findVertexIdx(origin),reducedGraph.findVertexIdx(requestRestaurants[nearestRestaurantPos]));
 
                 // No path found for this employee
-                if(dist == INF || totalDist > 6000){
+                if(dist == INF){
                     totalDist = INF;
                     break;
                 }
@@ -450,26 +451,24 @@ SingleTask * multipleRestaurantsRequest(Graph<Coordinates> & graph, Graph<Coordi
             requestRestaurants.erase(requestRestaurants.begin()+nearestRestaurantPos);
         }
 
-        if(totalDist == INF){
+        if(totalDist == INF || (totalDist > 6000 && (employees[i]->getType() == BIKE || employees[i]->getType() == FOOT))){
             continue;
         }
 
         // Check if path from last restaurant to delivery address exists
         if(employees[i]->getType() == CAR || employees[i]->getType() == MOTORCYCLE){
-            double dist = INF;
             int deliveryIdx = graph.findVertexIdx(request.getDeliveryAddr());
                 if(deliveryIdx != -1){
-                    dist = graph.getDist(graph.findVertexIdx(restaurantsPath[restaurantsPath.size()-1]),deliveryIdx);
+                    double dist = graph.getDist(graph.findVertexIdx(restaurantsPath[restaurantsPath.size()-1]),deliveryIdx);
                     if(dist == INF) break;
                     totalDist += dist;
-            } else break;
+                } else break;
         }
         else if (employees[i]->getType() == BIKE || employees[i]->getType() == FOOT){
-            double dist = INF;
             int deliveryIdx = reducedGraph.findVertexIdx(request.getDeliveryAddr());
             if(deliveryIdx != -1){
-                dist = reducedGraph.getDist(reducedGraph.findVertexIdx(restaurantsPath[restaurantsPath.size()-1]),deliveryIdx);
-                if(dist == INF) break;
+                double dist = reducedGraph.getDist(reducedGraph.findVertexIdx(restaurantsPath[restaurantsPath.size()-1]),deliveryIdx);
+                if(dist == INF || totalDist + dist > 6000) break;
                 totalDist += dist;
             } else break;
         }
