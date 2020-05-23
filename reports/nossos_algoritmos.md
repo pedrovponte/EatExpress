@@ -180,7 +180,7 @@ simultaneousRequests(Graph G, vector<Request> R, Employee employee){
 
     int totalCargo ← 0;
     while deliver == ∅ || pick == ∅ :
-        // Não há mais pedidos para recolher do restaurante / O estafeta não tem mais capacidade
+        // O estafeta não tem mais capacidade / Não há mais pedidos para recolher do restaurante
         if totalCargo == maxCargo(e) || pick == ∅ :
             // Entrega um pedido 
             orig ← deliveryAddr(deliver.front());
