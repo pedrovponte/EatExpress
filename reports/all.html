@@ -343,7 +343,8 @@ pre[data-line] .line-highlight[data-end]:after {
 </li>
 </ul>
 </li>
-<li><a href="#8-refer%C3%AAncias">8. Refer&#xEA;ncias</a></li>
+<li><a href="#8-concluso">8. Conclusão</a></li>
+<li><a href="#9-refer%C3%AAncias">9. Refer&#xEA;ncias</a></li>
 </ul>
 <p><br><br><br><br><br><br><br><br><br><br><br><br><br><br></p>
 <h1 class="mume-header" id="1-introdu%C3%A7%C3%A3o">1. Introdu&#xE7;&#xE3;o</h1>
@@ -745,7 +746,7 @@ Type<span class="token operator">:</span> Vegetarian        Vertex id<span class
         <span class="token punctuation">}</span>
     <span class="token punctuation">}</span>
 </pre><p>Para efeitos de teste desta fase de implementa&#xE7;&#xE3;o, considerou-se a exist&#xEA;ncia de 3 estafetas, distribu&#xED;dos aleatoriamente por um grafo, representativo de uma &#xE1;rea urbana, de dimens&#xF5;es <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>16</mn><mo>&#xD7;</mo><mn>16</mn></mrow><annotation encoding="application/x-tex">16 \times 16</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.72777em;vertical-align:-0.08333em;"></span><span class="mord">1</span><span class="mord">6</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">&#xD7;</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">1</span><span class="mord">6</span></span></span></span>, e geraram-se at&#xE9; 2000 pedidos tamb&#xE9;m aleat&#xF3;rios.</p>
-<p><img src="../logs/phase2/Dijkstra-Floyd.png" alt></p>
+<p style="text-align: center; margin-left: auto; margin-right: auto;"><img src="../logs/phase2/Dijkstra-Floyd.png" style="text-align: center; display: inline;" alt></p>
 <h3 class="mume-header" id="543-fase-iii">5.4.3 Fase III</h3>
 
 <p>Aqui, variados meios de transporte come&#xE7;aram j&#xE1; a ser considerados, o que correspondeu &#xE0; necessidade de criar mapas adaptados, partindo dos j&#xE1; existentes. A solu&#xE7;&#xE3;o, em conformidade com as simula&#xE7;&#xF5;es efetuadas, foi reconverter os mapas em grelha para grafos com um n&#xFA;mero inferior de v&#xE9;rtices e arestas dispon&#xED;veis, simulando a transitabilidade de certas vias e a sua acessibilidade, conforme o meio de transporte. Um exemplo de um grafo adaptado para servir estafetas que se desloquem a p&#xE9;, ou de bicicleta, &#xE9; o seguinte:</p>
@@ -841,45 +842,47 @@ para realizar esta verifica&#xE7;&#xE3;o.</p>
 <code>getEligibleEmployees(vector&lt;Employee*&gt; &amp; employees, const Request &amp; request)</code>.</p>
 <p>Finalmente, de todos os estafetas dispon&#xED;veis, a escolha passa pela conjuga&#xE7;&#xE3;o de tr&#xEA;s fatores: dist&#xE2;ncia mais curta at&#xE9; ao restaurante, carga e velocidade m&#xE9;dia do meio de transporte, dando prioridade &#xE0; dist&#xE2;ncia, com um peso de 50% na decis&#xE3;o. Para isso utiliza-se o operador menor da classe <code>Employee</code> para escolher o estafeta a realizar o pedido.</p>
 <pre data-role="codeBlock" data-info="cpp" class="language-cpp"><span class="token keyword">bool</span> Employee<span class="token operator">::</span><span class="token keyword">operator</span><span class="token operator">&lt;</span><span class="token punctuation">(</span><span class="token keyword">const</span> Employee <span class="token operator">&amp;</span>rhs<span class="token punctuation">)</span> <span class="token keyword">const</span> <span class="token punctuation">{</span>
-    <span class="token keyword">return</span> dist<span class="token operator">*</span><span class="token number">0.5</span> <span class="token operator">+</span> maxCargo<span class="token operator">*</span><span class="token number">0.3</span> <span class="token operator">+</span> avgVelocity <span class="token operator">*</span> <span class="token number">0.2</span> <span class="token operator">&lt;</span> rhs<span class="token punctuation">.</span><span class="token function">getDist</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">*</span><span class="token number">0.5</span> <span class="token operator">+</span> rhs<span class="token punctuation">.</span><span class="token function">getMaxCargo</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">*</span> <span class="token number">0.3</span> <span class="token operator">+</span> rhs<span class="token punctuation">.</span><span class="token function">getAvgVelocity</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">*</span> <span class="token number">0.2</span> <span class="token punctuation">;</span>
+    <span class="token keyword">return</span> dist <span class="token operator">*</span> <span class="token number">0.5</span> <span class="token operator">+</span> maxCargo <span class="token operator">*</span> <span class="token number">0.3</span> <span class="token operator">+</span> avgVelocity <span class="token operator">*</span> <span class="token number">0.2</span> <span class="token operator">&lt;</span> 
+        rhs<span class="token punctuation">.</span><span class="token function">getDist</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">*</span> <span class="token number">0.5</span> <span class="token operator">+</span> rhs<span class="token punctuation">.</span><span class="token function">getMaxCargo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">*</span> <span class="token number">0.3</span> <span class="token operator">+</span> rhs<span class="token punctuation">.</span><span class="token function">getAvgVelocity</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">*</span> <span class="token number">0.2</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
 </pre><p>Definido um estafeta para um dado pedido, este &#xE9; marcado como indispon&#xED;vel, sendo necess&#xE1;rio distribuir os restantes pedidos pelos estafetas dispon&#xED;veis.<br>
 Como existem pedidos que s&#xF3; podem ser realizados por alguns estafetas espec&#xED;ficos, devido &#xE0; sua carga ou fraca acessibilidade dos seus v&#xE9;rtices, alguns pedidos n&#xE3;o ser&#xE3;o atribu&#xED;dos &#xE0; primeira tentativa, utilizando-se uma fila de prioridade auxiliar <code>pendingRequests</code> para os guardar.</p>
 <p>Assim que uma ronda de distribui&#xE7;&#xE3;o de pedidos termina, isto &#xE9;, assim que todos os estafetas tenham um pedido atribu&#xED;do, volta-se a disponibilizar todos os estafetas para a distribui&#xE7;&#xE3;o dos restantes pedidos e constr&#xF3;i-se o caminho mais curto para cada estafeta realizar o pedido que lhe foi atribu&#xED;do - <code>setFloydWarshallPath(Graph&lt;Coordinates&gt; &amp; graph)</code> - em <code>SingleTask.cpp</code>; obtendo o caminho mais curto entre a posi&#xE7;&#xE3;o do estafeta e o restaurante e entre o restaurante e a morada de entrega.</p>
 <p>Assim que n&#xE3;o existirem mais pedidos para distribuir, havendo a possibilidade de existirem pedidos que nenhum estafeta tenha condi&#xE7;&#xF5;es para realizar - por os seus v&#xE9;rtices serem inacess&#xED;veis ou por nenhum estafeta ter capacidade para o transportar; s&#xE3;o devolvidas todas as tarefas que fazem corresponder cada pedido com o estafeta que ficou respons&#xE1;vel por ele.</p>
 <pre data-role="codeBlock" data-info="cpp" class="language-cpp"><span class="token function">distributeRequests</span><span class="token punctuation">(</span>Graph G1<span class="token punctuation">,</span> Graph G2<span class="token punctuation">,</span> PriorityQueue<span class="token operator">&lt;</span>Request<span class="token operator">&gt;</span> R<span class="token punctuation">,</span> vector<span class="token operator">&lt;</span>Employee<span class="token operator">&gt;</span> E<span class="token punctuation">)</span><span class="token punctuation">{</span>
-    vector<span class="token operator">&lt;</span>SingleTask<span class="token operator">&gt;</span> task<span class="token punctuation">;</span> <span class="token comment">// Para devolver a distribui&#xE7;&#xE3;o dos pedidos pelos estafetas</span>
-    vector<span class="token operator">&lt;</span>SingleTask<span class="token operator">&gt;</span> roundTasks<span class="token punctuation">;</span> <span class="token comment">// A cada ronda de distribui&#xE7;&#xE3;o guarda as tarefas</span>
+    vector<span class="token operator">&lt;</span>SingleTask<span class="token operator">&gt;</span> task <span class="token comment">// Para devolver a distribui&#xE7;&#xE3;o dos pedidos pelos estafetas</span>
+    vector<span class="token operator">&lt;</span>SingleTask<span class="token operator">&gt;</span> roundTasks <span class="token comment">// A cada ronda de distribui&#xE7;&#xE3;o guarda as tarefas</span>
 
-    PriorityQueue<span class="token operator">&lt;</span>Request<span class="token operator">&gt;</span> pendingRequests &#x1F804; &#x2205; <span class="token comment">// Para guardar pedidos pendentes</span>
-    R &#x2190; <span class="token function">setRequestsDeliverability</span><span class="token punctuation">(</span>G1<span class="token punctuation">,</span>G2<span class="token punctuation">,</span>R<span class="token punctuation">)</span> <span class="token comment">// Para definir se um pedido pode ou n&#xE3;o ser entregue por cada meio de transporte</span>
+    PriorityQueue<span class="token operator">&lt;</span>Request<span class="token operator">&gt;</span> pendingRequests &#x1F804; &#x2205; <span class="token comment">// Guardar pedidos pendentes</span>
+    R &#x2190; <span class="token function">setRequestsDeliverability</span><span class="token punctuation">(</span>G1<span class="token punctuation">,</span>G2<span class="token punctuation">,</span>R<span class="token punctuation">)</span>
 
     <span class="token keyword">while</span> R <span class="token operator">!=</span> &#x2205; <span class="token operator">:</span>
-        Request request &#x2190; R<span class="token punctuation">.</span><span class="token function">top</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token comment">// Entregar um pedido de cada vez</span>
-        R<span class="token punctuation">.</span><span class="token function">pop</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        Request request &#x2190; R<span class="token punctuation">.</span><span class="token function">top</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token comment">// Tentar atribuir o 1&#xBA; pedido da fila</span>
+        R<span class="token punctuation">.</span><span class="token function">pop</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
 
-        <span class="token function">setDistancesToCheckpoint</span><span class="token punctuation">(</span>G1<span class="token punctuation">,</span> G2<span class="token punctuation">,</span> E<span class="token punctuation">,</span> request<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        eligibleEmployees &#x2190; <span class="token function">getEligibleEmployees</span><span class="token punctuation">(</span>E<span class="token punctuation">,</span> request<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token function">setDistancesToCheckpoint</span><span class="token punctuation">(</span>G1<span class="token punctuation">,</span> G2<span class="token punctuation">,</span> E<span class="token punctuation">,</span> request<span class="token punctuation">)</span>
+        eligibleEmployees &#x2190; <span class="token function">getEligibleEmployees</span><span class="token punctuation">(</span>E<span class="token punctuation">,</span> request<span class="token punctuation">)</span>
 
         <span class="token keyword">if</span> E <span class="token operator">==</span> &#x2205; <span class="token operator">:</span>
-            pendingRequests<span class="token punctuation">.</span><span class="token function">push</span><span class="token punctuation">(</span>request<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// Nenhum estafeta elig&#xED;vel no momento</span>
+            pendingRequests<span class="token punctuation">.</span><span class="token function">push</span><span class="token punctuation">(</span>request<span class="token punctuation">)</span> <span class="token comment">// Nenhum estafeta elig&#xED;vel</span>
         <span class="token keyword">else</span> <span class="token operator">:</span>
-            <span class="token function">sort</span><span class="token punctuation">(</span>E<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// de acordo com o operador &lt;</span>
-            <span class="token function">ready</span><span class="token punctuation">(</span>E<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">)</span> &#x2190; <span class="token boolean">false</span><span class="token punctuation">;</span> <span class="token comment">// Ocupar o estafeta com o pedido</span>
-            SingleTask <span class="token function">task</span><span class="token punctuation">(</span>E<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">,</span> request<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// Definir tarefa que associa o estafeta ao pedido</span>
+            <span class="token function">sort</span><span class="token punctuation">(</span>E<span class="token punctuation">)</span> <span class="token comment">// de acordo com o operador &lt;</span>
+            <span class="token function">ready</span><span class="token punctuation">(</span>E<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">)</span> &#x2190; <span class="token boolean">false</span> <span class="token comment">// Ocupar o estafeta com o pedido</span>
+            SingleTask <span class="token function">task</span><span class="token punctuation">(</span>E<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">,</span> request<span class="token punctuation">)</span> <span class="token comment">// Associar o estafeta ao pedido</span>
 
         <span class="token keyword">if</span> Q <span class="token operator">==</span> &#x2205; <span class="token operator">:</span>
-            <span class="token comment">/*...*/</span> <span class="token comment">// Aqui verifica-se se um pedido n&#xE3;o pode ser entregue a nenhum estafeta. Detalhes podem ser consultados no c&#xF3;digo fonte.</span>
-
+            <span class="token comment">//Verificar caso em que o pedido n&#xE3;o pode ser entregue por nenhum estafeta</span>
+            <span class="token comment">// ...</span>
+            <span class="token comment">// Constru&#xE7;&#xE3;o do caminho dos estafetas</span>
             <span class="token keyword">for</span> each task &#x2208; roundTasks <span class="token operator">:</span>
                 <span class="token keyword">if</span> <span class="token function">VehicleType</span><span class="token punctuation">(</span>task<span class="token punctuation">)</span> <span class="token operator">==</span> CAR <span class="token operator">||</span> <span class="token function">VehicleType</span><span class="token punctuation">(</span>task<span class="token punctuation">)</span> <span class="token operator">==</span> MOTORCYCLE <span class="token operator">:</span>
-                    task<span class="token punctuation">.</span><span class="token function">setFloydWarshallPath</span><span class="token punctuation">(</span>G1<span class="token punctuation">)</span><span class="token punctuation">;</span>
+                    task<span class="token punctuation">.</span><span class="token function">setFloydWarshallPath</span><span class="token punctuation">(</span>G1<span class="token punctuation">)</span>
                 <span class="token keyword">if</span> <span class="token function">VehicleType</span><span class="token punctuation">(</span>task<span class="token punctuation">)</span> <span class="token operator">==</span> BIKE <span class="token operator">||</span> <span class="token function">VehicleType</span><span class="token punctuation">(</span>task<span class="token punctuation">)</span> <span class="token operator">==</span> FOOT <span class="token operator">:</span>
-                    task<span class="token punctuation">.</span><span class="token function">setFloydWarshallPath</span><span class="token punctuation">(</span>G2<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// Constru&#xE7;&#xE3;o do caminho do estafeta </span>
+                    task<span class="token punctuation">.</span><span class="token function">setFloydWarshallPath</span><span class="token punctuation">(</span>G2<span class="token punctuation">)</span> 
 
-            tasks<span class="token punctuation">.</span><span class="token function">insert</span><span class="token punctuation">(</span>roundTasks<span class="token punctuation">)</span><span class="token punctuation">;</span>
-            roundTasks<span class="token punctuation">.</span><span class="token function">clear</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> 
-    <span class="token keyword">return</span> tasks<span class="token punctuation">;</span>
+            tasks<span class="token punctuation">.</span><span class="token function">insert</span><span class="token punctuation">(</span>roundTasks<span class="token punctuation">)</span>
+            roundTasks<span class="token punctuation">.</span><span class="token function">clear</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token keyword">return</span> tasks
 <span class="token punctuation">}</span>
 </pre><h2 class="mume-header" id="62-pedido-de-m%C3%BAltiplos-restaurantes">6.2 Pedido de m&#xFA;ltiplos restaurantes</h2>
 
@@ -889,75 +892,80 @@ Para isso, determinam-se, mais uma vez, quais os estafeta elig&#xED;veis para re
 Seguidamente, determina-se para cada estafeta o caminho a seguir para recolher o pedido dos restaurantes, escolhendo sempre o restaurante mais perto  - <code>int getNearestRestaurant(Graph&lt;Coordinates&gt; &amp; graph, const Coordinates &amp; origin, vector&lt;Coordinates&gt; &amp; restaurants)</code>; (consultando a matriz de dist&#xE2;ncias pr&#xE9; calculada com o algoritmo de Floyd Warshall). Mant&#xE9;m-se sempre guardada a melhor dist&#xE2;ncia, o estafeta ao qual essa dist&#xE2;ncia corresponde e a ordem de visita dos restaurantes, tendo sempre em aten&#xE7;&#xE3;o que pode n&#xE3;o existir caminho poss&#xED;vel, no caso de alguns meios de transporte (dependendo do grafo de entrada). No fim, &#xE9; escolhido o estafeta ao qual corresponde a melhor dist&#xE2;ncia.</p>
 <p>Mais uma vez, para definir o caminho completo a percorrer pelo estafeta, utiliza-se a fun&#xE7;&#xE3;o <code>setFloydWarshallPath(Graph&lt;Coordinates&gt; &amp; graph)</code> - em <code>SingleTask.cpp</code>; que calcula o caminho mais curto entre restaurantes consecutivos cuja ordem de visita j&#xE1; fora determinada no algoritmo descrito.</p>
 <pre data-role="codeBlock" data-info="cpp" class="language-cpp"><span class="token function">multipleRestaurantsRequest</span><span class="token punctuation">(</span>Graph G1<span class="token punctuation">,</span> Graph G2<span class="token punctuation">,</span> vector<span class="token operator">&lt;</span>Employee<span class="token operator">&gt;</span> E<span class="token punctuation">,</span> Request request<span class="token punctuation">)</span><span class="token punctuation">{</span>
-    vector<span class="token operator">&lt;</span>Coordinates<span class="token operator">&gt;</span> restaurants<span class="token punctuation">;</span> <span class="token comment">// Restaurantes por ordem de visita</span>
-    <span class="token keyword">int</span> nearestEmployeePos<span class="token punctuation">;</span> <span class="token comment">// Guardar a cada itera&#xE7;&#xE3;o o estafeta ao qual corresponde a melhor dist&#xE2;ncia</span>
-    <span class="token keyword">int</span> nearestRestaurantPos<span class="token punctuation">;</span> <span class="token comment">// Guardar para cada estafeta o restaurante mais pr&#xF3;ximo dos que faltam visitar  </span>
-    <span class="token keyword">double</span> nearestEmployeeDist &#x2190; INF<span class="token punctuation">;</span> <span class="token comment">// Inicializar a melhor dist&#xE2;ncia com valor elevado</span>
+    vector<span class="token operator">&lt;</span>Coordinates<span class="token operator">&gt;</span> restaurants <span class="token comment">// Restaurantes por ordem de visita</span>
+    <span class="token keyword">int</span> nearestEmployeePos <span class="token comment">// Estafeta ao qual corresponde a melhor dist&#xE2;ncia</span>
+    <span class="token keyword">int</span> nearestRestaurantPos <span class="token comment">// Restaurante mais pr&#xF3;ximo dos que faltam visitar  </span>
+    <span class="token keyword">double</span> nearestEmployeeDist &#x2190; INF <span class="token comment">// Inicializar a melhor dist&#xE2;ncia com valor elevado</span>
 
     employees &#x2190; <span class="token function">getEligibleEmployeesMultipleRestaurants</span><span class="token punctuation">(</span>E<span class="token punctuation">,</span> request<span class="token punctuation">)</span><span class="token punctuation">;</span>
 
     <span class="token keyword">for</span> i <span class="token operator">=</span> <span class="token number">0</span> to E<span class="token punctuation">.</span><span class="token function">size</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">:</span> <span class="token comment">// Repetir procedimento para cada estafeta dispon&#xED;vel</span>
-        <span class="token keyword">double</span> totalDist &#x2190; <span class="token number">0</span><span class="token punctuation">;</span>
-        Coordinates orig &#x2190; <span class="token function">coords</span><span class="token punctuation">(</span>E<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// Posi&#xE7;&#xE3;o inicial do estafeta</span>
-        vector<span class="token operator">&lt;</span>Coordinates<span class="token operator">&gt;</span> requestRestaurants &#x2190; <span class="token function">checkpoints</span><span class="token punctuation">(</span>request<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// Restaurantes por visitar</span>
-        vector<span class="token operator">&lt;</span>Coordinates<span class="token operator">&gt;</span> restaurantsPath<span class="token punctuation">;</span> <span class="token comment">// Ordem de visita dos restaurantes se o estafeta por escolhido</span>
+        <span class="token keyword">double</span> totalDist &#x2190; <span class="token number">0</span>
+        Coordinates orig &#x2190; <span class="token function">coords</span><span class="token punctuation">(</span>E<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token comment">// Posi&#xE7;&#xE3;o inicial do estafeta</span>
+        vector<span class="token operator">&lt;</span>Coordinates<span class="token operator">&gt;</span> requestRestaurants &#x2190; <span class="token function">checkpoints</span><span class="token punctuation">(</span>request<span class="token punctuation">)</span> <span class="token comment">// Restaurantes por visitar</span>
+        vector<span class="token operator">&lt;</span>Coordinates<span class="token operator">&gt;</span> restaurantsPath <span class="token comment">// Ordem de visita dos restaurantes</span>
 
         <span class="token keyword">for</span> j <span class="token operator">=</span> <span class="token number">0</span> to <span class="token function">checkpoints</span><span class="token punctuation">(</span>request<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">size</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">:</span>
-            <span class="token keyword">double</span> dist &#x2190; <span class="token number">0</span><span class="token punctuation">;</span> <span class="token comment">// Calcular a dist&#xE2;ncia a percorrer pelo estafeta se for escolhido</span>
+            <span class="token keyword">double</span> dist &#x2190; <span class="token number">0</span><span class="token punctuation">;</span> <span class="token comment">// Calcular dist&#xE2;ncia a percorrer pelo estafeta</span>
             <span class="token keyword">if</span> <span class="token function">vehicle</span><span class="token punctuation">(</span>E<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token operator">==</span> CAR <span class="token operator">||</span><span class="token function">vehicle</span><span class="token punctuation">(</span>E<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token operator">==</span> MOTORCYCLE <span class="token operator">:</span>
-                nearestRestaurantPos &#x2190; <span class="token function">getNearestRestaurant</span><span class="token punctuation">(</span>G1<span class="token punctuation">,</span> orig<span class="token punctuation">,</span> requestRestaurants<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// Restaurante por visitar mais perto do anterior</span>
+                <span class="token comment">// Restaurante por visitar mais perto do anterior</span>
+                nearestRestaurantPos &#x2190; <span class="token function">getNearestRestaurant</span><span class="token punctuation">(</span>G1<span class="token punctuation">,</span> orig<span class="token punctuation">,</span> requestRestaurants<span class="token punctuation">)</span> 
 
                 dist &#x2190; G1<span class="token punctuation">.</span><span class="token function">getDist</span><span class="token punctuation">(</span>orig<span class="token punctuation">,</span> requestRestaurants<span class="token punctuation">[</span>nearestRestaurantPos<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-                <span class="token comment">/*...*/</span>
-                <span class="token keyword">if</span> dist <span class="token operator">==</span> INF <span class="token operator">:</span> <span class="token comment">// N&#xE3;o foi encontrado caminho para o estafeta realizar o pedido</span>
-                    totalDist &#x2190; INF<span class="token punctuation">;</span> <span class="token keyword">break</span><span class="token punctuation">;</span>
+                <span class="token comment">//...</span>
+                <span class="token keyword">if</span> dist <span class="token operator">==</span> INF <span class="token operator">:</span> <span class="token comment">// N&#xE3;o foi encontrado caminho</span>
+                    totalDist &#x2190; INF
+                    <span class="token keyword">break</span>
             
-            <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token function">vehicle</span><span class="token punctuation">(</span>E<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token operator">==</span> BIKE <span class="token operator">||</span><span class="token function">vehicle</span><span class="token punctuation">(</span>E<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token operator">==</span> FOOT <span class="token operator">:</span>
-                <span class="token comment">/*Procedimento semelhante ao anterior mas para o grafo destes meios de transporte*/</span>
+            <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token function">vehicle</span><span class="token punctuation">(</span>E<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token operator">==</span> BIKE <span class="token operator">||</span><span class="token function">vehicle</span><span class="token punctuation">(</span>E<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token operator">==</span> FOOT <span class="token operator">:</span> <span class="token comment">//...</span>
 
-            totalDist &#x2190; totalDist <span class="token operator">+</span> dist<span class="token punctuation">;</span> <span class="token comment">// Acumular dist&#xE2;ncia</span>
-            restaurantsPath<span class="token punctuation">.</span><span class="token function">push_back</span><span class="token punctuation">(</span>requestRestaurants<span class="token punctuation">[</span>nearestRestaurantPos<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// Guardar restaurantes por ordem de visita</span>
-            orig &#x2190; requestRestaurants<span class="token punctuation">[</span>nearestRestaurantPos<span class="token punctuation">]</span><span class="token punctuation">;</span> <span class="token comment">// Atualizar posi&#xE7;&#xE3;o anterior</span>
-            requestRestaurants<span class="token punctuation">.</span><span class="token function">erase</span><span class="token punctuation">(</span>requestRestaurants<span class="token punctuation">.</span><span class="token function">begin</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">+</span> nearestRestaurantPos<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// Eliminar dos restaurantes por visitar</span>
+            totalDist &#x2190; totalDist <span class="token operator">+</span> dist <span class="token comment">// Acumular dist&#xE2;ncia</span>
+            <span class="token comment">// Guardar restaurantes por ordem de visita</span>
+            restaurantsPath<span class="token punctuation">.</span><span class="token function">push_back</span><span class="token punctuation">(</span>requestRestaurants<span class="token punctuation">[</span>nearestRestaurantPos<span class="token punctuation">]</span><span class="token punctuation">)</span>
+            <span class="token comment">// Atualizar posi&#xE7;&#xE3;o anterior</span>
+            orig &#x2190; requestRestaurants<span class="token punctuation">[</span>nearestRestaurantPos<span class="token punctuation">]</span> 
+            <span class="token comment">// Eliminar dos restaurantes por visitar</span>
+            requestRestaurants<span class="token punctuation">.</span><span class="token function">erase</span><span class="token punctuation">(</span>requestRestaurants<span class="token punctuation">.</span><span class="token function">begin</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">+</span> nearestRestaurantPos<span class="token punctuation">)</span> 
 
-        <span class="token comment">// N&#xE3;o escolher o estafeta se n&#xE3;o foi encontrado caminho ou se, no caso de se deslocar a p&#xE9; ou de bicicleta, o caminho ultrapassa 6km </span>
-        <span class="token keyword">if</span> totalDist <span class="token operator">==</span> INF <span class="token operator">||</span> <span class="token punctuation">(</span>totalDist <span class="token operator">&gt;</span> <span class="token number">6000</span> <span class="token operator">&amp;&amp;</span> <span class="token punctuation">(</span><span class="token function">vehicle</span><span class="token punctuation">(</span>E<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token operator">==</span> BIKE <span class="token operator">||</span> <span class="token function">vehicle</span><span class="token punctuation">(</span>E<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token operator">==</span> FOOT<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token operator">:</span>
-            <span class="token keyword">continue</span><span class="token punctuation">;</span> 
+        <span class="token comment">// N&#xE3;o escolher o estafeta</span>
+        <span class="token keyword">if</span> totalDist <span class="token operator">==</span> INF <span class="token operator">||</span> 
+        <span class="token punctuation">(</span>totalDist <span class="token operator">&gt;</span> <span class="token number">6000</span> <span class="token operator">&amp;&amp;</span> <span class="token punctuation">(</span><span class="token function">vehicle</span><span class="token punctuation">(</span>E<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token operator">==</span> BIKE <span class="token operator">||</span> <span class="token function">vehicle</span><span class="token punctuation">(</span>E<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token operator">==</span> FOOT<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token operator">:</span>
+            <span class="token keyword">continue</span>
 
         <span class="token comment">// Adicionar a dist&#xE2;ncia &#xE0; morada de destino</span>
         <span class="token keyword">if</span> <span class="token function">vehicle</span><span class="token punctuation">(</span>E<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token operator">==</span> CAR <span class="token operator">||</span> <span class="token function">vehicle</span><span class="token punctuation">(</span>E<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token operator">==</span> MOTORCYCLE <span class="token operator">:</span>
-            <span class="token keyword">double</span> dist &#x2190; G<span class="token punctuation">.</span><span class="token function">getDist</span><span class="token punctuation">(</span>restaurantsPath<span class="token punctuation">[</span>restaurantsPath<span class="token punctuation">.</span><span class="token function">size</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token function">deliveryAddr</span><span class="token punctuation">(</span>request<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            <span class="token comment">/*...*/</span>
-            <span class="token keyword">if</span><span class="token punctuation">(</span>dist <span class="token operator">==</span> INF<span class="token punctuation">)</span> <span class="token keyword">break</span><span class="token punctuation">;</span>
-            totalDist &#x2190; totalDist <span class="token operator">+</span> dist<span class="token punctuation">;</span>
+            <span class="token keyword">double</span> dist &#x2190; G<span class="token punctuation">.</span><span class="token function">getDist</span><span class="token punctuation">(</span>restaurantsPath<span class="token punctuation">[</span>restaurantsPath<span class="token punctuation">.</span><span class="token function">size</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token function">deliveryAddr</span><span class="token punctuation">(</span>request<span class="token punctuation">)</span><span class="token punctuation">)</span>
+            <span class="token comment">//...</span>
+            <span class="token keyword">if</span><span class="token punctuation">(</span>dist <span class="token operator">==</span> INF<span class="token punctuation">)</span> <span class="token keyword">break</span>
+            totalDist &#x2190; totalDist <span class="token operator">+</span> dist
         
         <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token function">vehicle</span><span class="token punctuation">(</span>E<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token operator">==</span> BIKE <span class="token operator">||</span> <span class="token function">vehicle</span><span class="token punctuation">(</span>E<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token operator">==</span> FOOT<span class="token punctuation">)</span> <span class="token operator">:</span>
-            <span class="token keyword">double</span> dist &#x2190; G<span class="token punctuation">.</span><span class="token function">getDist</span><span class="token punctuation">(</span>restaurantsPath<span class="token punctuation">[</span>restaurantsPath<span class="token punctuation">.</span><span class="token function">size</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token function">deliveryAddr</span><span class="token punctuation">(</span>request<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            <span class="token comment">/*...*/</span>
+            <span class="token keyword">double</span> dist &#x2190; G<span class="token punctuation">.</span><span class="token function">getDist</span><span class="token punctuation">(</span>restaurantsPath<span class="token punctuation">[</span>restaurantsPath<span class="token punctuation">.</span><span class="token function">size</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token function">deliveryAddr</span><span class="token punctuation">(</span>request<span class="token punctuation">)</span><span class="token punctuation">)</span>
+            <span class="token comment">//...</span>
             <span class="token keyword">if</span><span class="token punctuation">(</span>dist <span class="token operator">==</span> INF <span class="token operator">||</span> totalDist <span class="token operator">+</span> dist <span class="token operator">&gt;</span> <span class="token number">6000</span><span class="token punctuation">)</span> <span class="token keyword">break</span><span class="token punctuation">;</span>
-             totalDist &#x2190; totalDist <span class="token operator">+</span> dist<span class="token punctuation">;</span>
+             totalDist &#x2190; totalDist <span class="token operator">+</span> dist
         
-        <span class="token comment">// Se a dist&#xE2;ncia for melhor que a do estafeta anterior, guarda-se a dist&#xE2;ncia, o caminho e o estafeta</span>
+        <span class="token comment">// Melhor dist&#xE2;ncia -&gt; mudar estafeta escolhido</span>
         <span class="token keyword">if</span> totalDist <span class="token operator">&lt;</span> nearestEmployeeDist <span class="token operator">:</span> 
-            nearestEmployeePos &#x2190; i<span class="token punctuation">;</span>
-            nearestEmployeeDist &#x2190; totalDist<span class="token punctuation">;</span>
-            restaurants &#x2190; restaurantsPath<span class="token punctuation">;</span>
+            nearestEmployeePos &#x2190; i
+            nearestEmployeeDist &#x2190; totalDist
+            restaurants &#x2190; restaurantsPath
     <span class="token punctuation">}</span>
 
     <span class="token comment">// Se n&#xE3;o foi encontrado nenhum estafeta para realizar o pedido retornar tarefa vazia</span>
-    <span class="token keyword">if</span> nearestEmployeeDist <span class="token operator">==</span> INF <span class="token operator">:</span> <span class="token keyword">return</span> <span class="token function">SingleTask</span><span class="token punctuation">(</span><span class="token keyword">nullptr</span><span class="token punctuation">,</span> request<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">if</span> nearestEmployeeDist <span class="token operator">==</span> INF <span class="token operator">:</span> <span class="token keyword">return</span> <span class="token function">SingleTask</span><span class="token punctuation">(</span><span class="token keyword">nullptr</span><span class="token punctuation">,</span> request<span class="token punctuation">)</span>
 
-    request<span class="token punctuation">.</span><span class="token function">setCheckpoints</span><span class="token punctuation">(</span>restaurants<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// Guardar os restaurantes por ordem de visita</span>
-    SingleTask task &#x2190; <span class="token function">SingleTask</span><span class="token punctuation">(</span>E<span class="token punctuation">[</span>nearestEmployeePos<span class="token punctuation">]</span><span class="token punctuation">,</span> request<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// Tarefa que associa pedido e estafeta</span>
+    request<span class="token punctuation">.</span><span class="token function">setCheckpoints</span><span class="token punctuation">(</span>restaurants<span class="token punctuation">)</span> <span class="token comment">// Guardar os restaurantes por ordem de visita</span>
+    SingleTask task &#x2190; <span class="token function">SingleTask</span><span class="token punctuation">(</span>E<span class="token punctuation">[</span>nearestEmployeePos<span class="token punctuation">]</span><span class="token punctuation">,</span> request<span class="token punctuation">)</span> <span class="token comment">// Associar pedido e estafeta</span>
 
     <span class="token keyword">if</span> <span class="token function">vehicle</span><span class="token punctuation">(</span>task<span class="token punctuation">)</span> <span class="token operator">==</span> CAR <span class="token operator">||</span> <span class="token function">vehicle</span><span class="token punctuation">(</span>task<span class="token punctuation">)</span> <span class="token operator">==</span> MOTORCYCLE<span class="token operator">:</span>
-        task<span class="token punctuation">.</span><span class="token function">setFloydWarshallPath</span><span class="token punctuation">(</span>G1<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// Constru&#xE7;&#xE3;o do caminho do estafeta</span>
+        task<span class="token punctuation">.</span><span class="token function">setFloydWarshallPath</span><span class="token punctuation">(</span>G1<span class="token punctuation">)</span> <span class="token comment">// Constru&#xE7;&#xE3;o do caminho do estafeta</span>
     <span class="token keyword">if</span> <span class="token function">vehicle</span><span class="token punctuation">(</span>task<span class="token punctuation">)</span> <span class="token operator">==</span> BIKE <span class="token operator">||</span> <span class="token function">vehicle</span><span class="token punctuation">(</span>task<span class="token punctuation">)</span> <span class="token operator">==</span> FOOT <span class="token operator">:</span>
-        task<span class="token punctuation">.</span><span class="token function">setFloydWarshallPath</span><span class="token punctuation">(</span>G2<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        task<span class="token punctuation">.</span><span class="token function">setFloydWarshallPath</span><span class="token punctuation">(</span>G2<span class="token punctuation">)</span>
 
-    <span class="token keyword">return</span> task<span class="token punctuation">;</span>
+    <span class="token keyword">return</span> task
 <span class="token punctuation">}</span>
-
+<br><br><br><br><br><br>
 </pre><h2 class="mume-header" id="63-um-estafeta-v%C3%A1rios-pedidos-no-mesmo-deslocamento-variante-do-tsp">6.3 Um estafeta - V&#xE1;rios pedidos no mesmo deslocamento (variante do TSP)</h2>
 
 <p>Outra alternativa que pensamos ser essencial incluir na nossa implementa&#xE7;&#xE3;o, tendo em conta a ess&#xEA;ncia do problema, foi o caso em que um s&#xF3; estafeta deve, num s&#xF3; trajeto, recolher todos os pedidos dos restaurantes e entreg&#xE1;-los nas respetivas moradas de entrega, tendo em aten&#xE7;&#xE3;o que o restaurante de um pedido deve sempre ser visitado antes da morada de entrega e que podem existir m&#xFA;ltiplos pedidos do mesmo restaurante.</p>
@@ -977,100 +985,103 @@ e<br>
 <p>Finalmente, &#xE9; definido o caminho completo e tamb&#xE9;m os tempos estimados para cada pedido na fun&#xE7;&#xE3;o<br>
 <code>setFloydWarshallPath(Graph&lt;Coordinates&gt; &amp; graph, const vector&lt;pair&lt;Coordinates,unsigned long&gt;&gt; &amp; checkpoints)</code> - em <code>SpecialTask.cpp</code>; que procede de modo similar &#xE0; fun&#xE7;&#xE3;o do mesmo nome descrita anteriormente, calculando o caminho mais curto entre cada par de pontos consecutivos do caminho parcial.</p>
 <pre data-role="codeBlock" data-info="cpp" class="language-cpp"><span class="token function">simultaneousRequests</span><span class="token punctuation">(</span>Graph G<span class="token punctuation">,</span> vector<span class="token operator">&lt;</span>Request<span class="token operator">&gt;</span> R<span class="token punctuation">,</span> Employee employee<span class="token punctuation">)</span><span class="token punctuation">{</span>
-    vector<span class="token operator">&lt;</span>Coordinates<span class="token operator">&gt;</span> path<span class="token punctuation">;</span> <span class="token comment">// Caminho parcial - ordem de visita dos restaurantes e moradas de entrega</span>
-    Coordinates orig &#x2190; <span class="token function">coordinates</span><span class="token punctuation">(</span>employee<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// Ponto de origem &#xE9; a posi&#xE7;&#xE3;o do estafeta</span>
+    vector<span class="token operator">&lt;</span>Coordinates<span class="token operator">&gt;</span> path <span class="token comment">// Pontos por ordem de visita</span>
+    Coordinates orig &#x2190; <span class="token function">coordinates</span><span class="token punctuation">(</span>employee<span class="token punctuation">)</span> <span class="token comment">// Ponto de origem</span>
     
-    vector<span class="token operator">&lt;</span>Request<span class="token operator">&gt;</span> pick &#x2190; R<span class="token punctuation">;</span> <span class="token comment">// Pedidos a recolher do restaurante</span>
-    <span class="token function">setNearestRestaurant</span><span class="token punctuation">(</span>G<span class="token punctuation">,</span> pick<span class="token punctuation">,</span> orig<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// Obter na frente do vetor o restaurante mais perto da origem</span>
-    vector<span class="token operator">&lt;</span>Request<span class="token operator">&gt;</span> deliver<span class="token punctuation">;</span> <span class="token comment">// Pedidos a ser entregues na morada respetiva (j&#xE1; recolhidos previmente)</span>
+    vector<span class="token operator">&lt;</span>Request<span class="token operator">&gt;</span> pick &#x2190; R <span class="token comment">// Pedidos a recolher do restaurante</span>
+    <span class="token function">setNearestRestaurant</span><span class="token punctuation">(</span>G<span class="token punctuation">,</span> pick<span class="token punctuation">,</span> orig<span class="token punctuation">)</span> <span class="token comment">// Restaurante mais perto da origem na frente</span>
+    vector<span class="token operator">&lt;</span>Request<span class="token operator">&gt;</span> deliver<span class="token punctuation">;</span> <span class="token comment">// Pedidos recolhidos, a ser entregues nas moradas</span>
 
     <span class="token keyword">int</span> totalCargo &#x2190; <span class="token number">0</span><span class="token punctuation">;</span>
     <span class="token keyword">while</span> deliver <span class="token operator">==</span> &#x2205; <span class="token operator">||</span> pick <span class="token operator">==</span> &#x2205; <span class="token operator">:</span>
-        <span class="token comment">// O estafeta n&#xE3;o tem mais capacidade / N&#xE3;o h&#xE1; mais pedidos para recolher do restaurante</span>
+        <span class="token comment">// Estafeta n&#xE3;o tem mais capacidade / N&#xE3;o h&#xE1; mais pedidos para recolher</span>
         <span class="token keyword">if</span> totalCargo <span class="token operator">==</span> <span class="token function">maxCargo</span><span class="token punctuation">(</span>e<span class="token punctuation">)</span> <span class="token operator">||</span> pick <span class="token operator">==</span> &#x2205; <span class="token operator">:</span>
-            <span class="token comment">// Entrega um pedido </span>
-            orig &#x2190; <span class="token function">deliveryAddr</span><span class="token punctuation">(</span>deliver<span class="token punctuation">.</span><span class="token function">front</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            path<span class="token punctuation">.</span><span class="token function">push_back</span><span class="token punctuation">(</span>orig<span class="token punctuation">)</span><span class="token punctuation">;</span>
-            totalCargo &#x2190; totalCargo <span class="token operator">-</span> <span class="token function">cargo</span><span class="token punctuation">(</span>deliver<span class="token punctuation">.</span><span class="token function">front</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            deliver<span class="token punctuation">.</span><span class="token function">erase</span><span class="token punctuation">(</span>deliver<span class="token punctuation">.</span><span class="token function">begin</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// Remover dos pedidos a entregar</span>
+            <span class="token comment">// Entrega pedido j&#xE1; recolhido (da morada mais perto)</span>
+            orig &#x2190; <span class="token function">deliveryAddr</span><span class="token punctuation">(</span>deliver<span class="token punctuation">.</span><span class="token function">front</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+            path<span class="token punctuation">.</span><span class="token function">push_back</span><span class="token punctuation">(</span>orig<span class="token punctuation">)</span>
+            totalCargo &#x2190; totalCargo <span class="token operator">-</span> <span class="token function">cargo</span><span class="token punctuation">(</span>deliver<span class="token punctuation">.</span><span class="token function">front</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+            deliver<span class="token punctuation">.</span><span class="token function">erase</span><span class="token punctuation">(</span>deliver<span class="token punctuation">.</span><span class="token function">begin</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
 
         <span class="token comment">// N&#xE3;o h&#xE1; mais pedidos para entregar</span>
         <span class="token keyword">else</span> <span class="token keyword">if</span> deliver <span class="token operator">==</span> &#x2205; <span class="token operator">:</span>
             <span class="token comment">// Recolher pedido(s) do restaurante mais perto da localiza&#xE7;&#xE3;o atual</span>
-            orig &#x2190; <span class="token function">restaurant</span><span class="token punctuation">(</span>pick<span class="token punctuation">.</span><span class="token function">front</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            path<span class="token punctuation">.</span><span class="token function">push_back</span><span class="token punctuation">(</span>orig<span class="token punctuation">)</span><span class="token punctuation">;</span>
-            totalCargo &#x2190; totalCargo <span class="token operator">+</span> <span class="token function">cargo</span><span class="token punctuation">(</span>pick<span class="token punctuation">.</span><span class="token function">front</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            orig &#x2190; <span class="token function">restaurant</span><span class="token punctuation">(</span>pick<span class="token punctuation">.</span><span class="token function">front</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+            path<span class="token punctuation">.</span><span class="token function">push_back</span><span class="token punctuation">(</span>orig<span class="token punctuation">)</span>
+            totalCargo &#x2190; totalCargo <span class="token operator">+</span> <span class="token function">cargo</span><span class="token punctuation">(</span>pick<span class="token punctuation">.</span><span class="token function">front</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
 
-            <span class="token comment">// Verificar se h&#xE1; mais pedidos do mesmo restaurante e recolh&#xEA;-los se poss&#xED;vel(verifica carga)</span>
+            <span class="token comment">// Recolher pedidos do mesmo restaurante, se poss&#xED;vel(verifica carga)</span>
             <span class="token function">repeatedRestaurants</span><span class="token punctuation">(</span>pick<span class="token punctuation">,</span>deliver<span class="token punctuation">,</span>totalCargo<span class="token punctuation">,</span><span class="token function">maxCargo</span><span class="token punctuation">(</span>employee<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
             <span class="token comment">// Adicionar aos pedidos a entregar, remover dos pedidos a recolher</span>
-            deliver<span class="token punctuation">.</span><span class="token function">push_back</span><span class="token punctuation">(</span>pick<span class="token punctuation">.</span><span class="token function">front</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            pick<span class="token punctuation">.</span><span class="token function">erase</span><span class="token punctuation">(</span>pick<span class="token punctuation">.</span><span class="token function">begin</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            deliver<span class="token punctuation">.</span><span class="token function">push_back</span><span class="token punctuation">(</span>pick<span class="token punctuation">.</span><span class="token function">front</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+            pick<span class="token punctuation">.</span><span class="token function">erase</span><span class="token punctuation">(</span>pick<span class="token punctuation">.</span><span class="token function">begin</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
         
-        <span class="token comment">// Escolhe a op&#xE7;&#xE3;o mais pr&#xF3;xima - recolher ou entregar um pedido. Se n&#xE3;o tiver capacidade entrega um pedido</span>
+        <span class="token comment">// Escolher a op&#xE7;&#xE3;o mais pr&#xF3;xima - recolher ou entregar um pedido</span>
+        <span class="token comment">// Se n&#xE3;o tiver capacidade entrega um pedido</span>
         <span class="token keyword">else</span><span class="token operator">:</span>
             <span class="token keyword">if</span><span class="token punctuation">(</span>totalCargo <span class="token operator">+</span> <span class="token function">cargo</span><span class="token punctuation">(</span>pick<span class="token punctuation">.</span><span class="token function">front</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">&gt;</span> <span class="token function">maxCargo</span><span class="token punctuation">(</span>employee<span class="token punctuation">)</span> <span class="token operator">||</span>
-                 G<span class="token punctuation">.</span><span class="token function">getDist</span><span class="token punctuation">(</span>orig<span class="token punctuation">,</span><span class="token function">deliveryAddr</span><span class="token punctuation">(</span>deliver<span class="token punctuation">.</span><span class="token function">front</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">&lt;</span> G<span class="token punctuation">.</span><span class="token function">getDist</span><span class="token punctuation">(</span>orig<span class="token punctuation">,</span><span class="token function">restaurant</span><span class="token punctuation">(</span>pick<span class="token punctuation">.</span><span class="token function">front</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token operator">:</span>
-                <span class="token comment">/* ... Entrega um pedido .... */</span>
-            <span class="token keyword">else</span><span class="token operator">:</span>
-                <span class="token comment">/* ... Recolhe pedido(s) do restaurante mais perto... */</span>
+                G<span class="token punctuation">.</span><span class="token function">getDist</span><span class="token punctuation">(</span>orig<span class="token punctuation">,</span><span class="token function">deliveryAddr</span><span class="token punctuation">(</span>deliver<span class="token punctuation">.</span><span class="token function">front</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">&lt;</span> G<span class="token punctuation">.</span><span class="token function">getDist</span><span class="token punctuation">(</span>orig<span class="token punctuation">,</span><span class="token function">restaurant</span><span class="token punctuation">(</span>pick<span class="token punctuation">.</span><span class="token function">front</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token operator">:</span>
+                <span class="token comment">//...Entrega um pedido...</span>
+            <span class="token keyword">else</span><span class="token operator">:</span> <span class="token comment">//...Recolhe pedido(s) do restaurante mais perto...</span>
 
-        <span class="token function">setNearestRestaurant</span><span class="token punctuation">(</span>G<span class="token punctuation">,</span>pick<span class="token punctuation">,</span>orig<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// Manter no in&#xED;cio o pedido por recolher cujo restaurante est&#xE1; mais pr&#xF3;ximo da posi&#xE7;&#xE3;o atual</span>
-        <span class="token function">setNearestDeliveryAddress</span><span class="token punctuation">(</span>G<span class="token punctuation">,</span>deliver<span class="token punctuation">,</span>orig<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// Manter na frente o pedido a entregar cuja morada de entrega &#xE9; mais pr&#xF3;xima da posi&#xE7;&#xE3;o atual</span>
+        <span class="token comment">// Manter na frente o restaurante mais perto da nova origem</span>
+        <span class="token function">setNearestRestaurant</span><span class="token punctuation">(</span>G<span class="token punctuation">,</span>pick<span class="token punctuation">,</span>orig<span class="token punctuation">)</span>
+        <span class="token comment">// Manter na frente a morada (dos pedidos recolhidos) mais perto da origem</span>
+        <span class="token function">setNearestDeliveryAddress</span><span class="token punctuation">(</span>G<span class="token punctuation">,</span>deliver<span class="token punctuation">,</span>orig<span class="token punctuation">)</span>
 
-    SpecialTask <span class="token function">s</span><span class="token punctuation">(</span>employee<span class="token punctuation">,</span>R<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// Atribuir uma tarefa ao estafeta que consiste na realiza&#xE7;&#xE3;o de v&#xE1;rios pedidos num deslocamento</span>
-    s<span class="token punctuation">.</span><span class="token function">setFloydWarshallPath</span><span class="token punctuation">(</span>G<span class="token punctuation">,</span>path<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// Indicar ordem de visita dos restaurantes e moradas para construir a rota total do estafeta</span>
-    <span class="token keyword">return</span> s<span class="token punctuation">;</span>
+    SpecialTask <span class="token function">s</span><span class="token punctuation">(</span>employee<span class="token punctuation">,</span>R<span class="token punctuation">)</span> <span class="token comment">// Atribui pedidos ao estafeta</span>
+    <span class="token comment">// Constr&#xF3;i caminho total a partir da ordem de visita dos restaurantes e moradas </span>
+    s<span class="token punctuation">.</span><span class="token function">setFloydWarshallPath</span><span class="token punctuation">(</span>G<span class="token punctuation">,</span>path<span class="token punctuation">)</span>
+    <span class="token keyword">return</span> s
 <span class="token punctuation">}</span>
 
-</pre><p><br><br><br></p>
-<h2 class="mume-header" id="64-nota-geral-acerca-dos-algoritmos-implementados">6.4 Nota geral acerca dos algoritmos implementados</h2>
+</pre><h2 class="mume-header" id="64-nota-geral-acerca-dos-algoritmos-implementados">6.4 Nota geral acerca dos algoritmos implementados</h2>
 
-<p>Por fim, &#xE9; de salientar a vantagem proporcionada pelo pr&#xE9;-processamento com o algoritmo de Floyd Warshall quando utilizados algoritmos como os descritos acima.<br>
-Para efeitos de compara&#xE7;&#xE3;o, no entanto, podem ser consultados em <code>simulations.cpp</code> e em <code>SingleTask.cpp</code> os algoritmos que testamos na Fase II e que utilizam o algoritmo de Dijkstra na sua implementa&#xE7;&#xE3;o. Tamb&#xE9;m a an&#xE1;lise das fun&#xE7;&#xF5;es<br>
-<code>virtual void setFloydWarshallPath(Graph&lt;Coordinates&gt; &amp; graph)</code><br>
-e<br>
-<code>void setDijkstraPath(Graph&lt;Coordinates&gt; &amp; graph)</code> permite facilmente perceber que, ao utilizar o Floyd Warshall, &#xE9; evitado o c&#xE1;lculo repetitivo das dist&#xE2;ncias e do caminho mais curto para cada novo ponto de origem, uma desvantagem do Dijkstra.</p>
-<p><em>Parte da fun&#xE7;&#xE3;o utilizada para definir o caminho final de um estafeta, nos algoritmos <em>1</em> e <em>2</em></em></p>
+<p>Por fim, &#xE9; de salientar a vantagem proporcionada pelo pr&#xE9;-processamento com o algoritmo de Floyd Warshall quando utilizados algoritmos como os descritos acima. Para efeitos de compara&#xE7;&#xE3;o, no entanto, podem ser consultados em <code>simulations.cpp</code> e em <code>SingleTask.cpp</code> os algoritmos que testamos na Fase II e que utilizam o algoritmo de Dijkstra na sua implementa&#xE7;&#xE3;o. Tamb&#xE9;m a an&#xE1;lise das fun&#xE7;&#xF5;es<br>
+<code>virtual void setFloydWarshallPath(Graph&lt;Coordinates&gt; &amp; graph)</code> e <code>void setDijkstraPath(Graph&lt;Coordinates&gt; &amp; graph)</code> permite facilmente perceber que, ao utilizar o Floyd Warshall, &#xE9; evitado o c&#xE1;lculo repetitivo das dist&#xE2;ncias e do caminho mais curto para cada novo ponto de origem, uma desvantagem do Dijkstra.
+<em>Parte da fun&#xE7;&#xE3;o utilizada para definir o caminho final de um estafeta, nos algoritmos <em>1</em> e <em>2:</em></em></p>
 <pre data-role="codeBlock" data-info="cpp" class="language-cpp"><span class="token keyword">void</span> SingleTask<span class="token operator">::</span><span class="token function">setFloydWarshallPath</span><span class="token punctuation">(</span>Graph<span class="token operator">&lt;</span>Coordinates<span class="token operator">&gt;</span> <span class="token operator">&amp;</span> graph<span class="token punctuation">)</span><span class="token punctuation">{</span>
-    <span class="token comment">/*...*/</span>
-    <span class="token comment">// Os &apos;checkpoints&apos; do pedido est&#xE3;o por ordem de visita - definida com um dos algoritmos anteriores</span>
-    <span class="token keyword">for</span><span class="token punctuation">(</span>Coordinates checkpoint<span class="token operator">:</span> request<span class="token punctuation">.</span><span class="token function">getCheckpoints</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">{</span> <span class="token comment">// Para cada ponto a visitar </span>
-        tempPath <span class="token operator">=</span> graph<span class="token punctuation">.</span><span class="token function">getfloydWarshallPath</span><span class="token punctuation">(</span>orig<span class="token punctuation">,</span> checkpoint<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// Obter o caminho mais curto desde o ponto anterior</span>
-        totalDistance <span class="token operator">+=</span> graph<span class="token punctuation">.</span><span class="token function">getDist</span><span class="token punctuation">(</span>graph<span class="token punctuation">.</span><span class="token function">findVertexIdx</span><span class="token punctuation">(</span>orig<span class="token punctuation">)</span><span class="token punctuation">,</span> graph<span class="token punctuation">.</span><span class="token function">findVertexIdx</span><span class="token punctuation">(</span>checkpoint<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// acumular a dist&#xE2;ncia</span>
-        <span class="token comment">/*...*/</span>
-        path<span class="token punctuation">.</span><span class="token function">insert</span><span class="token punctuation">(</span>path<span class="token punctuation">.</span><span class="token function">end</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>tempPath<span class="token punctuation">.</span><span class="token function">begin</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">,</span> tempPath<span class="token punctuation">.</span><span class="token function">end</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// Adicionar o caminho calculado ao caminho constru&#xED;do at&#xE9; ent&#xE3;o</span>
+    <span class="token comment">//...</span>
+    <span class="token comment">// Percorrer coordenadas do pedido - por ordem de visita</span>
+    <span class="token keyword">for</span><span class="token punctuation">(</span>Coordinates checkpoint<span class="token operator">:</span> request<span class="token punctuation">.</span><span class="token function">getCheckpoints</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+        <span class="token comment">// Caminho mais curto desde o ponto anterior</span>
+        tempPath <span class="token operator">=</span> graph<span class="token punctuation">.</span><span class="token function">getfloydWarshallPath</span><span class="token punctuation">(</span>orig<span class="token punctuation">,</span> checkpoint<span class="token punctuation">)</span><span class="token punctuation">;</span> 
+        <span class="token comment">// Acumular a dist&#xE2;ncia</span>
+        totalDistance <span class="token operator">+=</span> graph<span class="token punctuation">.</span><span class="token function">getDist</span><span class="token punctuation">(</span>graph<span class="token punctuation">.</span><span class="token function">findVertexIdx</span><span class="token punctuation">(</span>orig<span class="token punctuation">)</span><span class="token punctuation">,</span> graph<span class="token punctuation">.</span><span class="token function">findVertexIdx</span><span class="token punctuation">(</span>checkpoint<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span> 
+        <span class="token comment">//...</span>
+        <span class="token comment">// Adicionar caminho calculado ao caminho constru&#xED;do at&#xE9; ent&#xE3;o</span>
+        path<span class="token punctuation">.</span><span class="token function">insert</span><span class="token punctuation">(</span>path<span class="token punctuation">.</span><span class="token function">end</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>tempPath<span class="token punctuation">.</span><span class="token function">begin</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">,</span> tempPath<span class="token punctuation">.</span><span class="token function">end</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
         orig <span class="token operator">=</span> checkpoint<span class="token punctuation">;</span> <span class="token comment">// Definir novo ponto de origem</span>
     <span class="token punctuation">}</span>
-    <span class="token comment">/*...*/</span>
+    <span class="token comment">//...</span>
 <span class="token punctuation">}</span>
 </pre><h1 class="mume-header" id="7-principais-casos-de-uso-implementados">7. Principais casos de uso implementados</h1>
 
 <p>Depois de todos os algoritmos estarem implementados e estudadas todas as quest&#xF5;es relacionadas com a an&#xE1;lise temporal e espacial, passamos para o desenvolvimento da solu&#xE7;&#xE3;o para o contexto do projeto.</p>
 <p>A aplica&#xE7;&#xE3;o desenvolvida, poder&#xE1; ser utilizada em v&#xE1;rios mapas (4x4, 8x8, 16x16, 20x20, 30x30 e Penafiel), cabendo ao utilizador escolher o mapa que deseja quando a aplica&#xE7;&#xE3;o se inicia.</p>
-<p><img src="../images/initialScreen.png" alt></p>
+<p style="text-align:center; margin-left: auto; margin-right: auto;"><img src="../images/initialScreen.png" style="width: 50%; height: 50%; text-align: center; display: inline;" alt></p>
 <p>Escolhido o mapa, &#xE9; perguntado ao utilizador se pretende fazer apenas um pedido ou simular m&#xFA;ltiplos pedidos.</p>
-<table>
+<table style="text-align:center; margin-left: auto; margin-right: auto; display: inline-table;">
 <thead>
 <tr>
-<th style="text-align:center"><img src="../images/typeRequest.png" alt></th>
+<th><img src="../images/typeRequest.png" style="text-align: center; display: inline;" alt></th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style="text-align:center">Escolha do tipo de pedido</td>
+<td>Escolha do tipo de pedido</td>
 </tr>
 </tbody>
 </table>
 <p>De seguida, ir&#xE1; ser perguntado ao utilizador se deseja visualizar o mapa escolhido, onde ser&#xE1; poss&#xED;vel visualizar a localiza&#xE7;&#xE3;o dos v&#xE1;rios restaurantes.</p>
+<p>Seguidamente, no caso de grafos maiores, ser&#xE1; mostrada uma mensagem ao utilizador durante alguns segundos, indicando que o mapa escolhido est&#xE1; a ser processado. &#xC9; de notar que, no caso do grafo da cidade de Penafiel, o processamento j&#xE1; foi previamente realizado (com o algoritmo de Floyd Warshall), sendo este tempo de espera provocado pela leitura das matrizes de dist&#xE2;ncias e de predecessor no caminho mais curto dos respetivos ficheiros. Em todos os outros casos o processamento &#xE9; realmente feito no momento, recorrendo ao mesmo algoritmo.</p>
 <h2 class="mume-header" id="71-realiza%C3%A7%C3%A3o-de-um-pedido">7.1 Realiza&#xE7;&#xE3;o de um pedido</h2>
 
 <p>Quando a op&#xE7;&#xE3;o escolhida &#xE9; fazer apenas um pedido, &#xE9; poss&#xED;vel fazer um pedido que pode conter apenas um restaurante entre os apresentados na lista ou ent&#xE3;o v&#xE1;rios, sendo que para cada restaurante se escolhe quantas refei&#xE7;&#xF5;es se deseja deste, estando o tamanho total do pedido limitado a 15 refei&#xE7;&#xF5;es.</p>
-<table>
+<table style="text-align:center; margin-left: auto; margin-right: auto; display: inline-table;">
 <thead>
 <tr>
-<th style="text-align:center"><img src="../images/restaurantsScreen.png" alt></th>
+<th style="text-align:center"><img src="../images/restaurantsScreen.png" style="width: 50%; height: 50%; text-align: center; display: inline;" alt></th>
 </tr>
 </thead>
 <tbody>
@@ -1080,10 +1091,10 @@ e<br>
 </tbody>
 </table>
 <p>Depois de o pedido estar completo, ser&#xE3;o apresentadas na aplica&#xE7;&#xE3;o as informa&#xE7;&#xF5;es sobre o pedido, sobre o estafeta que o vai entregar, o caminho percorrido pelo estafeta desde a sua localiza&#xE7;&#xE3;o inicial at&#xE9; ao local de entrega, a dist&#xE2;ncia total percorrida e o tempo estimado de espera. &#xC9; ainda apresentado o grafo com o caminho percorrido pelo estafeta.</p>
-<table>
+<table style="text-align:center; margin-left: auto; margin-right: auto; display: inline-table;">
 <thead>
 <tr>
-<th style="text-align:center"><img src="../images/finalOutput.png" alt></th>
+<th style="text-align:center"><img src="../images/finalOutput.png" style="text-align: center; display: inline;" alt></th>
 </tr>
 </thead>
 <tbody>
@@ -1092,10 +1103,10 @@ e<br>
 </tr>
 </tbody>
 </table>
-<table>
+<table style="text-align:center; margin-left: auto; margin-right: auto; display: inline-table;">
 <thead>
 <tr>
-<th style="text-align:center"><img src="../images/finalGraph.png" height="50%" width="50%" style="text-align:center"></th>
+<th style="text-align:center"><img src="../images/finalGraph.png" height="30%" width="30%" style="text-align: center; display: inline;"></th>
 </tr>
 </thead>
 <tbody>
@@ -1108,10 +1119,10 @@ e<br>
 <h2 class="mume-header" id="72-simula%C3%A7%C3%A3o-de-m%C3%BAltiplos-pedidos">7.2 Simula&#xE7;&#xE3;o de m&#xFA;ltiplos pedidos</h2>
 
 <p>No caso de a op&#xE7;&#xE3;o escolhida ser a de simular v&#xE1;rios pedidos, existem 2 op&#xE7;&#xF5;es.</p>
-<table>
+<table style="text-align:center; margin-left: auto; margin-right: auto; display: inline-table;">
 <thead>
 <tr>
-<th style="text-align:center"><img src="../images/multipleRequestsTypes.png" alt></th>
+<th style="text-align:center"><img src="../images/multipleRequestsTypes.png" style="text-align: center; display: inline;" alt></th>
 </tr>
 </thead>
 <tbody>
@@ -1123,10 +1134,10 @@ e<br>
 <h3 class="mume-header" id="721-um-estafeta-v%C3%A1rios-pedidos-no-mesmo-deslocamento-variante-do-tsp">7.2.1 Um estafeta - V&#xE1;rios pedidos no mesmo deslocamento (variante do TSP)</h3>
 
 <p>Caso o utilizador opte pela <strong>op&#xE7;&#xE3;o A</strong>, ser&#xE1; apresentado ao utilizador o estafeta dispon&#xED;vel para entregar os pedidos simult&#xE2;neos e ser&#xE1; pedido ao utilizador quantos pedidos quer simular.</p>
-<table>
+<table style="text-align:center; margin-left: auto; margin-right: auto; display: inline-table;">
 <thead>
 <tr>
-<th style="text-align:center"><img src="../images/oneEmployeeRequests.png" alt></th>
+<th style="text-align:center"><img src="../images/oneEmployeeRequests.png" style="text-align: center; display: inline;" alt></th>
 </tr>
 </thead>
 <tbody>
@@ -1137,10 +1148,10 @@ e<br>
 </table>
 <p>Depois de escolhidos, ir&#xE3;o aparecer as informa&#xE7;&#xF5;es de cada um dos pedidos simulados, bem como sobre a sua entrega, tal como foi descrito anteriormente.</p>
 <p>&#xC9; tamb&#xE9;m mostrado ao utilizador o grafo com o caminho percorrido pelo estafeta para entregar os pedidos.</p>
-<table>
+<table style="text-align:center; margin-left: auto; margin-right: auto; display: inline-table;">
 <thead>
 <tr>
-<th style="text-align:center"><img src="../images/simultaneosGraph.png" height="50%" width="50%" style="text-align:center"></th>
+<th style="text-align:center"><img src="../images/simultaneosGraph.png" height="40%" width="30%" style="text-align: center; display: inline;"></th>
 </tr>
 </thead>
 <tbody>
@@ -1149,7 +1160,7 @@ e<br>
 </tr>
 </tbody>
 </table>
-<p><em>Para a implementa&#xE7;&#xE3;o deste caso de utiliza&#xE7;&#xE3;o &#xE9; usado o algoritmos <strong>3</strong>.</em></p>
+<p><em>Para a implementa&#xE7;&#xE3;o deste caso de utiliza&#xE7;&#xE3;o &#xE9; usado o algoritmo <strong>3</strong>.</em></p>
 <h3 class="mume-header" id="722-m%C3%BAltiplos-estafetas-distribui%C3%A7%C3%A3o-de-pedidos-por-ordem-temporal">7.2.2 M&#xFA;ltiplos estafetas - distribui&#xE7;&#xE3;o de pedidos por ordem temporal</h3>
 
 <p>Se o utilizador preferir a <strong>op&#xE7;&#xE3;o B</strong>, a seguir ter&#xE1; de escolher um n&#xFA;mero de estafetas, entre 1 e 10, e o n&#xFA;mero de pedidos a simular.</p>
@@ -1161,10 +1172,11 @@ e<br>
         cout <span class="token operator">&lt;&lt;</span> endl<span class="token punctuation">;</span>
         <span class="token keyword">if</span><span class="token punctuation">(</span>employeesNum <span class="token operator">&gt;</span> <span class="token number">10</span> <span class="token operator">||</span> employeesNum <span class="token operator">&lt;</span> <span class="token number">1</span><span class="token punctuation">)</span> cout <span class="token operator">&lt;&lt;</span> <span class="token string">&quot;Try again!&quot;</span> <span class="token operator">&lt;&lt;</span> endl<span class="token punctuation">;</span>
 <span class="token punctuation">}</span> <span class="token keyword">while</span><span class="token punctuation">(</span>employeesNum <span class="token operator">&gt;</span> <span class="token number">10</span> <span class="token operator">||</span> employeesNum <span class="token operator">&lt;</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-</pre><table>
+</pre>
+<table style="text-align:center; margin-left: auto; margin-right: auto; display: inline-table;">
 <thead>
 <tr>
-<th style="text-align:center"><img src="../images/simulateRequests.jpg" alt></th>
+<th style="text-align:center"><img src="../images/simulateRequests.jpg" style="text-align: center; display: inline;" alt></th>
 </tr>
 </thead>
 <tbody>
@@ -1175,10 +1187,10 @@ e<br>
 </table>
 <p>De seguida, s&#xE3;o apresentadas as informa&#xE7;&#xF5;es sobre os pedidos gerados e sobre os estafetas criados, assim como as informa&#xE7;&#xF5;es sobre a entrega de cada um dos pedidos, tal como acima foi descrito.</p>
 <p>No final da lista, aparece um menu onde podemos escolher entre algumas poss&#xED;veis visualiza&#xE7;&#xF5;es dos grafos:</p>
-<table>
+<table style="text-align:center; margin-left: auto; margin-right: auto; display: inline-table;">
 <thead>
 <tr>
-<th style="text-align:center"><img src="../images/menuAfterRequests.png" alt></th>
+<th style="text-align:center"><img src="../images/menuAfterRequests.png" style="text-align: center; display: inline;" alt></th>
 </tr>
 </thead>
 <tbody>
@@ -1187,11 +1199,12 @@ e<br>
 </tr>
 </tbody>
 </table>
-<p><strong>Op&#xE7;&#xE3;o A -</strong> Visualizar o caminho percorrido pelo estafeta respons&#xE1;vel por um certo pedido;</p>
-<p><strong>Op&#xE7;&#xE3;o B -</strong> Visualizar os percursos efetuados por um determinado estafeta;</p>
+<p><strong>Op&#xE7;&#xE3;o A -</strong> Visualizar o caminho percorrido para realizar um dado pedido;</p>
+<p><strong>Op&#xE7;&#xE3;o B -</strong> Visualizar o percurso total efetuado por um determinado estafeta;</p>
 <p><strong>Op&#xE7;&#xE3;o C -</strong> Visualizar os percursos efetuados por todos os estafetas.</p>
 <p><em>Para a implementa&#xE7;&#xE3;o deste caso de utiliza&#xE7;&#xE3;o &#xE9; usado o algoritmo <strong>1</strong>.</em></p>
-<h1 class="mume-header" id="8-refer%C3%AAncias">8. Refer&#xEA;ncias</h1>
+<h1 class="mume-header" id="8-concluso">8. Conclusão</h1>
+<h1 class="mume-header" id="9-refer%C3%AAncias">9. Refer&#xEA;ncias</h1>
 
 <ul>
 <li>&#x201C;Introduction to Algorithms&#x201D;, 3rd Edition, T.H. Cormen, C. E. Leiserson, R. L. Rivest , C. Stein., MIT Press, 2009</li>
@@ -1200,14 +1213,22 @@ e<br>
 <a href="https://brilliant.org/wiki/a-star-search/#heuristics">https://brilliant.org/wiki/a-star-search/#heuristics</a></li>
 <li>A*&#x2019;s Use of the Heuristic,<br>
 <a href="http://theory.stanford.edu/~amitp/GameProgramming/Heuristics.html">http://theory.stanford.edu/~amitp/GameProgramming/Heuristics.html</a></li>
-<li>Implementation of A*, <em>from Red Blob Games</em>,<br>
-<a href="https://www.redblobgames.com/pathfinding/a-star/implementation.html">https://www.redblobgames.com/pathfinding/a-star/implementation.html</a></li>
-<li>Nicholas Swift, Easy A* (star) Pathfinding,<br>
-<a href="https://medium.com/@nicholas.w.swift/easy-a-star-pathfinding-7e6689c7f7b2">https://medium.com/@nicholas.w.swift/easy-a-star-pathfinding-7e6689c7f7b2</a></li>
+<li>Algoritmo de Dijkstra,<br>
+<a href="https://brilliant.org/wiki/dijkstras-short-path-finder/">https://brilliant.org/wiki/dijkstras-short-path-finder/</a></li>
+<li>Dijkstra’s shortest path algorithm | Greedy Algo-7<br>
+<a href="https://www.geeksforgeeks.org/dijkstras-shortest-path-algorithm-greedy-algo-7/">https://www.geeksforgeeks.org/dijkstras-shortest-path-algorithm-greedy-algo-7/</a></li>
 <li>Algoritmo de Floyd-Warshall,<br>
 <a href="https://brilliant.org/wiki/floyd-warshall-algorithm/">https://brilliant.org/wiki/floyd-warshall-algorithm/</a></li>
-<li>Floyd Warshall Algorithm | DP-16,<br>
+<li>Floyd Warshall Algorithm | DP-16<br>
 <a href="https://www.geeksforgeeks.org/floyd-warshall-algorithm-dp-16/">https://www.geeksforgeeks.org/floyd-warshall-algorithm-dp-16/</a></li>
+<li>Comparison of Dijkstra’s and Floyd–Warshall algorithms<br>
+<a href="https://www.geeksforgeeks.org/comparison-dijkstras-floyd-warshall-algorithms/">https://www.geeksforgeeks.org/comparison-dijkstras-floyd-warshall-algorithms/</a></li>
+<li>Comparison of Dijkstra’s algorithm and Floyd–Warshall algorithm<br>
+<a href="https://www.selmanalpdundar.com/comparison-of-dijkstras-algorithm-and-floyd-warshall-algorithm.html">https://www.selmanalpdundar.com/comparison-of-dijkstras-algorithm-and-floyd-warshall-algorithm.html</a></li>
+<li>Am I right about the differences between Floyd-Warshall, Dijkstra and Bellman-Ford algorithms?<br>
+<a href="https://cs.stackexchange.com/questions/2942/am-i-right-about-the-differences-between-floyd-warshall-dijkstra-and-bellman-fo">https://cs.stackexchange.com/questions/2942/am-i-right-about-the-differences-between-floyd-warshall-dijkstra-and-bellman-fo</a></li>
+<li>Dijkstra vs. Floyd-Warshall: Finding optimal route on all node pairs<br>
+<a href="https://stackoverflow.com/questions/4212431/dijkstra-vs-floyd-warshall-finding-optimal-route-on-all-node-pairs">https://stackoverflow.com/questions/4212431/dijkstra-vs-floyd-warshall-finding-optimal-route-on-all-node-pairs</a></li>
 <li>Travelling salesman problem,<br>
 <a href="https://en.wikipedia.org/wiki/Travelling_salesman_problem">https://en.wikipedia.org/wiki/Travelling_salesman_problem</a></li>
 </ul>

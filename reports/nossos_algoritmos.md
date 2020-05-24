@@ -238,7 +238,6 @@ simultaneousRequests(Graph G, vector<Request> R, Employee employee){
 }
 
 ```
-<br><br><br>
 
 ## 6.4 Nota geral acerca dos algoritmos implementados
 
