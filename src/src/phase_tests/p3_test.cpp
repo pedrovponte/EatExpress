@@ -5,11 +5,11 @@
 #include <gtest/gtest.h>
 #include <random>
 #include <chrono>
-#include "../Graph.h"
-#include "../utils.h"
-#include "../Employee.h"
-#include "../Request.h"
-#include "../SingleTask.h"
+#include "../graph/Graph.h"
+#include "../utils/utils.h"
+#include "../eatExpress/Employee.h"
+#include "../eatExpress/Request.h"
+#include "../eatExpress/SingleTask.h"
 
 
 using namespace std;

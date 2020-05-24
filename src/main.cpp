@@ -1,6 +1,6 @@
 #include <fstream>
 #include "gtest/gtest.h"
-#include "src/app.h"
+#include "src/app/app.h"
 
 using namespace std;
 

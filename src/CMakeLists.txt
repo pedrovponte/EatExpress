@@ -13,8 +13,8 @@ include_directories(lib/googletest-master/googlemock/include)
 
 include_directories(lib/graphViewer)
 
-add_executable(CAL_T3G4 main.cpp src/tests.cpp src/Graph.h src/MutablePriorityQueue.h src/Vertex.h src/Edge.h src/utils.cpp
-        src/utils.h src/Coordinates.h src/Coordinates.cpp lib/graphViewer/connection.cpp lib/graphViewer/graphviewer.cpp src/Employee.h src/Employee.cpp
-        src/Request.cpp src/Request.h src/SingleTask.cpp src/SingleTask.h src/phase_tests/p1_test.cpp src/simulations.cpp src/simulations.h src/phase_tests/p2_test.cpp src/app.cpp src/app.h src/SpecialTask.cpp src/SpecialTask.h src/Task.cpp src/Task.h src/phase_tests/p3_test.cpp)
+add_executable(CAL_T3G4 main.cpp src/utils/tests.cpp src/graph/Graph.h src/graph/MutablePriorityQueue.h src/graph/Vertex.h src/graph/Edge.h src/utils/utils.cpp
+        src/utils/utils.h src/eatExpress/Coordinates.h src/eatExpress/Coordinates.cpp lib/graphViewer/connection.cpp lib/graphViewer/graphviewer.cpp src/eatExpress/Employee.h src/eatExpress/Employee.cpp
+        src/eatExpress/Request.cpp src/eatExpress/Request.h src/eatExpress/SingleTask.cpp src/eatExpress/SingleTask.h src/phase_tests/p1_test.cpp src/simulations/simulations.cpp src/simulations/simulations.h src/phase_tests/p2_test.cpp src/app/app.cpp src/app/app.h src/eatExpress/SpecialTask.cpp src/eatExpress/SpecialTask.h src/eatExpress/Task.cpp src/eatExpress/Task.h src/phase_tests/p3_test.cpp)
 
 target_link_libraries(CAL_T3G4 gtest gtest_main)
