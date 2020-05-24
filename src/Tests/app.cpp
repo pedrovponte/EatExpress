@@ -853,7 +853,7 @@ min_priority_queue randomRequests1(unsigned number, unsigned vertices){
     min_priority_queue requests;
     Date date;
     Hour hour;
-    srand (1);
+    srand (time(NULL));
     time_t now = time(0);
 
     for(int i = 0 ; i < number; i++){
@@ -878,7 +878,7 @@ vector<Request> randomRequests2(unsigned number, unsigned vertices){
     vector<Request> requests;
     Date date;
     Hour hour;
-    srand (1);
+    srand (time(NULL));
     time_t t = time(0);
 
     for(int i = 0 ; i < number; i++){
@@ -901,7 +901,7 @@ vector<Request> randomRequests2(unsigned number, unsigned vertices){
 vector<Employee*> randomEmployees(unsigned number, unsigned vertices){
    vector<Employee*> employees;
    int id = 0;
-   srand (1);
+   srand (time(NULL));
 
     if(number == 1){
         int randV = rand() % (vertices - 1);
