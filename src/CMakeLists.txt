@@ -13,8 +13,8 @@ include_directories(lib/googletest-master/googlemock/include)
 
 include_directories(lib/graphViewer)
 
-add_executable(CAL_T3G4 main.cpp Tests/tests.cpp Tests/Graph.h Tests/MutablePriorityQueue.h Tests/Vertex.h Tests/Edge.h Tests/utils.cpp
-        Tests/utils.h Tests/Coordinates.h Tests/Coordinates.cpp lib/graphViewer/connection.cpp lib/graphViewer/graphviewer.cpp Tests/Employee.h Tests/Employee.cpp
-        Tests/Request.cpp Tests/Request.h Tests/SingleTask.cpp Tests/SingleTask.h Tests/phase_tests/p1_test.cpp Tests/simulations.cpp Tests/simulations.h Tests/phase_tests/p2_test.cpp Tests/app.cpp Tests/app.h Tests/SpecialTask.cpp Tests/SpecialTask.h Tests/Task.cpp Tests/Task.h Tests/phase_tests/p3_test.cpp)
+add_executable(CAL_T3G4 main.cpp src/tests.cpp src/Graph.h src/MutablePriorityQueue.h src/Vertex.h src/Edge.h src/utils.cpp
+        src/utils.h src/Coordinates.h src/Coordinates.cpp lib/graphViewer/connection.cpp lib/graphViewer/graphviewer.cpp src/Employee.h src/Employee.cpp
+        src/Request.cpp src/Request.h src/SingleTask.cpp src/SingleTask.h src/phase_tests/p1_test.cpp src/simulations.cpp src/simulations.h src/phase_tests/p2_test.cpp src/app.cpp src/app.h src/SpecialTask.cpp src/SpecialTask.h src/Task.cpp src/Task.h src/phase_tests/p3_test.cpp)
 
 target_link_libraries(CAL_T3G4 gtest gtest_main)

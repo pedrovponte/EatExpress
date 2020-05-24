@@ -1,8 +1,6 @@
 #include <fstream>
-#include "Tests/utils.h"
 #include "gtest/gtest.h"
-#include "Tests/simulations.h"
-#include "Tests/app.h"
+#include "src/app.h"
 
 using namespace std;
 
@@ -10,8 +8,6 @@ int main(int argc, char* argv[]) {
     testing::InitGoogleTest(&argc, argv);
 
     chooseMap();
-    //Graph<Coordinates> graph = loadGraph("PortugalMaps", "Espinho", true, true);
-     // simulateSimultaneousRequests();
 
     cout << endl << "\t(X) Exit ";
     getchar();
