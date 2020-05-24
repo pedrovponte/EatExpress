@@ -964,7 +964,7 @@ Employee * getRandomEmployee(unsigned vertices){
 int chooseMap() {
     char opt;
 
-    cout << endl << "\tWelcome to UghEats. Please select the map that you want to use: " << endl
+    cout << endl << "\tWelcome to EatExpress. Please select the map that you want to use: " << endl
         << "\t--------------------------------------------------------------------" << endl
         << endl
         << "\t(A) GridGraph 4x4" << endl
