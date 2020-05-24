@@ -59,7 +59,7 @@ Depois de escolhidos, irão aparecer as informações de cada um dos pedidos sim
 |:-------------------------:|
 |Caminho percorrido pelo estafeta|
 
-*Para a implementação deste caso de utilização é usado o algoritmos **3**.*
+*Para a implementação deste caso de utilização é usado o algoritmo **3**.*
 
 
 ### 7.2.2 Múltiplos estafetas - distribuição de pedidos por ordem temporal
@@ -89,9 +89,9 @@ No final da lista, aparece um menu onde podemos escolher entre algumas possívei
 |:-------------------------:|
 |Opções de visualização dos grafos|
 
-**Opção A -** Visualizar o caminho percorrido pelo estafeta responsável por um certo pedido;
+**Opção A -** Visualizar o caminho percorrido para realizar um dado pedido;
 
-**Opção B -** Visualizar os percursos efetuados por um determinado estafeta;
+**Opção B -** Visualizar o percurso total efetuado por um determinado estafeta;
 
 **Opção C -** Visualizar os percursos efetuados por todos os estafetas.
 

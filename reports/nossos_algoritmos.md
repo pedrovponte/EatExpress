@@ -26,7 +26,8 @@ Finalmente, de todos os estafetas disponíveis, a escolha passa pela conjugaçã
 
 ```cpp
 bool Employee::operator<(const Employee &rhs) const {
-    return dist*0.5 + maxCargo*0.3 + avgVelocity * 0.2 < rhs.getDist()*0.5 + rhs.getMaxCargo()* 0.3 + rhs.getAvgVelocity() * 0.2 ;
+    return dist * 0.5 + maxCargo * 0.3 + avgVelocity * 0.2 < 
+        rhs.getDist() * 0.5 + rhs.getMaxCargo() * 0.3 + rhs.getAvgVelocity() * 0.2;
 }
 ```
 
@@ -39,38 +40,39 @@ Assim que não existirem mais pedidos para distribuir, havendo a possibilidade d
 
 ```cpp
 distributeRequests(Graph G1, Graph G2, PriorityQueue<Request> R, vector<Employee> E){
-    vector<SingleTask> task; // Para devolver a distribuição dos pedidos pelos estafetas
-    vector<SingleTask> roundTasks; // A cada ronda de distribuição guarda as tarefas
+    vector<SingleTask> task // Para devolver a distribuição dos pedidos pelos estafetas
+    vector<SingleTask> roundTasks // A cada ronda de distribuição guarda as tarefas
 
-    PriorityQueue<Request> pendingRequests 🠄 ∅ // Para guardar pedidos pendentes
-    R ← setRequestsDeliverability(G1,G2,R) // Para definir se um pedido pode ou não ser entregue por cada meio de transporte
+    PriorityQueue<Request> pendingRequests 🠄 ∅ // Guardar pedidos pendentes
+    R ← setRequestsDeliverability(G1,G2,R)
 
     while R != ∅ :
-        Request request ← R.top() // Entregar um pedido de cada vez
-        R.pop();
+        Request request ← R.top() // Tentar atribuir o 1º pedido da fila
+        R.pop()
 
-        setDistancesToCheckpoint(G1, G2, E, request);
-        eligibleEmployees ← getEligibleEmployees(E, request);
+        setDistancesToCheckpoint(G1, G2, E, request)
+        eligibleEmployees ← getEligibleEmployees(E, request)
 
         if E == ∅ :
-            pendingRequests.push(request); // Nenhum estafeta eligível no momento
+            pendingRequests.push(request) // Nenhum estafeta eligível
         else :
-            sort(E); // de acordo com o operador <
-            ready(E[0]) ← false; // Ocupar o estafeta com o pedido
-            SingleTask task(E[0], request); // Definir tarefa que associa o estafeta ao pedido
+            sort(E) // de acordo com o operador <
+            ready(E[0]) ← false // Ocupar o estafeta com o pedido
+            SingleTask task(E[0], request) // Associar o estafeta ao pedido
 
         if Q == ∅ :
-            /*...*/ // Aqui verifica-se se um pedido não pode ser entregue a nenhum estafeta. Detalhes podem ser consultados no código fonte.
-
+            //Verificar caso em que o pedido não pode ser entregue por nenhum estafeta
+            // ...
+            // Construção do caminho dos estafetas
             for each task ∈ roundTasks :
                 if VehicleType(task) == CAR || VehicleType(task) == MOTORCYCLE :
-                    task.setFloydWarshallPath(G1);
+                    task.setFloydWarshallPath(G1)
                 if VehicleType(task) == BIKE || VehicleType(task) == FOOT :
-                    task.setFloydWarshallPath(G2); // Construção do caminho do estafeta 
+                    task.setFloydWarshallPath(G2) 
 
-            tasks.insert(roundTasks);
-            roundTasks.clear(); 
-    return tasks;
+            tasks.insert(roundTasks)
+            roundTasks.clear()
+    return tasks
 }
 ```
 
@@ -86,73 +88,78 @@ Mais uma vez, para definir o caminho completo a percorrer pelo estafeta, utiliza
 
 ```cpp
 multipleRestaurantsRequest(Graph G1, Graph G2, vector<Employee> E, Request request){
-    vector<Coordinates> restaurants; // Restaurantes por ordem de visita
-    int nearestEmployeePos; // Guardar a cada iteração o estafeta ao qual corresponde a melhor distância
-    int nearestRestaurantPos; // Guardar para cada estafeta o restaurante mais próximo dos que faltam visitar  
-    double nearestEmployeeDist ← INF; // Inicializar a melhor distância com valor elevado
+    vector<Coordinates> restaurants // Restaurantes por ordem de visita
+    int nearestEmployeePos // Estafeta ao qual corresponde a melhor distância
+    int nearestRestaurantPos // Restaurante mais próximo dos que faltam visitar  
+    double nearestEmployeeDist ← INF // Inicializar a melhor distância com valor elevado
 
     employees ← getEligibleEmployeesMultipleRestaurants(E, request);
 
     for i = 0 to E.size(): // Repetir procedimento para cada estafeta disponível
-        double totalDist ← 0;
-        Coordinates orig ← coords(E[i]); // Posição inicial do estafeta
-        vector<Coordinates> requestRestaurants ← checkpoints(request); // Restaurantes por visitar
-        vector<Coordinates> restaurantsPath; // Ordem de visita dos restaurantes se o estafeta por escolhido
+        double totalDist ← 0
+        Coordinates orig ← coords(E[i]) // Posição inicial do estafeta
+        vector<Coordinates> requestRestaurants ← checkpoints(request) // Restaurantes por visitar
+        vector<Coordinates> restaurantsPath // Ordem de visita dos restaurantes
 
         for j = 0 to checkpoints(request).size() :
-            double dist ← 0; // Calcular a distância a percorrer pelo estafeta se for escolhido
+            double dist ← 0; // Calcular distância a percorrer pelo estafeta
             if vehicle(E[i]) == CAR ||vehicle(E[i]) == MOTORCYCLE :
-                nearestRestaurantPos ← getNearestRestaurant(G1, orig, requestRestaurants); // Restaurante por visitar mais perto do anterior
+                // Restaurante por visitar mais perto do anterior
+                nearestRestaurantPos ← getNearestRestaurant(G1, orig, requestRestaurants) 
 
                 dist ← G1.getDist(orig, requestRestaurants[nearestRestaurantPos]);
-                /*...*/
-                if dist == INF : // Não foi encontrado caminho para o estafeta realizar o pedido
-                    totalDist ← INF; break;
+                //...
+                if dist == INF : // Não foi encontrado caminho
+                    totalDist ← INF
+                    break
             
-            else if vehicle(E[i]) == BIKE ||vehicle(E[i]) == FOOT :
-                /*Procedimento semelhante ao anterior mas para o grafo destes meios de transporte*/
+            else if vehicle(E[i]) == BIKE ||vehicle(E[i]) == FOOT : //...
 
-            totalDist ← totalDist + dist; // Acumular distância
-            restaurantsPath.push_back(requestRestaurants[nearestRestaurantPos]); // Guardar restaurantes por ordem de visita
-            orig ← requestRestaurants[nearestRestaurantPos]; // Atualizar posição anterior
-            requestRestaurants.erase(requestRestaurants.begin() + nearestRestaurantPos); // Eliminar dos restaurantes por visitar
+            totalDist ← totalDist + dist // Acumular distância
+            // Guardar restaurantes por ordem de visita
+            restaurantsPath.push_back(requestRestaurants[nearestRestaurantPos])
+            // Atualizar posição anterior
+            orig ← requestRestaurants[nearestRestaurantPos] 
+            // Eliminar dos restaurantes por visitar
+            requestRestaurants.erase(requestRestaurants.begin() + nearestRestaurantPos) 
 
-        // Não escolher o estafeta se não foi encontrado caminho ou se, no caso de se deslocar a pé ou de bicicleta, o caminho ultrapassa 6km 
-        if totalDist == INF || (totalDist > 6000 && (vehicle(E[i]) == BIKE || vehicle(E[i]) == FOOT))):
-            continue; 
+        // Não escolher o estafeta
+        if totalDist == INF || 
+        (totalDist > 6000 && (vehicle(E[i]) == BIKE || vehicle(E[i]) == FOOT))):
+            continue
 
         // Adicionar a distância à morada de destino
         if vehicle(E[i]) == CAR || vehicle(E[i]) == MOTORCYCLE :
-            double dist ← G.getDist(restaurantsPath[restaurantsPath.size()-1]),deliveryAddr(request));
-            /*...*/
-            if(dist == INF) break;
-            totalDist ← totalDist + dist;
+            double dist ← G.getDist(restaurantsPath[restaurantsPath.size()-1]),deliveryAddr(request))
+            //...
+            if(dist == INF) break
+            totalDist ← totalDist + dist
         
         else if vehicle(E[i]) == BIKE || vehicle(E[i]) == FOOT) :
-            double dist ← G.getDist(restaurantsPath[restaurantsPath.size()-1]),deliveryAddr(request));
-            /*...*/
+            double dist ← G.getDist(restaurantsPath[restaurantsPath.size()-1]),deliveryAddr(request))
+            //...
             if(dist == INF || totalDist + dist > 6000) break;
-             totalDist ← totalDist + dist;
+             totalDist ← totalDist + dist
         
-        // Se a distância for melhor que a do estafeta anterior, guarda-se a distância, o caminho e o estafeta
+        // Melhor distância -> mudar estafeta escolhido
         if totalDist < nearestEmployeeDist : 
-            nearestEmployeePos ← i;
-            nearestEmployeeDist ← totalDist;
-            restaurants ← restaurantsPath;
+            nearestEmployeePos ← i
+            nearestEmployeeDist ← totalDist
+            restaurants ← restaurantsPath
     }
 
     // Se não foi encontrado nenhum estafeta para realizar o pedido retornar tarefa vazia
-    if nearestEmployeeDist == INF : return SingleTask(nullptr, request);
+    if nearestEmployeeDist == INF : return SingleTask(nullptr, request)
 
-    request.setCheckpoints(restaurants); // Guardar os restaurantes por ordem de visita
-    SingleTask task ← SingleTask(E[nearestEmployeePos], request); // Tarefa que associa pedido e estafeta
+    request.setCheckpoints(restaurants) // Guardar os restaurantes por ordem de visita
+    SingleTask task ← SingleTask(E[nearestEmployeePos], request) // Associar pedido e estafeta
 
     if vehicle(task) == CAR || vehicle(task) == MOTORCYCLE:
-        task.setFloydWarshallPath(G1); // Construção do caminho do estafeta
+        task.setFloydWarshallPath(G1) // Construção do caminho do estafeta
     if vehicle(task) == BIKE || vehicle(task) == FOOT :
-        task.setFloydWarshallPath(G2);
+        task.setFloydWarshallPath(G2)
 
-    return task;
+    return task
 }
 
 ```
@@ -180,51 +187,54 @@ Finalmente, é definido o caminho completo e também os tempos estimados para ca
 
 ```cpp
 simultaneousRequests(Graph G, vector<Request> R, Employee employee){
-    vector<Coordinates> path; // Caminho parcial - ordem de visita dos restaurantes e moradas de entrega
-    Coordinates orig ← coordinates(employee); // Ponto de origem é a posição do estafeta
+    vector<Coordinates> path // Pontos por ordem de visita
+    Coordinates orig ← coordinates(employee) // Ponto de origem
     
-    vector<Request> pick ← R; // Pedidos a recolher do restaurante
-    setNearestRestaurant(G, pick, orig); // Obter na frente do vetor o restaurante mais perto da origem
-    vector<Request> deliver; // Pedidos a ser entregues na morada respetiva (já recolhidos previmente)
+    vector<Request> pick ← R // Pedidos a recolher do restaurante
+    setNearestRestaurant(G, pick, orig) // Restaurante mais perto da origem na frente
+    vector<Request> deliver; // Pedidos recolhidos, a ser entregues nas moradas
 
     int totalCargo ← 0;
     while deliver == ∅ || pick == ∅ :
-        // O estafeta não tem mais capacidade / Não há mais pedidos para recolher do restaurante
+        // Estafeta não tem mais capacidade / Não há mais pedidos para recolher
         if totalCargo == maxCargo(e) || pick == ∅ :
-            // Entrega um pedido 
-            orig ← deliveryAddr(deliver.front());
-            path.push_back(orig);
-            totalCargo ← totalCargo - cargo(deliver.front());
-            deliver.erase(deliver.begin()); // Remover dos pedidos a entregar
+            // Entrega pedido já recolhido (da morada mais perto)
+            orig ← deliveryAddr(deliver.front())
+            path.push_back(orig)
+            totalCargo ← totalCargo - cargo(deliver.front())
+            deliver.erase(deliver.begin())
 
         // Não há mais pedidos para entregar
         else if deliver == ∅ :
             // Recolher pedido(s) do restaurante mais perto da localização atual
-            orig ← restaurant(pick.front());
-            path.push_back(orig);
-            totalCargo ← totalCargo + cargo(pick.front());
+            orig ← restaurant(pick.front())
+            path.push_back(orig)
+            totalCargo ← totalCargo + cargo(pick.front())
 
-            // Verificar se há mais pedidos do mesmo restaurante e recolhê-los se possível(verifica carga)
+            // Recolher pedidos do mesmo restaurante, se possível(verifica carga)
             repeatedRestaurants(pick,deliver,totalCargo,maxCargo(employee));
 
             // Adicionar aos pedidos a entregar, remover dos pedidos a recolher
-            deliver.push_back(pick.front());
-            pick.erase(pick.begin());
+            deliver.push_back(pick.front())
+            pick.erase(pick.begin())
         
-        // Escolhe a opção mais próxima - recolher ou entregar um pedido. Se não tiver capacidade entrega um pedido
+        // Escolher a opção mais próxima - recolher ou entregar um pedido
+        // Se não tiver capacidade entrega um pedido
         else:
             if(totalCargo + cargo(pick.front()) > maxCargo(employee) ||
-                 G.getDist(orig,deliveryAddr(deliver.front())) < G.getDist(orig,restaurant(pick.front()))):
-                /* ... Entrega um pedido .... */
-            else:
-                /* ... Recolhe pedido(s) do restaurante mais perto... */
+                G.getDist(orig,deliveryAddr(deliver.front())) < G.getDist(orig,restaurant(pick.front()))):
+                //...Entrega um pedido...
+            else: //...Recolhe pedido(s) do restaurante mais perto...
 
-        setNearestRestaurant(G,pick,orig); // Manter no início o pedido por recolher cujo restaurante está mais próximo da posição atual
-        setNearestDeliveryAddress(G,deliver,orig); // Manter na frente o pedido a entregar cuja morada de entrega é mais próxima da posição atual
+        // Manter na frente o restaurante mais perto da nova origem
+        setNearestRestaurant(G,pick,orig)
+        // Manter na frente a morada (dos pedidos recolhidos) mais perto da origem
+        setNearestDeliveryAddress(G,deliver,orig)
 
-    SpecialTask s(employee,R); // Atribuir uma tarefa ao estafeta que consiste na realização de vários pedidos num deslocamento
-    s.setFloydWarshallPath(G,path); // Indicar ordem de visita dos restaurantes e moradas para construir a rota total do estafeta
-    return s;
+    SpecialTask s(employee,R) // Atribui pedidos ao estafeta
+    // Constrói caminho total a partir da ordem de visita dos restaurantes e moradas 
+    s.setFloydWarshallPath(G,path)
+    return s
 }
 
 ```
@@ -242,15 +252,18 @@ e
 
 ```cpp 
 void SingleTask::setFloydWarshallPath(Graph<Coordinates> & graph){
-    /*...*/
-    // Os 'checkpoints' do pedido estão por ordem de visita - definida com um dos algoritmos anteriores
-    for(Coordinates checkpoint: request.getCheckpoints()){ // Para cada ponto a visitar 
-        tempPath = graph.getfloydWarshallPath(orig, checkpoint); // Obter o caminho mais curto desde o ponto anterior
-        totalDistance += graph.getDist(graph.findVertexIdx(orig), graph.findVertexIdx(checkpoint)); // acumular a distância
-        /*...*/
-        path.insert(path.end(),tempPath.begin()+1, tempPath.end()); // Adicionar o caminho calculado ao caminho construído até então
+    //...
+    // Percorrer coordenadas do pedido - por ordem de visita
+    for(Coordinates checkpoint: request.getCheckpoints()){
+        // Caminho mais curto desde o ponto anterior
+        tempPath = graph.getfloydWarshallPath(orig, checkpoint); 
+        // Acumular a distância
+        totalDistance += graph.getDist(graph.findVertexIdx(orig), graph.findVertexIdx(checkpoint)); 
+        //...
+        // Adicionar caminho calculado ao caminho construído até então
+        path.insert(path.end(),tempPath.begin()+1, tempPath.end());
         orig = checkpoint; // Definir novo ponto de origem
     }
-    /*...*/
+    //...
 }
 ```
