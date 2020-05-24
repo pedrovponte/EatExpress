@@ -148,6 +148,7 @@ int grid4x4() {
 
     system("CLS");
 
+    if(preview) cout << endl <<  "\t...Opening city preview..." << endl;
     Graph<Coordinates> graph = loadGraph("GridGraphs", "4x4", true, preview);
     cout << endl << "\t....Processing city map..."<< endl;
     graph.floydWarshallShortestPath();
@@ -192,7 +193,7 @@ int grid8x8() {
     bool preview = previewCity();
 
     system("CLS");
-
+    if(preview) cout << endl <<  "\t...Opening city preview..." << endl;
     Graph<Coordinates> graph = loadGraph("GridGraphs", "8x8", true, preview);
     cout << endl << "\t....Processing city map..."<< endl;
     graph.floydWarshallShortestPath();
@@ -236,7 +237,7 @@ int grid16x16() {
     bool preview = previewCity();
 
     system("CLS");
-
+    if(preview) cout << endl <<  "\t...Opening city preview..." << endl;
     Graph<Coordinates> graph = loadGraph("GridGraphs", "16x16Random", true, preview);
     Graph<Coordinates> reducedGraph = loadGraph("GridGraphs", "16x16Bike", true);
 
@@ -290,7 +291,7 @@ int grid20x20() {
     bool preview = previewCity();
 
     system("CLS");
-
+    if(preview) cout << endl <<  "\t...Opening city preview..." << endl;
     Graph<Coordinates> graph = loadGraph("GridGraphs", "20x20", true, preview);
     Graph<Coordinates> reducedGraph = loadGraph("GridGraphs", "20x20Bike", true);
 
@@ -349,7 +350,7 @@ int grid30x30() {
     bool preview = previewCity();
 
     system("CLS");
-
+    if(preview) cout << endl <<  "\t...Opening city preview..." << endl;
     Graph<Coordinates> graph = loadGraph("GridGraphs", "30x30", true, preview);
     Graph<Coordinates> reducedGraph = loadGraph("GridGraphs", "30x30Bike", true);
 
@@ -417,7 +418,7 @@ int penafiel(){
     bool preview = previewCity();
 
     system("CLS");
-
+    if(preview) cout << endl <<  "\t...Opening city preview..." << endl;
     Graph<Coordinates> graph = loadGraph("Penafiel","",true,preview);
     cout << endl << "\t....Processing city map  (might take some seconds)..."<< endl;
     graph.readDistancesMatrix("Mapas/Penafiel/distances_penafiel.txt");

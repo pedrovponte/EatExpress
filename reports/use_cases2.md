@@ -14,6 +14,8 @@ Escolhido o mapa, é perguntado ao utilizador se pretende fazer apenas um pedido
 
 De seguida, irá ser perguntado ao utilizador se deseja visualizar o mapa escolhido, onde será possível visualizar a localização dos vários restaurantes.
 
+Seguidamente, no caso de grafos maiores, será mostrada uma mensagem ao utilizador durante alguns segundos, indicando que o mapa escolhido está a ser processado. É de notar que, no caso do grafo da cidade de Penafiel, o processamento já foi previamente realizado (com o algoritmo de Floyd Warshall), sendo este tempo de espera provocado pela leitura das matrizes de distâncias e de predecessor no caminho mais curto dos respetivos ficheiros. Em todos os outros casos o processamento é realmente feito no momento, recorrendo ao mesmo algoritmo.
+
 ## 7.1 Realização de um pedido
 
 Quando a opção escolhida é fazer apenas um pedido, é possível fazer um pedido que pode conter apenas um restaurante entre os apresentados na lista ou então vários, sendo que para cada restaurante se escolhe quantas refeições se deseja deste, estando o tamanho total do pedido limitado a 15 refeições.
